@@ -1,0 +1,182 @@
+
+/**========================================================================
+ * *                                UNIDADES DE  MEDIDA
+ *   px: pixeles (unidad absoluta)
+ *   vw: unidad relativa al ancho de la ventana
+ *   vh: unidad relatica a la altura de la ventana
+ *   em: unidad relativa al tamaño fuente del elemento padre --  
+ 1em = 16px (1 * 16)
+ 2em = 32px (2* 16)
+ *   rem: unidad relativa al tamaño de la fuente del elemento raiz --
+ 1rem = 16px
+ 2rem = 32px
+ *                                PALETA DE COLORES
+
+ #ccd5ae
+ #fefae0
+ #d4a373
+ *========================================================================**/
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* border: 1px dashed black; */
+}
+
+/* TITULOS PRINCIPALES */
+h1{
+  font-size: clamp(1.5em, 4vw, 2.5em);
+  font-weight: 300;
+  line-height: 1.5;
+  margin-bottom: 0.3em;
+}
+h2 {
+  font-size: clamp(1.2em, 3vw, 1.5em);
+  font-weight: 200;
+}
+
+p {
+  font-size: clamp(0.9em, 2vw, 1.1em);
+  font-weight: 300; 
+  line-height: 1.5;
+  margin-bottom: 1em;
+}
+
+body{
+  color:#000000;
+  font-family: 'Roboto',sans-serif;
+  /* text-transform: uppercase; */
+  background-color: #f5f7f6;
+  margin: 0;
+  position: relative;
+}
+
+
+.login-page{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+}
+.login-page{
+  width: clamp(320px, 90vw, 1200px);
+  margin: 0 auto;
+}
+
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form{
+  padding: 1em 2em;
+  background-color: #f5f7ef;
+}
+
+.login-form header{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+}
+
+.login-form header{
+  height: 10em;
+  margin-bottom: 2em;
+}
+
+.data-form{
+  display: flex;
+  flex-direction: column;
+  width: clamp(1em, 90%, 500px); 
+  height: 30.4em;
+  margin:  0 auto;
+}
+
+.data-form label,
+.data-form input,
+.data-form button,
+.data-form a {
+  width: 100%;
+  box-sizing: border-box; /* Importante para que padding no rompa el diseño */
+}
+
+.login-form label{
+  display: flex;
+  align-items: end;
+}
+.data-form label{
+  font-size: 1.2em;
+  font-weight: 100;
+  font-style: italic;
+  height: 2em;
+  margin-bottom: 0.6em;
+}
+
+.data-form input{
+  height: 4em;
+  padding: 0 20px;
+  font-size: 1em;
+  
+  border: 1px solid #ccc;
+  border-radius: 5px;
+
+  margin-bottom: 2em;
+
+  transition: all 0.2s ease; 
+}
+
+.data-form input:focus{
+  outline: none;
+  border: 2px solid #ccc; /* Cambia el color del borde al hacer foco */
+  box-shadow: 0 0 5px #4c3e35; /* Agrega un efecto suave si quieres */
+}
+
+.data-form a{
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  justify-content: center;
+}
+
+.data-form a{
+  height: 2em;
+
+  padding: 1.3em 0;
+  
+  margin-bottom: 1.3em;
+}
+
+button{
+  border: none;
+  border-radius: 100px;
+
+  transition: all 0.4s ease;
+  display: inline-block;
+
+  text-decoration: none;
+  text-transform: uppercase;
+
+  color: #41352e;
+  background-color: #dad7cd;
+  box-shadow: 0 0 4px #41352e;
+}
+/* se crea una clase comun para almacenar todos los estilos para ser reutilizados */
+
+.btn:hover,
+.btn:active {
+  color: #dad7cd;
+  background-color: #41352e;
+  box-shadow: 0 0 4px #dad7cd;
+}
+ /* estas son las clases que heredan las propiedades del boton
+ sin embargo tienen sus propiedades unicas */
+.btn--big{
+  padding: 20px 50px;
+}
+.btn--small{
+  font-size: 14px;
+  padding: 8px 12px;
+}
+
+
