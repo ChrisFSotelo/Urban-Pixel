@@ -1,6 +1,9 @@
 <?php
-require_once CONFIG_PATH . '/Conexion.php';
-require FEATURES_PATH . '/users/dao/UsuarioDAO.php';
+require_once __DIR__ . '/../../../../config/Conexion.php';
+
+require_once __DIR__ . '/../dao/UsuarioDAO.php';
+
+
 class Persona
 {
     protected $idPersona;

@@ -22,8 +22,9 @@ class UsuarioDAO
 
     public function autenticarUsuario()
     {
-        return "SELECT idUsuario FROM usuarios
-                WHERE email = '. $this->email .' AND clave = '. $this->clave .'";
+        return "SELECT idUsuario FROM usuarios 
+            WHERE email = '$this->email' AND clave = '$this->clave'";
     }
+
 
 }

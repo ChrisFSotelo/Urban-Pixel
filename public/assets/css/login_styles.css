@@ -12,9 +12,9 @@
  2rem = 32px
  *                                PALETA DE COLORES
 
- #00AFFF 
- #B5FF00 
- #D400FF
+ #006494 
+ #003554 
+ #051923
  *========================================================================**/
 *{
   margin: 0;
@@ -44,9 +44,9 @@ p {
 }
 
 body{
-  color:#000000;
-  font-family: 'Roboto',sans-serif;
-  background-color: #000000;
+  color:#051923;
+  font-family: 'Poppins',sans-serif;
+  background-color: #051923   ;
   margin: 0;
   position: relative;
 }
@@ -72,7 +72,6 @@ body{
 .login-form{
   padding: 1em 2em;
   background-color: #002333;
-  box-shadow: -10px 0 20px #002333;
 }
 
 .login-form header{
