@@ -35,31 +35,34 @@ if (isset($_POST["autenticar"])) {
     }
 }
 ?>
+
+<head>
+    <link rel="stylesheet" href="/Urban-Pixel/public/assets/css/login_styles.css" />
+</head>
 <main class="login-page">
     <section class="login-visual">
         <div class="flex-img">
-            <img class="image-logo animated" src="../../../../public/assets/images/Urban_logo.png" alt="Photo"/>
+            <img class="image-logo animated" src="/Urban-Pixel/public/assets/images/Urban_logo.png" alt="Urban Logo" />
         </div>
     </section>
 
     <!-- Formulario -->
     <section class="login-form">
         <header>
-            <h1>Bienvenido</h1>
+            <h1>Urban Pixel</h1>
             <h2>Inicie sesion para continuar</h2>
         </header>
 
         <form method="post"
-              class="data-form"
-              action="?pdi=<?php echo base64_encode(__DIR__ . '/login.php'); ?>">
+            class="data-form"
+            action="?pdi=<?php echo base64_encode(__DIR__ . '/login.php'); ?>">
             <label for="email">Ingresa tu correo</label>
-            <input type="email" name="email" placeholder="Correo" required/>
+            <input type="email" name="email" placeholder="Correo" required />
 
             <label for="clave">Ingresa tu contraseña</label>
-            <input type="password" name="clave" placeholder="Clave" required/>
+            <input type="password" name="clave" placeholder="Clave" required />
             <a href="#">Olvidé mi contraseña</a>
             <button class="btn btn--big" type="submit" name="autenticar">Iniciar sesion</button>
         </form>
     </section>
 </main>
-

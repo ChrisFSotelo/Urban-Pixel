@@ -36,7 +36,9 @@ $paginasConSesion = array(
 <body>
     <?php
     if (!isset($_GET["pdi"])) {
+        include "components/navBar.php";
         include "src/feactures/users/views/landing_page.php";
+
     } else {
         $pdi = base64_decode($_GET["pdi"]);
         if (in_array($pdi, $paginasSinSesion)) {

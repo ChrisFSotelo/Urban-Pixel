@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <title>Urban Pixel</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="public/assets/css/landing_styles.css" />
 </head>
 <main>
-  <header>
-
-  </header>
 
   <section class="hero">
     <h2>Descubre nuestra nueva colección</h2>
@@ -40,4 +38,5 @@
     <p>© 2025 Urban Pixel. Todos los derechos reservados.</p>
   </footer>
 </main>
+
 </html>
