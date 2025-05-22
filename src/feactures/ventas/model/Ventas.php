@@ -4,13 +4,13 @@
     // ***** ***** ***** *****
 
     class Ventas {
-        private $id;
+        private int $id;
         private Usuario $idUsuario; // Hace referencia al objeto 'Usuario', una usuario por venta
-        private $fechaCompra;
-        private $total;
+        private DateTime $fechaCompra;
+        private int $total;
 
         // Constructor
-        public function __construct($id, Usuario $idUsuario, $fechaCompra, $total) {
+        public function __construct(int $id, Usuario $idUsuario, DateTime $fechaCompra, int $total) {
             $this->id = $id;
             $this->idUsuario = $idUsuario;
             $this->fechaCompra = $fechaCompra;
@@ -32,16 +32,16 @@
         }
 
         // Setters
-        public function setId($id) {
+        public function setId(int $id) {
             $this->id = $id;
         }
         public function setIdUsuario(Usuario $idUsuario) {
             $this->idUsuario = $idUsuario;
         }
-        public function setFechaCompra($fechaCompra) {
+        public function setFechaCompra(DateTime $fechaCompra) {
             $this->fechaCompra = $fechaCompra;
         }
-        public function setTotal($total) {
+        public function setTotal(int $total) {
             $this->total = $total;
         }
     }

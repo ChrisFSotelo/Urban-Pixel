@@ -28,8 +28,13 @@ h1{
   font-weight: 700;
   line-height: 1.5;
   margin-bottom: 0.3em;
-  color: #e6f7ff;
 }
+
+h1 a {
+  color: #e6f7ff;
+  text-decoration: none;
+}
+
 h2 {
   font-size: clamp(1.1em, 3vw, 1.3em);
   font-weight: 500;
@@ -43,7 +48,7 @@ p {
   margin-bottom: 1em;
 }
 
-body{
+body {
   color:#051923;
   font-family: 'Poppins',sans-serif;
   background-color: #cdd1d3;

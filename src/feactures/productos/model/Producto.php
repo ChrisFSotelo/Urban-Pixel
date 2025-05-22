@@ -1,13 +1,13 @@
 <?php 
     class Producto {
-        private $id;
-        private $nombre;
-        private $cantidad;
-        private $precio;
+        private int $id;
+        private string $nombre;
+        private int $cantidad;
+        private int $precio;
         private Categoria $categoria; // Hace referencia al objeto 'Categorias', una categoría por producto
 
         // Constructor
-        public function __construct($id, $nombre, $cantidad, $precio, Categoria $categoria) {
+        public function __construct(int $id, string $nombre, int $cantidad, int $precio, Categoria $categoria) {
             $this->id = $id;
             $this->nombre = $nombre;
             $this->cantidad = $cantidad;
@@ -33,16 +33,16 @@
         }
 
         // Setters
-        public function setId($id) {
+        public function setId(int $id) {
             $this->id = $id;
         }
-        public function setNombre($nombre) {
+        public function setNombre(string $nombre) {
             $this->nombre = $nombre;
         }
-        public function setCantidad($cantidad) {
+        public function setCantidad(int $cantidad) {
             $this->cantidad = $cantidad;
         }
-        public function setPrecio($precio) {
+        public function setPrecio(int $precio) {
             $this->precio = $precio;
         }
         public function setCategoria(Categoria $categoria) {

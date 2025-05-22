@@ -37,19 +37,22 @@ if (isset($_POST["autenticar"])) {
 ?>
 
 <head>
-    <link rel="stylesheet" href="/Urban-Pixel/public/assets/css/login_styles.css" />
+    <link rel="stylesheet" href="public/assets/css/login_styles.css" />
 </head>
+
 <main class="login-page">
     <section class="login-visual">
         <div class="flex-img">
-            <img class="image-logo animated" src="/Urban-Pixel/public/assets/images/Urban_logo.png" alt="Urban Logo" />
+            <img class="image-logo animated" src="public/assets/images/Urban_logo.png" alt="Urban Logo" />
         </div>
     </section>
 
     <!-- Formulario -->
     <section class="login-form">
         <header>
-            <h1>Urban Pixel</h1>
+            <h1>
+                <a href="index.php" title="Página principal">Urban Pixel</a>
+            </h1>
             <h2>Inicie sesion para continuar</h2>
         </header>
 
