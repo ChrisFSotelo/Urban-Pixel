@@ -22,9 +22,15 @@ class Conexion
         $this->mysqlConexion->close();
     }
 
-    public function ejecutarConsulta($sql){
-        $this->resultado = $this->mysqlConexion->query($sql);
-        return $this->resultado;
+    public function ejecutarConsulta($sql) {
+        try {
+            $this->resultado = $this->mysqlConexion->query($sql);
+            return $this->resultado;
+        } 
+        catch (Exception $e) {
+            echo("Error al ejecutar la consulta: \n". $sql ."\n". $e->getMessage(). "\n");
+            return false;
+        }
     }
 
     public function siguienteRegistro()

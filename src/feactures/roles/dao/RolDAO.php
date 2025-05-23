@@ -1,6 +1,6 @@
 <?php 
-    require_once "Conexion.php";
-    require_once "Rol.php";
+    require_once "../../../../config/Conexion.php";
+    require_once "../model/Rol.php";
 
     class RolDAO {
         private Conexion $conexion;
@@ -74,7 +74,35 @@
                 return null;
             }
             
-            if($fila = $resultado->fetch_object()) { // Si se encuentra el rol
+            if($fila = $resultado->fetch_object()) { // Si se encuentra el rol                
+                $rol = new Rol(
+                    (int) $fila->id, 
+                    $fila->nombre
+                );
+
+                $this->conexion->cerrarConexion();
+                return $rol;
+            }
+
+            // Si no se encuentra el rol
+            $this->conexion->cerrarConexion();
+            echo("No se encontró el rol \n");
+            return null;
+        }
+
+        // Obtener un rol por nombre excluyendo uno
+        public function obtenerPorNombreExcluyendoRolActual(int $id, string $nombre): Rol | null {
+            $this->conexion->abrirConexion();
+            $sql = "SELECT * FROM rol WHERE (id != $id) AND (nombre = '$nombre')";
+            $resultado = $this->conexion->ejecutarConsulta($sql);
+
+            if(!$resultado) { // Si hubo un error
+                $this->conexion->cerrarConexion();
+                echo("Hubo un fallo al obtener el rol \n");
+                return null;
+            }
+            
+            if($fila = $resultado->fetch_object()) { // Si se encuentra el rol                
                 $rol = new Rol(
                     (int) $fila->id, 
                     $fila->nombre

@@ -1,6 +1,6 @@
 <?php
-    require_once 'Categoria.php';
-    require_once 'Conexion.php';
+    require_once __DIR__. "/../model/Categoria.php";
+    require_once "../../../../config/Conexion.php";
 
     class CategoriaDAO {
         private $conexion;
@@ -10,7 +10,7 @@
         }
 
         public function insertar (Categoria $categoria) {
-            $this->conexion->AbrirConexion();
+            $this->conexion->abrirConexion();
             $nombre = $categoria->getNombre();
 
             $sql = "INSERT INTO categoria (nombre) VALUES('$nombre')";
@@ -20,12 +20,26 @@
         public function obtenerPorId($id){
             $this->conexion->abrirConexion();
             
-            $sql = "SELECT * FROM categoria WHERE idCategoria = $id";
+            $sql = "SELECT * FROM categoria WHERE id = $id";
             $resultado = $this->conexion->ejecutarConsulta($sql);
             $categoria=null;
 
             if($fila = $resultado->fetch_assoc())
-                $categoria = new Categoria($fila['idCategoria'], $fila['nombre']);
+                $categoria = new Categoria($fila['id'], $fila['nombre']);
+
+            $this->conexion->cerrarConexion();
+            return $categoria;
+        }
+
+        public function obtenerPorNombre($nombre){
+            $this->conexion->abrirConexion();
+            
+            $sql = "SELECT * FROM categoria WHERE nombre = '$nombre'";
+            $resultado = $this->conexion->ejecutarConsulta($sql);
+            $categoria=null;
+
+            if($fila = $resultado->fetch_assoc())
+                $categoria = new Categoria($fila['id'], $fila['nombre']);
 
             $this->conexion->cerrarConexion();
             return $categoria;
@@ -39,7 +53,7 @@
             $categorias = [];
 
             while ($fila = $resultado->fetch_assoc())
-                $categorias[] = new Categoria($fila['idCategoria'], $fila['nombre']);
+                $categorias[] = new Categoria($fila['id'], $fila['nombre']);
 
             $this->conexion->cerrarConexion();
             return $categorias;
@@ -51,7 +65,7 @@
             $id = $categoria->getId();
             $nombre = $categoria->getNombre();
 
-            $sql = "UPDATE categorias SET nombre = '$nombre' WHERE idCategoria = $id";
+            $sql = "UPDATE categoria SET nombre = '$nombre' WHERE id = $id";
             $resultado = $this->conexion->ejecutarConsulta($sql);
 
             $this->conexion->cerrarConexion();
@@ -61,7 +75,7 @@
         public function eliminar($id) {
             $this->conexion->abrirConexion();
 
-            $sql = "DELETE FROM categoria WHERE idCategoria = $id";
+            $sql = "DELETE FROM categoria WHERE id = $id";
             $resultado = $this->conexion->ejecutarConsulta($sql);
 
             $this->conexion->cerrarConexion();

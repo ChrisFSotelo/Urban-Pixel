@@ -1,6 +1,7 @@
 <?php
 
-use dao\UsuarioDAO;
+    require_once __DIR__. "/Persona.php";
+    use dao\UsuarioDAO;
 
 class Usuario extends Persona
 {
