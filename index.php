@@ -5,8 +5,8 @@ if (isset($_GET["cerrarSesion"])) {
 }
 
 
-require "src/feactures/users/models/Persona.php";
-require "src/feactures/users/models/Usuario.php";
+require "src/feactures/users/model/Persona.php";
+require "src/feactures/users/model/Usuario.php";
 
 $paginasSinSesion = array(
     "src/feactures/login/views/login.php",
