@@ -1,5 +1,5 @@
 <?php
-    require_once "../../clientes/model/Categoria.php";
+    require_once "../../clientes/model/Cliente.php";
 
     class Factura {
         private int $id;

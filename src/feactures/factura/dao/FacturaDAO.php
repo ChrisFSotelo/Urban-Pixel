@@ -59,7 +59,7 @@
                 return null;
             }
             
-            if($fila = $resultado->fetch_object()) { // Si se encuentra el producto
+            if($fila = $resultado->fetch_object()) { // Si se encuentra la factura
                 $cliente = $this->clienteDAO->obtenerPorId((int) $fila->idCliente); // Obtenemos el cliente que generó la factura
 
                 $factura = new Factura(
@@ -117,12 +117,48 @@
             return $facturas;
         }
 
+        public function obtenerPorIdClienteHoraFecha(int $idCliente, string $hora, string $fecha): Factura | null {
+            $this->conexion->abrirConexion();
+            $sql = "SELECT * FROM factura WHERE (idCliente = $idCliente) AND (hora = '$hora') AND (fecha = '$fecha')";
+            $resultado = $this->conexion->ejecutarConsulta($sql);
+
+            if(!$resultado) { // Si hubo un error
+                $this->conexion->cerrarConexion();
+                echo("Hubo un fallo al obtener la factura \n");
+                return null;
+            }
+            
+            if($fila = $resultado->fetch_object()) { // Si se encuentra la factura
+                $cliente = $this->clienteDAO->obtenerPorId((int) $fila->idCliente); // Obtenemos el cliente que generó la factura
+
+                $factura = new Factura(
+                    (int) $fila->id, 
+                    new DateTime($fila->fecha),
+                    new DateTime($fila->hora),
+                    (int) $fila->subtotal,
+                    (int) $fila->iva,
+                    (int) $fila->total,
+                    $cliente,
+                    $fila->ciudad,
+                    $fila->direccion
+                );
+
+                $this->conexion->cerrarConexion();
+                return $factura;
+            }
+
+            // Si no se encuentra la factura
+            $this->conexion->cerrarConexion();
+            echo("No se encontró la factura \n");
+            return null;
+        }
+
         // Inserta una factura en la BD
         public function insertar(Factura $factura): Factura | null {
             $this->conexion->abrirConexion();
 
-            $fecha = $factura->getFecha()->format("Y-m-d");
-            $hora = $factura->getHora()->format("H:i:s");
+            $fecha = $factura->getFecha();
+            $hora = $factura->getHora();
             $subtotal = $factura->getSubtotal();
             $iva = $factura->getIva();
             $total = $factura->getTotal();
@@ -131,7 +167,7 @@
             $direccion = $factura->getDireccion();
 
             $sql = "INSERT INTO factura(fecha, hora, subtotal, iva, total, idCliente, ciudad, direccion) 
-                VALUES($fecha, $hora, $subtotal, $iva, $total, $idCliente, $ciudad, $direccion)";
+                VALUES('$fecha', '$hora', $subtotal, $iva, $total, $idCliente, $ciudad, $direccion)";
 
             $resultado = $this->conexion->ejecutarConsulta($sql);
             $this->conexion->cerrarConexion();
