@@ -1,10 +1,12 @@
 <?php
 
-
 namespace dao;
 
+require_once "../../../../config/Conexion.php";
+require_once "../model/Clientes.php";
+
 use Conexion;
-use models\Clientes;
+use model\Clientes;
 
 class ClienteDAO{
     private $conexion;
@@ -33,7 +35,7 @@ class ClienteDAO{
         echo ("Hubo un error al registrar el cliente");
         return null;
     }
-
+//CONSULTAS POR PROBAR
     public function obtenerPorId($id){
         $this->conexion->abrirConexion();
         $sql = "SELECT  nombre, apellido, correo FROM clientes WHERE id = $id";

@@ -1,8 +1,8 @@
 <?php
 $error = false;
 
-require_once __DIR__ . '/../../../feactures/users/models/Persona.php'; // si también usas esta clase
-require_once __DIR__ . '/../../../feactures/users/models/Usuario.php';
+require_once __DIR__ . '/../../../feactures/users/model/Persona.php'; // si también usas esta clase
+require_once __DIR__ . '/../../../feactures/users/model/Usuario.php';
 
 if (isset($_POST["autenticar"])) {
     $email = $_POST["email"];
