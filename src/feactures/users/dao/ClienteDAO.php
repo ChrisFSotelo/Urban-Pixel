@@ -26,7 +26,7 @@ class ClienteDAO{
         $clave = $cliente->getClave();
         $idRol = $cliente->getIdRol();
 
-        $sql = "INSERT INTO  clientes (nombre, apellido, correo, clave, idRol) VALUES ('$nombre','$apellido','$correo','$clave',$idRol)";
+        $sql = "INSERT INTO  cliente (nombre, apellido, correo, clave, idRol) VALUES ('$nombre','$apellido','$correo','$clave',$idRol)";
         $resultado = $this->conexion->ejecutarConsulta($sql);
         $this->conexion->cerrarConexion();
         if($resultado)
