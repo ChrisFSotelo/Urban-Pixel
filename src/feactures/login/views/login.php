@@ -58,12 +58,14 @@ if (isset($_POST["autenticar"])) {
 
         <form method="post"
             class="data-form"
-            action="?pdi=<?php echo base64_encode(__DIR__ . '/login.php'); ?>">
+            autocomplete="off"
+            action="?pdi=<?php echo base64_encode(__DIR__ . '/login.php'); ?>"
+        >
             <label for="email">Ingresa tu correo</label>
-            <input type="email" name="email" placeholder="Correo" required />
+            <input type="email" name="email" maxlength="50" placeholder="Correo" required />
 
             <label for="clave">Ingresa tu contraseña</label>
-            <input type="password" name="clave" placeholder="Clave" required />
+            <input type="password" name="clave" maxlength="25" placeholder="Clave" required />
             <a href="#">Olvidé mi contraseña</a>
             <button class="btn btn--big" type="submit" name="autenticar">Iniciar sesion</button>
         </form>

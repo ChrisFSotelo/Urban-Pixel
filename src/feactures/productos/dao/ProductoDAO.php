@@ -1,23 +1,29 @@
-<?php 
-    require_once "Conexion.php";
-    require_once "Categoria.php";
-    require_once "CategoriaDAO.php";
-    require_once "Producto.php";
+<?php
+    use dao\UsuarioDAO;
+
+    require_once "../../../../config/Conexion.php";
+    require_once "../../categorias//model/Categoria.php";
+    require_once "../../categorias/dao/CategoriaDAO.php";
+    require_once "../model/Producto.php";
+    require_once "../../users/models/Usuario.php";
+    require_once "../../users/dao/UsuarioDAO.php";
 
     class ProductoDAO {
         private Conexion $conexion;
-        private $categoriaDAO;
+        private CategoriaDAO $categoriaDAO;
+        private UsuarioDAO $adminDAO;
 
         // Se instancian los objetos
         public function __construct() {
             $this->conexion = new Conexion();
             $this->categoriaDAO = new CategoriaDAO();
+            $this->adminDAO = new UsuarioDAO();
         }
 
         // Lista todos los productos
         public function listar(): array | null {
             $this->conexion->abrirConexion();
-            $sql = "SELECT * FROM productos ORDER BY id ASC";
+            $sql = "SELECT * FROM producto ORDER BY id ASC";
             $resultado = $this->conexion->ejecutarConsulta($sql);
             $productos = [];
 
@@ -29,13 +35,15 @@
             
             while($fila = $resultado->fetch_object()) { // Listamos los productos
                 $categoria = $this->categoriaDAO->obtenerPorId((int) $fila->idCategoria); // Obtenemos la categoria del producto
+                $administrador = $this->adminDAO->obtenerPorId((int) $fila->idCategoria); // Obtenemos el administrador del producto
 
                 $productos[] = new Producto(
                     (int) $fila->id, 
                     $fila->nombre,
                     (int) $fila->cantidad,
                     (int) $fila->precio,
-                    $categoria
+                    $categoria,
+                    $administrador
                 );
             }
 
@@ -46,7 +54,7 @@
         // Obtener un producto por id
         public function obtenerPorId(int $id): Producto | null {
             $this->conexion->abrirConexion();
-            $sql = "SELECT * FROM productos WHERE id = $id";
+            $sql = "SELECT * FROM producto WHERE id = $id";
             $resultado = $this->conexion->ejecutarConsulta($sql);
 
             if(!$resultado) { // Si hubo un error
@@ -57,13 +65,84 @@
             
             if($fila = $resultado->fetch_object()) { // Si se encuentra el producto
                 $categoria = $this->categoriaDAO->obtenerPorId((int) $fila->idCategoria); // Obtenemos la categoria del producto
+                $administrador = $this->adminDAO->obtenerPorId((int) $fila->idCategoria); // Obtenemos el administrador del producto
 
                 $producto = new Producto(
                     (int) $fila->id, 
                     $fila->nombre,
                     (int) $fila->cantidad,
                     (int) $fila->precio,
-                    $categoria
+                    $categoria,
+                    $administrador
+                );
+
+                $this->conexion->cerrarConexion();
+                return $producto;
+            }
+
+            // Si no se encuentra el producto
+            $this->conexion->cerrarConexion();
+            echo("No se encontró el producto \n");
+            return null;
+        }
+
+        // Obtener un producto por nombre
+        public function obtenerPorNombre(string $nombre): Producto | null {
+            $this->conexion->abrirConexion();
+            $sql = "SELECT * FROM producto WHERE nombre = '$nombre'";
+            $resultado = $this->conexion->ejecutarConsulta($sql);
+
+            if(!$resultado) { // Si hubo un error
+                $this->conexion->cerrarConexion();
+                echo("Hubo un fallo al obtener el producto \n");
+                return null;
+            }
+            
+            if($fila = $resultado->fetch_object()) { // Si se encuentra el producto
+                $categoria = $this->categoriaDAO->obtenerPorId((int) $fila->idCategoria); // Obtenemos la categoria del producto
+                $administrador = $this->adminDAO->obtenerPorId((int) $fila->idCategoria); // Obtenemos el administrador del producto
+
+                $producto = new Producto(
+                    (int) $fila->id, 
+                    $fila->nombre,
+                    (int) $fila->cantidad,
+                    (int) $fila->precio,
+                    $categoria,
+                    $administrador
+                );
+
+                $this->conexion->cerrarConexion();
+                return $producto;
+            }
+
+            // Si no se encuentra el producto
+            $this->conexion->cerrarConexion();
+            echo("No se encontró el producto \n");
+            return null;
+        }
+
+        public function obtenerPorNombreExcluyendoProductoActual(int $id, string $nombre): Producto | null {
+            $this->conexion->abrirConexion();
+            $sql = "SELECT * FROM producto WHERE (id != $id) AND (nombre = '$nombre')";
+            $resultado = $this->conexion->ejecutarConsulta($sql);
+
+            if(!$resultado) { // Si hubo un error
+                $this->conexion->cerrarConexion();
+                echo("Hubo un fallo al obtener el producto \n");
+                return null;
+            }
+            
+            if($fila = $resultado->fetch_object()) { // Si se encuentra el producto
+                $categoria = $this->categoriaDAO->obtenerPorId((int) $fila->idCategoria); // Obtenemos la categoria del producto
+                $administrador = $this->adminDAO->obtenerPorId((int) $fila->idCategoria); // Obtenemos el administrador del producto
+
+                $producto = new Producto(
+                    (int) $fila->id, 
+                    $fila->nombre,
+                    (int) $fila->cantidad,
+                    (int) $fila->precio,
+                    $categoria,
+                    $administrador
                 );
 
                 $this->conexion->cerrarConexion();
@@ -84,9 +163,10 @@
             $cantidad = $producto->getCantidad();
             $precio = $producto->getPrecio();
             $idCategoria = $producto->getCategoria()->getId();
+            $idAministrador = $producto->getAdministrador()->getId();
 
-            $sql = "INSERT INTO productos(nombre, cantidad, precio, idcategoria) 
-                VALUES('$nombre', $cantidad, $precio, $idCategoria)";
+            $sql = "INSERT INTO producto(nombre, cantidad, precio, idCategoria, idAdministrador) 
+                VALUES('$nombre', $cantidad, $precio, $idCategoria, $idAministrador)";
 
             $resultado = $this->conexion->ejecutarConsulta($sql);
             $this->conexion->cerrarConexion();
@@ -108,12 +188,14 @@
             $cantidad = $producto->getCantidad();
             $precio = $producto->getPrecio();
             $idCategoria = $producto->getCategoria()->getId();
+            $idAministrador = $producto->getAdministrador()->getId();
 
-            $sql = "UPDATE productos
+            $sql = "UPDATE producto
                 SET nombre = '$nombre',
                     cantidad = $cantidad,
                     precio = $precio,
-                    idcategoria = $idCategoria 
+                    idCategoria = $idCategoria, 
+                    idAdministrador = $idAministrador 
                 WHERE id = $id";
 
             $resultado = $this->conexion->ejecutarConsulta($sql);
@@ -133,7 +215,7 @@
 
             if($producto !== null) { // Si se encuentra el producto
                 $this->conexion->abrirConexion();
-                $sql = "DELETE FROM productos WHERE id = $id";
+                $sql = "DELETE FROM producto WHERE id = $id";
                 $resultado = $this->conexion->ejecutarConsulta($sql);
                 $this->conexion->cerrarConexion();
 

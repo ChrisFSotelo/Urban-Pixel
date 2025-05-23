@@ -5,14 +5,16 @@
         private int $cantidad;
         private int $precio;
         private Categoria $categoria; // Hace referencia al objeto 'Categorias', una categoría por producto
+        private Usuario $administrador; // Hace referencia al objeto 'Usuario', un administrador (usuario) por producto
 
         // Constructor
-        public function __construct(int $id, string $nombre, int $cantidad, int $precio, Categoria $categoria) {
+        public function __construct(int $id, string $nombre, int $cantidad, int $precio, Categoria $categoria, Usuario $administrador) {
             $this->id = $id;
             $this->nombre = $nombre;
             $this->cantidad = $cantidad;
             $this->precio = $precio;
             $this->categoria = $categoria;
+            $this->administrador = $administrador;
         }
 
         // Getters
@@ -31,6 +33,9 @@
         public function getCategoria(): Categoria {
             return $this->categoria;
         }
+        public function getAdministrador(): Usuario {
+            return $this->administrador;
+        }
 
         // Setters
         public function setId(int $id) {
@@ -47,6 +52,9 @@
         }
         public function setCategoria(Categoria $categoria) {
             $this->categoria = $categoria;
+        }
+        public function setAdministrador(Usuario $administrador) {
+            $this->administrador = $administrador;
         }
     }
 ?>
