@@ -6,7 +6,7 @@ require_once __DIR__ . '/../config/Conexion.php';
 
 use models\Persona;
 
-class UsuarioDAO
+class ClienteDAO
 {
     private $conexion;
 
@@ -15,24 +15,24 @@ class UsuarioDAO
         $this->conexion = new \Conexion();
     }
 
-    public function insertar(Persona $usuario)
+    public function insertar(Persona $cliente)
     {
         $this->conexion->abrirConexion();
-        $nombre = $usuario->getNombre();
-        $apellido = $usuario->getApellido();
-        $correo = $usuario->getEmail();
-        $clave = $usuario->getClave();
+        $nombre = $cliente->getNombre();
+        $apellido = $cliente->getApellido();
+        $correo = $cliente->getEmail();
+        $clave = $cliente->getClave();
 
-        $sql = "INSERT INTO usuario (nombre, apellido, correo, clave, idRol)
-                VALUES ('$nombre', '$apellido', '$correo', '$clave', 1)"; 
+        $sql = "INSERT INTO cliente (nombre, apellido, correo, clave, idRol)
+                VALUES ('$nombre', '$apellido', '$correo', '$clave', 2)"; 
 
         $resultado = $this->conexion->ejecutarConsulta($sql);
         $this->conexion->cerrarConexion();
 
         if ($resultado) {
-            return $usuario;
+            return $cliente;
         } else {
-            echo "Hubo un fallo al agregar el usuario \n";
+            echo "Hubo un fallo al agregar el cliente \n";
             return null;
         }
     }
@@ -40,52 +40,52 @@ class UsuarioDAO
     public function obtenerPorId($id)
     {
         $this->conexion->abrirConexion();
-        $sql = "SELECT * FROM usuario WHERE id = $id";
+        $sql = "SELECT * FROM cliente WHERE id = $id";
         $resultado = $this->conexion->ejecutarConsulta($sql);
-        $usuario = null;
+        $cliente = null;
 
         if ($fila = $resultado->fetch_assoc()) {
-            $usuario = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave']);
+            $cliente = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave']);
         } else {
-            echo "No se encontró el usuario por el ID\n";
+            echo "No se encontró el cliente por el ID\n";
         }
 
         $this->conexion->cerrarConexion();
-        return $usuario;
+        return $cliente;
     }
 
     public function listar()
     {
         $this->conexion->abrirConexion();
-        $sql = "SELECT * FROM usuario";
+        $sql = "SELECT * FROM cliente";
         $resultado = $this->conexion->ejecutarConsulta($sql);
 
-        $usuarios = [];
+        $clientes = [];
 
         if (!$resultado) {
             $this->conexion->cerrarConexion();
-            echo "Hubo un fallo al listar los usuarios \n";
+            echo "Hubo un fallo al listar los clientes \n";
             return null;
         }
 
         while ($fila = $resultado->fetch_assoc()) {
-            $usuarios[] = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave']);
+            $clientes[] = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave']);
         }
 
         $this->conexion->cerrarConexion();
-        return $usuarios;
+        return $clientes;
     }
 
-    public function actualizar(Persona $usuario)
+    public function actualizar(Persona $cliente)
     {
         $this->conexion->abrirConexion();
-        $id = $usuario->getIdPersona();
-        $nombre = $usuario->getNombre();
-        $apellido = $usuario->getApellido();
-        $correo = $usuario->getEmail();
-        $clave = $usuario->getClave();
+        $id = $cliente->getIdPersona();
+        $nombre = $cliente->getNombre();
+        $apellido = $cliente->getApellido();
+        $correo = $cliente->getEmail();
+        $clave = $cliente->getClave();
 
-        $sql = "UPDATE usuario 
+        $sql = "UPDATE cliente 
                 SET nombre = '$nombre', apellido = '$apellido', correo = '$correo', clave = '$clave' 
                 WHERE id = $id";
 
@@ -93,10 +93,10 @@ class UsuarioDAO
         $this->conexion->cerrarConexion();
 
         if ($resultado) {
-            echo "Usuario actualizado correctamente\n";
+            echo "Cliente actualizado correctamente\n";
             return $resultado;
         } else {
-            echo "No se pudo actualizar el usuario\n";
+            echo "No se pudo actualizar el cliente\n";
             return null;
         }
     }
@@ -104,15 +104,15 @@ class UsuarioDAO
     public function eliminar($id)
     {
         $this->conexion->abrirConexion();
-        $sql = "DELETE FROM usuario WHERE id = $id";
+        $sql = "DELETE FROM cliente WHERE id = $id";
         $resultado = $this->conexion->ejecutarConsulta($sql);
         $this->conexion->cerrarConexion();
 
         if ($resultado) {
-            echo "Usuario con ID = $id eliminado correctamente\n";
+            echo "Cliente con ID = $id eliminado correctamente\n";
             return $resultado;
         } else {
-            echo "Usuario con ID = $id no se pudo eliminar\n";
+            echo "Cliente con ID = $id no se pudo eliminar\n";
             return null;
         }
     }
