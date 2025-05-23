@@ -1,20 +1,37 @@
 <?php
-session_start();
-if (isset($_GET["cerrarSesion"])) {
-    session_destroy();
+/* 
+    Import del archivo routes.php para obtener
+    las rutas de las vistas de la aplicación
+*/
+
+$routes = require(__DIR__ . "/config/routes.php");
+$currentPath = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+$requiresSession = $routes[$currentPath]['requires_session'] ?? false;
+$allowedRoles = $routes[$currentPath]['allowed_roles'] ?? [];
+$viewPath = $routes[$currentPath]['view'] ?? null;
+
+// session_start();
+// if (isset($_GET["cerrarSesion"])) {
+//     session_destroy();
+// }
+
+
+// require "src/feactures/users/models/Persona.php";
+// require "src/feactures/users/models/Usuario.php";
+
+// $paginasSinSesion = array(
+//     "src/feactures/login/views/login.php",
+//     "src/feactures/users/views/landing_page.php"
+// );
+// $paginasConSesion = array(
+//     "src/feactures/users/views/control_panel.html "
+// );
+
+if (!$viewPath || !file_exists(__DIR__ . '/' . $viewPath)) {
+    http_response_code(500);
+    echo "Error interno: La vista asociada no existe.";
+    exit;
 }
-
-
-require "src/feactures/users/models/Persona.php";
-require "src/feactures/users/models/Usuario.php";
-
-$paginasSinSesion = array(
-    "src/feactures/login/views/login.php",
-    "src/feactures/users/views/landing_page.php"
-);
-$paginasConSesion = array(
-    "src/feactures/users/views/control_panel.html "
-);
 ?>
 
 <html>
@@ -34,7 +51,15 @@ $paginasConSesion = array(
 </head>
 
 <body>
+    <header>
+        <?php include "components/navBar.php"; ?>
+    </header>
+    <main>
+        <?php include __DIR__ . "/" . $viewPath; ?>
+    </main>
+
     <?php
+    /*
     if (!isset($_GET["pdi"])) {
         include "components/navBar.php";
         include "src/feactures/users/views/landing_page.php";
@@ -52,7 +77,11 @@ $paginasConSesion = array(
         }else{
             echo "<h1>Error 404</h1>";
         }
-    }
+    }*/
     ?>
 </body>
+<footer>
+    <?php include "components/footer.php"; ?>
+</footer>
+
 </html>
