@@ -121,6 +121,7 @@
             return null;
         }
 
+        // Obtener un producto por nombre excluyendo el objeto actual
         public function obtenerPorNombreExcluyendoProductoActual(int $id, string $nombre): Producto | null {
             $this->conexion->abrirConexion();
             $sql = "SELECT * FROM producto WHERE (id != $id) AND (nombre = '$nombre')";

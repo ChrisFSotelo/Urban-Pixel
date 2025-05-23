@@ -109,14 +109,30 @@
                     break;
                 }
 
-                $nuevoProducto = $productoDAO->obtenerPorNombre($producto->getNombre());
+                $productoEditado = $productoDAO->obtenerPorNombre($producto->getNombre());
                 $datos = [
                     "mensaje" => "Producto editado correctamente",
-                    "producto" => generarJsonDeUnObjeto($nuevoProducto)
+                    "producto" => generarJsonDeUnObjeto($productoEditado)
                 ];
 
                 break;
             };
+
+            case "eliminar": {
+                $id = (int) $_POST["id"];
+
+                // Eliminamos y validamos
+                if($productoDAO->eliminar($id) === null) {
+                    $datos = ["error" => "Error al eliminar el producto"];
+                    break;
+                }
+
+                $datos = [
+                    "mensaje" => "Producto con id = ". $id ." eliminado correctamente"
+                ];
+
+                break;
+            }
         }
 
         echo json_encode($datos, JSON_UNESCAPED_UNICODE);

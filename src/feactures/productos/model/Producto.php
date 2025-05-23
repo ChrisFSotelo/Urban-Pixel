@@ -1,4 +1,7 @@
 <?php 
+    require_once "../../categorias/model/Categoria.php";
+    require_once "../../users/models/Usuario.php";
+
     class Producto {
         private int $id;
         private string $nombre;

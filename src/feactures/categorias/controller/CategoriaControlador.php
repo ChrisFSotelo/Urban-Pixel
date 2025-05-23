@@ -53,6 +53,50 @@
                 
                 break;
             };
+
+            case "editar": {
+                // Creamos el objeto 'Categoria'
+                $categoria = new Categoria(
+                    (int) $_POST["id"], 
+                    $_POST["nombre"]
+                );
+
+                // Evitamos duplicados por nombre
+                if($categoriaDAO->obtenerPorNombreExcluyendoCategoriaActual($categoria->getId(), $categoria->getNombre()) !== null) {
+                    $datos = ["error" => "Ya existe una categoria con ese nombre"];
+                    break;
+                }
+
+                // Editamos y validamos
+                if($categoriaDAO->actualizar($categoria) === null) {
+                    $datos = ["error" => "Error al editar la categoria"];
+                    break;
+                }
+
+                $categoriaEditada = $categoriaDAO->obtenerPorNombre($categoria->getNombre());
+                $datos = [
+                    "mensaje" => "Categoria editada correctamente",
+                    "categoria" => generarJsonDeUnObjeto($categoriaEditada)
+                ];
+                
+                break;
+            };
+
+            case "eliminar": {
+                $id = (int) $_POST["id"];
+
+                // Eliminamos y validamos
+                if($categoriaDAO->eliminar($id) === null) {
+                    $datos = ["error" => "Error al eliminar la categoría"];
+                    break;
+                }
+
+                $datos = [
+                    "mensaje" => "Categoría con id = ". $id ." eliminada correctamente"
+                ];
+
+                break;
+            }
         }
 
         echo json_encode($datos, JSON_UNESCAPED_UNICODE);
