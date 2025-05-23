@@ -23,7 +23,7 @@ if (isset($_POST["autenticar"])) {
             ]);
             exit;
         }
-        header("location: ?pdi=" . base64_encode(__DIR__ . '/../../../features/users/views/control_panel.html'));
+        header("location: /control_panel");
         exit;
     } else {
         header('Content-Type: application/json');
@@ -58,7 +58,7 @@ if (isset($_POST["autenticar"])) {
 
         <form method="post"
             class="data-form"
-            action="?pdi=<?php echo base64_encode(__DIR__ . '/login.php'); ?>">
+            action="/login">
             <label for="email">Ingresa tu correo</label>
             <input type="email" name="email" placeholder="Correo" required />
 

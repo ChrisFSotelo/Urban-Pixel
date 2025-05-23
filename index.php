@@ -3,12 +3,65 @@
     Import del archivo routes.php para obtener
     las rutas de las vistas de la aplicación
 */
+require(__DIR__ . "/config/routes.php");
+
+
+
+
+
+
+
+if (isset($_GET['cerrarSesion']) && $_GET['cerrarSesion'] === 'true') {
+    // Limpia las variables de sesión
+    $_SESSION = [];
+    // Destruye la sesión
+    session_destroy();
+    // Redirige al usuario al inicio o login
+    header("Location: /");
+    exit;
+}
 
 $routes = require(__DIR__ . "/config/routes.php");
+
 $currentPath = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+
+if (!array_key_exists($currentPath, $routes)) {
+    http_response_code(404);
+    include __DIR__ . "/src/shared/views/errors/error404.html";
+    exit;
+}
+
 $requiresSession = $routes[$currentPath]['requires_session'] ?? false;
+
+$usuario = null;
+if (!empty($_SESSION['id'])) {
+    $usuario = ['rol' => 'administrador', 'id' => $_SESSION['id']];
+} elseif (!empty($_SESSION['idCliente'])) { //cuando haya clientes.
+    $usuario = ['rol' => 'cliente', 'id' => $_SESSION['idCliente']];
+}
+
+if ($requiresSession && !$usuario) {
+    header("Location: /login");
+    exit;
+}
+
 $allowedRoles = $routes[$currentPath]['allowed_roles'] ?? [];
+
+if ($allowedRoles && (!$usuario || !in_array($usuario['rol'], $allowedRoles))) {
+    http_response_code(403);
+    include __DIR__ . "/src/shared/views/errors/error403.html";
+    exit;
+}
+
 $viewPath = $routes[$currentPath]['view'] ?? null;
+
+if (!$viewPath || !file_exists(__DIR__ . '/' . $viewPath)) {
+    http_response_code(500);
+    echo $viewPath;
+    echo $currentPath;
+    include __DIR__ . "/src/shared/views/errors/error500.html";
+    exit;
+}
 
 // session_start();
 // if (isset($_GET["cerrarSesion"])) {
