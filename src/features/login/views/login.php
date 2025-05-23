@@ -1,8 +1,8 @@
 <?php
 $error = false;
 
-require_once __DIR__ . '/../../../feactures/users/models/Persona.php'; // si también usas esta clase
-require_once __DIR__ . '/../../../feactures/users/models/Usuario.php';
+require_once __DIR__ . '/../../../features/users/models/Persona.php'; // si también usas esta clase
+require_once __DIR__ . '/../../../features/users/models/Usuario.php';
 
 if (isset($_POST["autenticar"])) {
     $email = $_POST["email"];
@@ -23,7 +23,7 @@ if (isset($_POST["autenticar"])) {
             ]);
             exit;
         }
-        header("location: ?pdi=" . base64_encode(__DIR__ . '/../../../feactures/users/views/control_panel.html'));
+        header("location: ?pdi=" . base64_encode(__DIR__ . '/../../../features/users/views/control_panel.html'));
         exit;
     } else {
         header('Content-Type: application/json');
