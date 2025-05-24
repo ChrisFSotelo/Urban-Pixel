@@ -167,7 +167,7 @@
             $direccion = $factura->getDireccion();
 
             $sql = "INSERT INTO factura(fecha, hora, subtotal, iva, total, idCliente, ciudad, direccion) 
-                VALUES('$fecha', '$hora', $subtotal, $iva, $total, $idCliente, $ciudad, $direccion)";
+                VALUES('$fecha', '$hora', $subtotal, $iva, $total, $idCliente, '$ciudad', '$direccion')";
 
             $resultado = $this->conexion->ejecutarConsulta($sql);
             $this->conexion->cerrarConexion();
