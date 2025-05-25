@@ -1,15 +1,10 @@
 <?php
+session_start();
 /* 
     Import del archivo routes.php para obtener
     las rutas de las vistas de la aplicación
 */
 require(__DIR__ . "/config/routes.php");
-
-
-
-
-
-
 
 if (isset($_GET['cerrarSesion']) && $_GET['cerrarSesion'] === 'true') {
     // Limpia las variables de sesión
@@ -35,7 +30,7 @@ $requiresSession = $routes[$currentPath]['requires_session'] ?? false;
 
 $usuario = null;
 if (!empty($_SESSION['id'])) {
-    $usuario = ['rol' => 'administrador', 'id' => $_SESSION['id']];
+    $usuario = ['rol' => 'admin', 'id' => $_SESSION['id']];
 } elseif (!empty($_SESSION['idCliente'])) { //cuando haya clientes.
     $usuario = ['rol' => 'cliente', 'id' => $_SESSION['idCliente']];
 }
@@ -87,6 +82,7 @@ if (!$viewPath || !file_exists(__DIR__ . '/' . $viewPath)) {
 }
 ?>
 
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -133,8 +129,5 @@ if (!$viewPath || !file_exists(__DIR__ . '/' . $viewPath)) {
     }*/
     ?>
 </body>
-<footer>
     <?php include "components/footer.php"; ?>
-</footer>
-
 </html>

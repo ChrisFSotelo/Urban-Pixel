@@ -1,38 +1,59 @@
 <?php
+
 $error = false;
 
-require_once __DIR__ . '/../../../features/users/models/Persona.php'; // si también usas esta clase
-require_once __DIR__ . '/../../../features/users/models/Usuario.php';
+require_once __DIR__ . "/../../auth/controller/authController.php";
+require_once __DIR__ . '/../../../features/users/model/Persona.php'; // si también usas esta clase
+require_once __DIR__ . '/../../../features/users/model/Usuario.php';
 
 if (isset($_POST["autenticar"])) {
-    $email = $_POST["email"];
-    $clave = md5($_POST["clave"]);
-    $usuario = new Usuario(null, null, null, $email, $clave);
-    if ($usuario->autenticarUsuario()) {
-        session_start();
+    $correo = $_POST["email"];
+    $clave = $_POST["clave"];
 
-        $_SESSION["id"] = $usuario->getIdPersona();
+    $resultado = Auth::auth($correo, $clave);
 
-        // Si la petición viene desde Postman o fetch/AJAX
-        if (!empty($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
-            header('Content-Type: application/json');
-            echo json_encode([
-                "status" => "success",
-                "message" => "Usuario autenticado correctamente",
-                "id" => $_SESSION["id"]
-            ]);
-            exit;
+    if (is_array($resultado))
+    {
+        if ($resultado['rol'] === 'admin')
+        {
+            session_start();
+            $_SESSION['id'] = $resultado['id'];
+            echo "\nid sesión: " . $_SESSION['id'];
+            echo "\nrol: " . $resultado['rol'];
+            echo "\nid: " . $resultado['id'];
+            header("location: /control_panel");
         }
-        header("location: /control_panel");
-        exit;
+        
     } else {
-        header('Content-Type: application/json');
-        echo json_encode([
-            "status" => "error",
-            "message" => "Credenciales incorrectas"
-        ]);
-        exit;
+        $error = true;
     }
+
+    // $usuario = new Usuario(null, null, null, $email, $clave);
+    // if ($usuario->autenticarUsuario()) {
+    //     session_start();
+
+    //     $_SESSION["id"] = $usuario->getIdPersona();
+
+    //     // Si la petición viene desde Postman o fetch/AJAX
+    //     if (!empty($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
+    //         header('Content-Type: application/json');
+    //         echo json_encode([
+    //             "status" => "success",
+    //             "message" => "Usuario autenticado correctamente",
+    //             "id" => $_SESSION["id"]
+    //         ]);
+    //         exit;
+    //     }
+    //     header("location: /control_panel");
+    //     exit;
+    // } else {
+    //     header('Content-Type: application/json');
+    //     echo json_encode([
+    //         "status" => "error",
+    //         "message" => "Credenciales incorrectas"
+    //     ]);
+    //     exit;
+    // }
 }
 ?>
 
@@ -60,10 +81,10 @@ if (isset($_POST["autenticar"])) {
             class="data-form"
             action="/login">
             <label for="email">Ingresa tu correo</label>
-            <input type="email" name="email" placeholder="Correo" required />
+            <input type="email" name="email" maxlength="50" placeholder="Correo" required />
 
             <label for="clave">Ingresa tu contraseña</label>
-            <input type="password" name="clave" placeholder="Clave" required />
+            <input type="password" name="clave" maxlength="25" placeholder="Clave" required />
             <a href="#">Olvidé mi contraseña</a>
             <button class="btn btn--big" type="submit" name="autenticar">Iniciar sesion</button>
         </form>

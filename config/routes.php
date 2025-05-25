@@ -2,19 +2,19 @@
 return [
     '/' => [
         'view' => 'src/features/users/views/landing_page.php',
-        'allowed_roles' => [],
         'requires_session' => false,
+        'allowed_roles' => [],  
     ],
 
     '/login' => [
         'view' => 'src/features/login/views/login.php',
-        'allowed_roles' => [],
         'requires_session' => false,
+        'allowed_roles' => [],
     ],
 
     '/control_panel' => [
-        'view' => 'src/features/users/views/control_panel.html',
-        'allowed_roles' => ['administrador'],
+        'view' => 'src/features/users/views/control_panel.php',
         'requires_session' => true,
+        'allowed_roles' => ['admin'],
     ],
 ];

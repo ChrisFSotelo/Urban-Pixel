@@ -1,30 +1,129 @@
 <?php
-
 namespace dao;
+
+require_once __DIR__ . '/../model/Persona.php';
+require_once __DIR__ . '/../../../../config/Conexion.php';
+
+use model\Persona;
 
 class UsuarioDAO
 {
-    private $idPersona;
-    private $nombre;
-    private $apellido;
-    private $email;
-    private $clave;
-    private $rol;
+    private $conexion;
 
-    public function __construct($idPersona=null, $nombre=null, $apellido=null, $email=null, $clave=null)
+    public function __construct()
     {
-        $this->idPersona = $idPersona;
-        $this->nombre = $nombre;
-        $this->apellido = $apellido;
-        $this->email = $email;
-        $this->clave = $clave;
+        $this->conexion = new \Conexion();
     }
 
-    public function autenticarUsuario()
+    public function insertar($usuario)
     {
-        return "SELECT idUsuario FROM usuarios 
-            WHERE email = '$this->email' AND clave = '$this->clave'";
+        $this->conexion->abrirConexion();
+        $nombre = $usuario->getNombre();
+        $apellido = $usuario->getApellido();
+        $correo = $usuario->getEmail();
+        $clave = $usuario->getClave();
+
+        $sql = "INSERT INTO usuario (nombre, apellido, correo, clave, idRol)
+                VALUES ('$nombre', '$apellido', '$correo', '$clave', 1)"; 
+
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+        $this->conexion->cerrarConexion();
+
+        if ($resultado) {
+            return $usuario;
+        } else {
+            echo "Hubo un fallo al agregar el usuario \n";
+            return null;
+        }
     }
 
+    public function obtenerPorId($id)
+    {
+        $this->conexion->abrirConexion();
+        $sql = "SELECT * FROM usuario WHERE id = $id";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+        $usuario = null;
 
+        if ($fila = $resultado->fetch_assoc()) {
+            //$usuario = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave']);
+        } else {
+            echo "No se encontró el usuario por el ID\n";
+        }
+
+        $this->conexion->cerrarConexion();
+        return $usuario;
+    }
+
+    public function listar()
+    {
+        $this->conexion->abrirConexion();
+        $sql = "SELECT * FROM usuario";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+
+        $usuarios = [];
+
+        if (!$resultado) {
+            $this->conexion->cerrarConexion();
+            echo "Hubo un fallo al listar los usuarios \n";
+            return null;
+        }
+
+        while ($fila = $resultado->fetch_assoc()) {
+            //$usuarios[] = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave']);
+        }
+
+        $this->conexion->cerrarConexion();
+        return $usuarios;
+    }
+
+    public function actualizar($usuario)
+    {
+        $this->conexion->abrirConexion();
+        $id = $usuario->getIdPersona();
+        $nombre = $usuario->getNombre();
+        $apellido = $usuario->getApellido();
+        $correo = $usuario->getEmail();
+        $clave = $usuario->getClave();
+
+        $sql = "UPDATE usuario 
+                SET nombre = '$nombre', apellido = '$apellido', correo = '$correo', clave = '$clave' 
+                WHERE id = $id";
+
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+        $this->conexion->cerrarConexion();
+
+        if ($resultado) {
+            echo "Usuario actualizado correctamente\n";
+            return $resultado;
+        } else {
+            echo "No se pudo actualizar el usuario\n";
+            return null;
+        }
+    }
+
+    public function eliminar($id)
+    {
+        $this->conexion->abrirConexion();
+        $sql = "DELETE FROM usuario WHERE id = $id";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+        $this->conexion->cerrarConexion();
+
+        if ($resultado) {
+            echo "Usuario con ID = $id eliminado correctamente\n";
+            return $resultado;
+        } else {
+            echo "Usuario con ID = $id no se pudo eliminar\n";
+            return null;
+        }
+    }
+
+    public function autenticarUsuario($usuario)
+    {
+        $correo = $usuario->getEmail();
+        $clave = $usuario->getClave();
+        echo "correo: " . $correo;
+        echo "clave: " . $clave;
+        return "SELECT * FROM usuario 
+            WHERE correo = '$correo' AND clave = '$clave'";
+    }
 }
