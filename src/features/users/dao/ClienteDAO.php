@@ -48,7 +48,7 @@ class ClienteDAO{
         }
 
         if ($fila = $resultado ->fetch_assoc())
-            $cliente = new Clientes($fila['nombre'], $fila['apellido'], $fila['correo'], $fila['idRol']);
+            $cliente = new Clientes($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave'], $fila['idRol']);
         $this->conexion->cerrarConexion();
         return $cliente;
 
@@ -78,7 +78,7 @@ class ClienteDAO{
         $clientes = [];
 
         while ($fila = $resultado->fetch_assoc())
-            $clientes[] = new Clientes($fila['nombre'], $fila['apellido'], $fila['correo']);
+            $clientes[] = new Clientes($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave'], $fila['idRol']);
 
         $this->conexion->cerrarConexion();
         return $clientes;

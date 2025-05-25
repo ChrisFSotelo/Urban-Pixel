@@ -1,22 +1,88 @@
 <?php
 session_start();
-if (isset($_GET["cerrarSesion"])) {
+/* 
+    Import del archivo routes.php para obtener
+    las rutas de las vistas de la aplicación
+*/
+require(__DIR__ . "/config/routes.php");
+
+if (isset($_GET['cerrarSesion']) && $_GET['cerrarSesion'] === 'true') {
+    // Limpia las variables de sesión
+    $_SESSION = [];
+    // Destruye la sesión
     session_destroy();
+    // Redirige al usuario al inicio o login
+    header("Location: /");
+    exit;
 }
 
+$routes = require(__DIR__ . "/config/routes.php");
 
-require "src/feactures/users/model/Persona.php";
-require "src/feactures/users/model/Usuario.php";
+$currentPath = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
-$paginasSinSesion = array(
-    "src/feactures/login/views/login.php",
-    "src/feactures/users/views/landing_page.php"
-);
-$paginasConSesion = array(
-    "src/feactures/users/views/control_panel.html "
-);
+if (!array_key_exists($currentPath, $routes)) {
+    http_response_code(404);
+    include __DIR__ . "/src/shared/views/errors/error404.html";
+    exit;
+}
+
+$requiresSession = $routes[$currentPath]['requires_session'] ?? false;
+
+$usuario = null;
+if (!empty($_SESSION['id'])) {
+    $usuario = ['rol' => 'admin', 'id' => $_SESSION['id']];
+} elseif (!empty($_SESSION['idCliente'])) { //cuando haya clientes.
+    $usuario = ['rol' => 'cliente', 'id' => $_SESSION['idCliente']];
+}
+
+if ($requiresSession && !$usuario) {
+    header("Location: /login");
+    exit;
+}
+
+$allowedRoles = $routes[$currentPath]['allowed_roles'] ?? [];
+
+if ($allowedRoles && (!$usuario || !in_array($usuario['rol'], $allowedRoles))) {
+    http_response_code(403);
+    include __DIR__ . "/src/shared/views/errors/error403.html";
+    exit;
+}
+
+$viewPath = $routes[$currentPath]['view'] ?? null;
+
+if (!$viewPath || !file_exists(__DIR__ . '/' . $viewPath)) {
+    http_response_code(500);
+    echo $viewPath;
+    echo $currentPath;
+    include __DIR__ . "/src/shared/views/errors/error500.html";
+    exit;
+}
+
+// session_start();
+// if (isset($_GET["cerrarSesion"])) {
+//     session_destroy();
+// }
+
+
+// require "src/feactures/users/models/Persona.php";
+// require "src/feactures/users/models/Usuario.php";
+
+// $paginasSinSesion = array(
+//     "src/feactures/login/views/login.php",
+//     "src/feactures/users/views/landing_page.php"
+// );
+// $paginasConSesion = array(
+//     "src/feactures/users/views/control_panel.html "
+// );
+
+if (!$viewPath || !file_exists(__DIR__ . '/' . $viewPath)) {
+    http_response_code(500);
+    echo "Error interno: La vista asociada no existe.";
+    exit;
+}
 ?>
 
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -34,7 +100,15 @@ $paginasConSesion = array(
 </head>
 
 <body>
+    <header>
+        <?php include "components/navBar.php"; ?>
+    </header>
+    <main>
+        <?php include __DIR__ . "/" . $viewPath; ?>
+    </main>
+
     <?php
+    /*
     if (!isset($_GET["pdi"])) {
         include "components/navBar.php";
         include "src/feactures/users/views/landing_page.php";
@@ -52,7 +126,8 @@ $paginasConSesion = array(
         }else{
             echo "<h1>Error 404</h1>";
         }
-    }
+    }*/
     ?>
 </body>
+    <?php include "components/footer.php"; ?>
 </html>

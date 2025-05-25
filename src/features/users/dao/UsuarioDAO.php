@@ -1,10 +1,10 @@
 <?php
 namespace dao;
 
-require_once __DIR__ . '/../models/Persona.php';
-require_once __DIR__ . '/../config/Conexion.php';
+require_once __DIR__ . '/../model/Persona.php';
+require_once __DIR__ . '/../../../../config/Conexion.php';
 
-use models\Persona;
+use model\Persona;
 
 class UsuarioDAO
 {
@@ -15,7 +15,7 @@ class UsuarioDAO
         $this->conexion = new \Conexion();
     }
 
-    public function insertar(Persona $usuario)
+    public function insertar($usuario)
     {
         $this->conexion->abrirConexion();
         $nombre = $usuario->getNombre();
@@ -45,7 +45,7 @@ class UsuarioDAO
         $usuario = null;
 
         if ($fila = $resultado->fetch_assoc()) {
-            $usuario = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave']);
+            //$usuario = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave']);
         } else {
             echo "No se encontró el usuario por el ID\n";
         }
@@ -69,14 +69,14 @@ class UsuarioDAO
         }
 
         while ($fila = $resultado->fetch_assoc()) {
-            $usuarios[] = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave']);
+            //$usuarios[] = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave']);
         }
 
         $this->conexion->cerrarConexion();
         return $usuarios;
     }
 
-    public function actualizar(Persona $usuario)
+    public function actualizar($usuario)
     {
         $this->conexion->abrirConexion();
         $id = $usuario->getIdPersona();
@@ -115,5 +115,15 @@ class UsuarioDAO
             echo "Usuario con ID = $id no se pudo eliminar\n";
             return null;
         }
+    }
+
+    public function autenticarUsuario($usuario)
+    {
+        $correo = $usuario->getEmail();
+        $clave = $usuario->getClave();
+        echo "correo: " . $correo;
+        echo "clave: " . $clave;
+        return "SELECT * FROM usuario 
+            WHERE correo = '$correo' AND clave = '$clave'";
     }
 }

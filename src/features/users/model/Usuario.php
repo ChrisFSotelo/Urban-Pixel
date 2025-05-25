@@ -22,13 +22,14 @@ class Usuario extends Persona
         parent::__construct($idPersona, $nombre, $apellido, $email, $clave);
     }
 
-    public function autenticarUsuario()
+    public function autenticarUsuario($usuario)
     {
         $conexion = new Conexion();
         $conexion->abrirConexion();
 
-        $usuarioDAO = new UsuarioDAO(null, null, null, $this->email, $this->clave);
-        $conexion->ejecutarConsulta($usuarioDAO->autenticarUsuario());
+        $usuarioDAO = new UsuarioDAO();
+
+        $conexion->ejecutarConsulta($usuarioDAO->autenticarUsuario($usuario));
 
 //        DEBUG
 //        $sql = $usuarioDAO->autenticarUsuario();
