@@ -1,9 +1,11 @@
 <?php
 namespace dao;
 
-require_once __DIR__ . '/../models/Persona.php';
-require_once __DIR__ . '/../config/Conexion.php';
+require_once __DIR__ . "/../../../../config/Conexion.php";
+require_once __DIR__ . '/../model/Persona.php';
 
+
+use Conexion;
 use models\Persona;
 
 class UsuarioDAO
