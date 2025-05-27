@@ -5,15 +5,15 @@ if (isset($_GET["cerrarSesion"])) {
 }
 
 
-require "src/feactures/users/model/Persona.php";
-require "src/feactures/users/model/Usuario.php";
+require "src/features/users/model/Persona.php";
+require "src/features/users/model/Usuario.php";
 
 $paginasSinSesion = array(
-    "src/feactures/login/views/login.php",
-    "src/feactures/users/views/landing_page.php"
+    "src/features/login/views/login.php",
+    "src/features/users/views/landing_page.php"
 );
 $paginasConSesion = array(
-    "src/feactures/users/views/control_panel.php"
+    "src/features/users/views/control_panel.php"
 );
 ?>
 
@@ -37,7 +37,7 @@ $paginasConSesion = array(
     <?php
     if (!isset($_GET["pdi"])) {
         include "components/navBar.php";
-        include "src/feactures/users/views/landing_page.php";
+        include "src/features/users/views/landing_page.php";
 
     } else {
         $pdi = $_GET["pdi"];
@@ -47,7 +47,7 @@ $paginasConSesion = array(
             if (isset($_SESSION["id"])) {
                 include ($pdi);
             } else {
-                include "src/feactures/login/views/Login.php";
+                include "src/features/login/views/Login.php";
             }
         }else{
             echo "<h1>Error 404</h1>";

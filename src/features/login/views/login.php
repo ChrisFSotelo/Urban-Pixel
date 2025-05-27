@@ -1,8 +1,8 @@
 <?php
 $error = false;
 
-require_once __DIR__ . '/../../../feactures/users/model/Persona.php'; // si también usas esta clase
-require_once __DIR__ . '/../../../feactures/users/model/Usuario.php';
+require_once __DIR__ . '/../../../features/users/model/Persona.php'; // si también usas esta clase
+require_once __DIR__ . '/../../../features/users/model/Usuario.php';
 
 if (isset($_POST["autenticar"])) {
     $correo = $_POST["correo"];
@@ -23,7 +23,7 @@ if (isset($_POST["autenticar"])) {
             ]);
             exit;
         }
-        header("location: ?pdi=src/feactures/users/views/control_panel.php");
+        header("location: ?pdi=src/features/users/views/control_panel.php");
         exit;
     } else {
         header('Content-Type: application/json');
@@ -84,7 +84,7 @@ if (isset($_POST["autenticar"])) {
         <form 
             method="post"
             class="data-form"
-            action="?pdi=src/feactures/login/views/login.php">
+            action="?pdi=src/features/login/views/login.php">
           <h1>Iniciar Sesión</h1>
           <input 
             type="email"

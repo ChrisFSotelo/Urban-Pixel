@@ -65,7 +65,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white" href="?pdi=<?php echo base64_encode('src/feactures/login/views/login.php'); ?>">
+                <a class="nav-link text-white" href="?pdi=<?php echo base64_encode('src/features/login/views/login.php'); ?>">
                     <i class="fas fa-sign-in-alt"></i> <span>Iniciar Sesión</span>
                 </a>
             </li>

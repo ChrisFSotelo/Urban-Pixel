@@ -93,4 +93,4 @@ INSERT INTO rol (nombre) VALUES
 ('Cliente');
 
 INSERT INTO usuario(nombre, apellido, correo, clave, idRol) VALUES 
-('Cristian Ferney', 'Sotelo Lancheros', 'cfsotelol@udistrital.edu.co', '51f5ba3406f5d930999897226474cbef', 1);
+('Cristian Ferney', 'Sotelo Lancheros', 'fmcaror@udistrital.edu.co', '202cb962ac59075b964b07152d234b70', 1);
