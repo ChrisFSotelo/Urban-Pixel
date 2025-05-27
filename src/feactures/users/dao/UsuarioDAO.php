@@ -6,7 +6,7 @@ require_once __DIR__ . '/../model/Persona.php';
 
 
 use Conexion;
-use models\Persona;
+use model\Persona;
 
 class UsuarioDAO
 {
@@ -14,7 +14,13 @@ class UsuarioDAO
 
     public function __construct()
     {
-        $this->conexion = new \Conexion();
+        $this->conexion = new Conexion();
+    }
+
+    public function autenticarUsuario($correo, $clave)
+    {
+        return "SELECT id FROM usuario 
+            WHERE correo = '$correo' AND clave = '$clave'";
     }
 
     public function insertar(Persona $usuario)

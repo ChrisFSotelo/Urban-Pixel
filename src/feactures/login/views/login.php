@@ -5,9 +5,9 @@ require_once __DIR__ . '/../../../feactures/users/model/Persona.php'; // si tamb
 require_once __DIR__ . '/../../../feactures/users/model/Usuario.php';
 
 if (isset($_POST["autenticar"])) {
-    $email = $_POST["email"];
+    $correo = $_POST["correo"];
     $clave = md5($_POST["clave"]);
-    $usuario = new Usuario(null, null, null, $email, $clave);
+    $usuario = new Usuario(null, null, null, $correo, $clave);
     if ($usuario->autenticarUsuario()) {
         session_start();
 
@@ -23,7 +23,7 @@ if (isset($_POST["autenticar"])) {
             ]);
             exit;
         }
-        header("location: ?pdi=" . base64_encode(__DIR__ . '/../../../feactures/users/views/control_panel.html'));
+        header("location: ?pdi=src/feactures/users/views/control_panel.html");
         exit;
     } else {
         header('Content-Type: application/json');
@@ -35,39 +35,89 @@ if (isset($_POST["autenticar"])) {
     }
 }
 ?>
-
-<head>
-    <link rel="stylesheet" href="public/assets/css/login_styles.css" />
-</head>
-
-<main class="login-page">
-    <section class="login-visual">
-        <div class="flex-img">
-            <img class="image-logo animated" src="public/assets/images/Urban_logo.png" alt="Urban Logo" />
-        </div>
-    </section>
-
-    <!-- Formulario -->
-    <section class="login-form">
-        <header>
-            <h1>
-                <a href="index.php" title="Página principal">Urban Pixel</a>
-            </h1>
-            <h2>Inicie sesion para continuar</h2>
-        </header>
-
-        <form method="post"
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login y Registro</title>
+      <link rel="stylesheet" href="public/assets/css/login.css" />
+  </head>
+    <script src="/urban-Pixel/public/assets/js/login.js" defer></script>
+  <body>
+    <div class="container" id="container">
+      <div class="form-container sign-up-container">
+        <form
+            method="post"
             class="data-form"
-            autocomplete="off"
-            action="?pdi=<?php echo base64_encode(__DIR__ . '/login.php'); ?>"
-        >
-            <label for="email">Ingresa tu correo</label>
-            <input type="email" name="email" maxlength="50" placeholder="Correo" required />
-
-            <label for="clave">Ingresa tu contraseña</label>
-            <input type="password" name="clave" maxlength="25" placeholder="Clave" required />
-            <a href="#">Olvidé mi contraseña</a>
-            <button class="btn btn--big" type="submit" name="autenticar">Iniciar sesion</button>
+            autocomplete="off">
+          <h1>Crear Cuenta</h1>
+          <input
+            type="text"
+            name="nombre"
+            maxlength="50"
+            placeholder="Nombre completo"
+            required
+          />
+          <input
+            type="email"
+            name="correo"
+            maxlength="25"
+            placeholder="Correo electrónico"
+            required
+          />
+          <input
+            type="password"
+            name="clave"
+            maxlength="25"
+            placeholder="Contraseña"
+            required
+          />
+          <button 
+            class="btn btn--big" 
+            type="submit" 
+            name="registrarse">
+            Registrarse
+          </button>
         </form>
-    </section>
-</main>
+      </div>
+
+      <div class="form-container sign-in-container">
+        <form 
+            method="post"
+            class="data-form"
+            action="?pdi=src/feactures/login/views/login.php">
+          <h1>Iniciar Sesión</h1>
+          <input 
+            type="email"
+            name="correo"
+            maxlength="50" 
+            placeholder="Correo electrónico" 
+            required/>
+          <input 
+            type="password" 
+            name="clave"
+            placeholder="Contraseña" 
+            required/>
+          <button
+            class="btn btn--big"
+            type="submit"
+            name="autenticar"
+            >Ingresar</button>
+        </form>
+      </div>
+
+      <div class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel overlay-left">
+            <h1>¡Bienvenido!</h1>
+            <p>¿Ya tienes una cuenta? Inicia sesión aquí.</p>
+            <button class="ghost" id="signIn">Iniciar Sesión</button>
+          </div>
+          <div class="overlay-panel overlay-right">
+            <h1>¡Hola de nuevo!</h1>
+            <p>¿Aún no tienes cuenta? Regístrate aquí.</p>
+            <button class="ghost" id="signUp">Registrarse</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>

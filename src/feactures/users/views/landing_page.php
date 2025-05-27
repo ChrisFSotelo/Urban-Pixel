@@ -8,9 +8,6 @@
     <link rel="stylesheet" href="public/assets/css/general_styles.css" />
   </head>
 
-  <header>
-
-  </header>
 
   <main>
     <section class="hero">

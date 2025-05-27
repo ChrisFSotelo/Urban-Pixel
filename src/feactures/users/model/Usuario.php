@@ -17,23 +17,20 @@ class Usuario extends Persona
         $this->productos = $productos;
     }
 
-    public function __construct($idPersona = 0, $nombre = "", $apellido = "", $email = "", $clave = "")
+    public function __construct($idPersona = 0, $nombre = "", $apellido = "", $correo = "", $clave = "")
     {
-        parent::__construct($idPersona, $nombre, $apellido, $email, $clave);
+        parent::__construct($idPersona, $nombre, $apellido, $correo, $clave);
     }
-
     public function autenticarUsuario()
     {
         $conexion = new Conexion();
         $conexion->abrirConexion();
 
-        $usuarioDAO = new UsuarioDAO(null, null, null, $this->email, $this->clave);
-        $conexion->ejecutarConsulta($usuarioDAO->autenticarUsuario());
+        $usuarioDAO = new UsuarioDAO();
+        $sql = $usuarioDAO->autenticarUsuario($this->correo, $this->clave);
 
-//        DEBUG
-//        $sql = $usuarioDAO->autenticarUsuario();
-//        echo "Consulta ejecutada: $sql <br>"; // Te mostrará la consulta real
-//        $conexion->ejecutarConsulta($sql);
+//        echo "Consulta ejecutada: $sql <br>";
+        $conexion->ejecutarConsulta($sql);
 
         if ($conexion->numeroFilas() == 0) {
             $conexion->cerrarConexion();
@@ -44,6 +41,5 @@ class Usuario extends Persona
             $conexion->cerrarConexion();
             return true;
         }
-
     }
 }

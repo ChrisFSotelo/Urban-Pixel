@@ -40,7 +40,7 @@ $paginasConSesion = array(
         include "src/feactures/users/views/landing_page.php";
 
     } else {
-        $pdi = base64_decode($_GET["pdi"]);
+        $pdi = $_GET["pdi"];
         if (in_array($pdi, $paginasSinSesion)) {
             include ($pdi);
         } elseif (in_array($pdi, $paginasConSesion)) {
