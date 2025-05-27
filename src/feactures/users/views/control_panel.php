@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,11 +9,11 @@
   <main>
     <header>Header</header>
     <article>Content</article>
-    <aside>Sidebar</aside>
-    <footer>Footer</footer>
+      <?php include_once 'components/sideBar.php'; ?>
+    <?php include_once 'components/footer.php'; ?>
   </main>
 </body>
-</html>
+
 
 <style>
     * {
@@ -68,11 +67,14 @@ aside {
 
 footer {
   grid-area: foot;
-  background-color: orange;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: bold;
+    background: #111;
+    color: white;
+    padding: 20px 40px;
+    text-align: center;
 }
 
 </style>

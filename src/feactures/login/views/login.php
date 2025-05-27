@@ -23,7 +23,7 @@ if (isset($_POST["autenticar"])) {
             ]);
             exit;
         }
-        header("location: ?pdi=src/feactures/users/views/control_panel.html");
+        header("location: ?pdi=src/feactures/users/views/control_panel.php");
         exit;
     } else {
         header('Content-Type: application/json');

@@ -13,7 +13,7 @@ $paginasSinSesion = array(
     "src/feactures/users/views/landing_page.php"
 );
 $paginasConSesion = array(
-    "src/feactures/users/views/control_panel.html "
+    "src/feactures/users/views/control_panel.php"
 );
 ?>
 
