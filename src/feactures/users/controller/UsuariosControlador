@@ -108,15 +108,15 @@ require_once "../../roles/model/Rol.php";
 
     function generarJsonDeUnArray(array $usuarios){
         return array_map(function($usuario){
-            return[
-                'id'=> $usuario->getIdPersona(),
+            return [
+                'id' => $usuario->getIdPersona(),
                 'nombre' => $usuario->getNombre(),
                 'apellido' => $usuario->getApellido(),
                 'correo' => $usuario->getEmail(),
-                'clave'=> $usuario->getClave(),
-                'rol' => $usuario ->getRol()
-            ]
-        }, $usuarios);
+                'clave' => $usuario->getClave(),
+                'rol' => $usuario->getRol()
+            ];
+        }, $usuarios); 
     }
 
     function generarJsonDeUnObjeto(Usuario $usuario){

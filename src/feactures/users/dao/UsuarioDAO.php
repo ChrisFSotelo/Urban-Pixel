@@ -88,7 +88,7 @@ class UsuarioDAO
             $usuario = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave'], 1);
              // con este objeto de persona ya se esta llenando el constructor de la clase persona
         } else {
-            echo "No se encontró el usuario por el correo. \n";
+            echo "No se encontró el usuario por el correo \n";
         }
 
         $this->conexion->cerrarConexion();

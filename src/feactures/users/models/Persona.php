@@ -54,5 +54,5 @@ class Persona
         $this -> clave = $clave;
     }
 }
-//
+
 ?>
