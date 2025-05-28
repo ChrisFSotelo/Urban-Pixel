@@ -1,4 +1,3 @@
-
 /**========================================================================
  * *                                UNIDADES DE  MEDIDA
  *   px: pixeles (unidad absoluta)
@@ -15,15 +14,16 @@
  #006494 
  #003554 
  #051923
- *========================================================================**/
-*{
+*========================================================================**/
+
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 /* TITULOS PRINCIPALES */
-h1{
+h1 {
   font-size: clamp(1.5em, 5vw, 2.5em);
   font-weight: 700;
   line-height: 1.5;
@@ -43,26 +43,27 @@ h2 {
 
 p {
   font-size: clamp(0.9em, 2vw, 1.1em);
-  font-weight: 300; 
+  font-weight: 300;
   line-height: 1.5;
   margin-bottom: 1em;
 }
 
 body {
-  color:#051923;
-  font-family: 'Poppins',sans-serif;
+  color: #051923;
+  font-family: 'Poppins', sans-serif;
   background-color: #cdd1d3;
   margin: 0;
   position: relative;
 }
 
 
-.login-page{
+.login-page {
   display: grid;
   grid-template-columns: 1fr 1fr;
   position: relative;
 }
-.login-page{
+
+.login-page {
   width: clamp(320px, 90vw, 1200px);
   margin: 0 auto;
 }
@@ -73,29 +74,29 @@ body {
   flex-direction: column;
 }
 
-.login-form{
+.login-form {
   padding: 1em 2em;
   background-color: #041219;
 }
 
-.login-form header{
+.login-form header {
   display: flex;
   flex-direction: column;
   text-align: center;
   justify-content: center;
 }
 
-.login-form header{
+.login-form header {
   height: 10em;
   margin-bottom: 2em;
 }
 
-.data-form{
+.data-form {
   display: flex;
   flex-direction: column;
-  width: clamp(1em, 90%, 500px); 
+  width: clamp(1em, 90%, 500px);
   height: 30.4em;
-  margin:  0 auto;
+  margin: 0 auto;
 }
 
 .data-form label,
@@ -103,15 +104,17 @@ body {
 .data-form button,
 .data-form a {
   width: 100%;
-  box-sizing: border-box; /* Importante para que padding no rompa el diseño */
+  box-sizing: border-box;
+  /* Importante para que padding no rompa el diseño */
 }
 
-.login-form label{
+.login-form label {
   display: flex;
   align-items: end;
   color: #e6f7ff;
 }
-.data-form label{
+
+.data-form label {
   font-size: 1.1em;
   font-weight: 100;
   font-style: italic;
@@ -119,27 +122,27 @@ body {
   margin-bottom: 0.6em;
 }
 
-.data-form input{
+.data-form input {
   display: inline;
   height: 4em;
   padding: 0 20px;
   font-size: 1.1em;
-  
+
   border: 1px solid #ccc;
   border-radius: 5px;
 
   margin-bottom: 2em;
 
-  transition: all 0.2s ease; 
+  transition: all 0.2s ease;
 }
 
-.data-form input:focus{
+.data-form input:focus {
   outline: none;
-  border: 2px solid #ccc; 
-  box-shadow: 0 0 5px #4c3e35; 
+  border: 2px solid #ccc;
+  box-shadow: 0 0 5px #4c3e35;
 }
 
-.data-form a{
+.data-form a {
   display: flex;
   flex-direction: row;
   text-align: center;
@@ -147,18 +150,19 @@ body {
   color: #e6f7ff;
 }
 
-.data-form a{
+.data-form a {
   height: 2em;
 
   padding: 1.3em 0;
-  
+
   margin-bottom: 1.3em;
 }
+
 /**========================================================================
  * !                              WARNING
  *   Bloque de estilos de boton deben ser convertidos en componentes
  *========================================================================**/
-button{
+button {
   border: none;
   border-radius: 100px;
 
@@ -172,6 +176,7 @@ button{
   background-color: #dad7cd;
   box-shadow: 0 0 4px #41352e;
 }
+
 /* se crea una clase comun para almacenar todos los estilos para ser reutilizados */
 
 .btn:hover,
@@ -180,37 +185,39 @@ button{
   background-color: #41352e;
   box-shadow: 0 0 4px #dad7cd;
 }
- /* estas son las clases que heredan las propiedades del boton
+
+/* estas son las clases que heredan las propiedades del boton
  sin embargo tienen sus propiedades unicas */
-.btn--big{
+.btn--big {
   padding: 20px 50px;
 }
-.btn--small{
+
+.btn--small {
   font-size: 14px;
   padding: 8px 12px;
 }
 
-.login-visual{
+.login-visual {
   background-color: #e6f0f4;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh; 
+  height: 100vh;
 }
 
-.flex-img{
-display: flex;
-justify-content: center;
+.flex-img {
+  display: flex;
+  justify-content: center;
 
-margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 .image-logo {
   width: 24em;
   height: 24em;
   object-fit: contain;
-  image-rendering: auto; 
+  image-rendering: auto;
   transition: all 1s;
   transform-origin: center center;
 }
@@ -220,7 +227,15 @@ margin-top: 1rem;
 }
 
 @keyframes pulsate {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.3); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.3);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
