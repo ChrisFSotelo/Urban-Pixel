@@ -12,12 +12,13 @@ class Persona
     protected $correo;
     protected $clave;
 
-    public function __construct($idPersona, $nombre, $apellido, $correo, $clave){
+    public function __construct($idPersona, $nombre, $apellido, $correo, $clave, $rol){
         $this -> idPersona = $idPersona;
         $this -> nombre = $nombre;
         $this -> apellido = $apellido;
         $this -> correo = $correo;
         $this -> clave = $clave;
+        $this -> rol = $rol;
     }
 
     public function getIdPersona(){

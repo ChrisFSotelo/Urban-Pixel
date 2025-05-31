@@ -1,0 +1,133 @@
+<?php
+use dao\UsuarioDAO;
+require_once "../../roles/model/Rol.php";
+    require_once "../../roles/dao/RolDAO.php";
+    require_once "../../users/models/Usuario.php";
+    require_once "../../users/dao/UsuarioDAO.php";
+    require_once "../../users/models/Persona.php";
+
+    if(isset($_REQUEST["accion"])){
+        $accion = $_REQUEST["accion"];
+        $usuarioDAO= new UsuarioDAO();
+        $rolDAO = new RolDAO();
+        $data;
+    switch($accion){
+        case "listar": {
+            $usuarios = $UsuarioDAO->listar();
+            if($usuarios == null){
+               $data=["error" => "error al listar usuarios"];
+            }
+            else{
+                $data=["mensaje" => "Usuarios listados correctamente",
+                "usuario" => generarJsonDeUnArray($usuarios)
+            ];
+            }
+            break;
+        }
+        case "agregar": {
+            $rol = $rolDAO->obtenerPorId((int)$_POST["idRol"]);
+            if($rol == null){
+                $data=["error" => "Rol no encontrado"];
+                break;
+            }
+            /* declarando el objeto usuario de la clase Usuario ya se puede acceder a los metodos de
+             persona (usuario extends persona)
+            */
+            $usuario = new Usuario(
+                $_POST["nombre"],
+                $_POST["apellido"],
+                $_POST["correo"],
+                $_POST["clave"],
+                $rol
+            );    
+            if($usuarioDAO->obtenerPorCorreo($usuario->getEmail())!==null){
+                $data=["error " => "Ya existe un usuario con este correo registrado"];
+                break;
+            }
+            if($usuarioDAO->insertar($usuario)===null){
+                $data=["error"=>"No se pudo agregar el usuario"];
+                break;
+            }else{
+                $nuevoUsuario = $usuarioDAO->obtenerPorCorreo($usuario->getEmail());
+                $data=["mensaje" => "Usuario agregado correcctamente",
+                "usuario" => generarJsonDeUnObjeto($nuevoUsuario)
+            ];
+            }
+            break;
+        };
+        case "editar":{
+            $rol = $rolDAO->obtenerPorId((int)$_POST["idRol"]);
+            if($rol == null){
+                $data=["error" => "Rol no encontrado"];
+                break;
+            };
+            $usuario = new Usuario(
+                $_POST["id"],
+                $_POST["nombre"],
+                $_POST["apellido"],
+                $_POST["correo"],
+                $_POST["clave"],
+                $rol
+            );    
+
+            if($usuarioDAO->obtenerPorCorreoExcluyendoCorreoActual($usuario->getIdPersona(), $usuario->getEmail())!==null){
+                $data=["error"=> "Ya existe un usuario con esta dirección de correo"];
+                break;
+            }
+            if($usuarioDAO->actualizar($usuario)===null){
+                $data=["error"=> "Error al actualizar el usuario"];
+                break;
+            }
+            $nuevoUsuario = $usuarioDAO->obtenerPorCorreo($usuario->getEmail());
+            $data=[
+            "mensaje" => "Usuario actualizado correctamente",
+            "usuario" => generarJsonDeUnObjeto($nuevoUsuario)
+            ];
+            break;
+        };
+        case "eliminar":{
+            if (!isset($_POST['id'])) {
+                $data = ["error al eliminar" => "No se recibió el ID del usuario"];
+                break;
+            }
+            $id = $_POST['id'];
+            $resultado = $usuarioDAO->eliminar($id);
+            if ($resultado) {
+                $data = ["mensaje" => "Usuario eliminado correctamente"];
+            } else {
+                $data = ["error" => "No se pudo eliminar el usuario o no existe"];
+            }
+            break;
+        }
+
+
+    }
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
+    }else 
+    header("Location: ../../../../");
+
+    function generarJsonDeUnArray(array $usuarios){
+        return array_map(function($usuario){
+            return [
+                'id' => $usuario->getIdPersona(),
+                'nombre' => $usuario->getNombre(),
+                'apellido' => $usuario->getApellido(),
+                'correo' => $usuario->getEmail(),
+                'clave' => $usuario->getClave(),
+                'rol' => $usuario->getRol()
+            ];
+        }, $usuarios); 
+    }
+
+    function generarJsonDeUnObjeto(Usuario $usuario){
+        return[
+            'id'=> $usuario->getIdPersona(),
+            'nombre'=>$usuario->getNombre(),
+            'apellido' => $usuario->getApellido(),
+            'correo'=> $usuario->getEmail(),
+            'clave' => $usuario->getClave(),
+            'rol'=> $usuario->getRol()
+
+        ];
+    }
+    ?>
