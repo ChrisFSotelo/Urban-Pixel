@@ -68,6 +68,8 @@
             <li class="nav-item">
                 <a class="nav-link text-white" href="<?php echo "src/features/Auth/logout.php" ?>">
                     <i class="fas fa-sign-in-alt"></i> <span>Cerrar Sesión</span>
+                <a class="nav-link text-white" href="?pdi=<?php echo base64_encode('src/features/login/views/login.php'); ?>">
+                    <i class="fas fa-sign-in-alt"></i> <span>Iniciar Sesión</span>
                 </a>
             </li>
         </ul>
