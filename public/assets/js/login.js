@@ -20,7 +20,7 @@ signInButton.addEventListener("click", () => {
 });
 
 // Validación de formulario de registro
-botonRegistro.addEventListener("click", (event) => {
+botonRegistro.addEventListener("click", async (event) => {
   event.preventDefault();
   const correoRegex = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
   const nombre = document.getElementById("nombre-registro");
@@ -52,8 +52,42 @@ botonRegistro.addEventListener("click", (event) => {
     sweetAlert.mostrarError("Error", "Por favor, ingrese una clave.");
     return false;
   }
+  // Construir FormData con los valores
+    const datos = new FormData();
+    datos.append("nombre", nombre.value);
+    datos.append("apellido", apellido.value);
+    datos.append("correo", correo.value);
+    datos.append("clave", clave.value);
+  try {
+    const respuesta = await fetch("src/features/users/controller/ClienteControlador.php?accion=registrar", {
+      method: "POST",
+      body: datos
+    });
 
-  formularioRegistro.submit();
+    const resultado = await respuesta.json();
+
+    if (resultado.mensaje) {
+      Swal.fire({
+        title: '¡Registro exitoso!',
+        text: resultado.mensaje,
+        icon: 'success',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        window.location.href = "../urban-Pixel"; // ⬅ cámbialo por la página deseada
+      });
+    } else if (resultado.error) {
+      Swal.fire({
+        title: 'Error',
+        text: resultado.error,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
+
+  } catch (error) {
+    console.error("Error al registrar:", error);
+    sweetAlert.mostrarError("Error", "No se pudo completar el registro");
+  }
 });
 
 // Validación de formulario de inicio de sesión

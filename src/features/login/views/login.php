@@ -5,11 +5,8 @@
   require_once __DIR__ . '/../../../features/users/model/Usuario.php';
 
 
-//
-//if (isset($_POST["registrarse"])) {
-//    $RegistrarCliente = new ClienteControlador();
-//    $RegistrarCliente->RegistrarCliente();
-//}
+
+
   if(isset($_POST["autenticar"])) {
     $correo = $_POST["correo"];
     $clave = md5($_POST["clave"]);
@@ -48,6 +45,7 @@
   <title>Login y Registro</title>
   <link rel="stylesheet" href="public/assets/css/login.css" />
   <link rel="stylesheet" href="public/assets/css/progress_bar.css" />
+
 </head>
 
 <body>
@@ -59,7 +57,6 @@
           name="formulario-registro"
           class="data-form"
           autocomplete="off"
-          action="src/features/users/controller/ClienteControlador.php?accion=registrar"
       >
 
         <h1>Crear Cuenta</h1>
@@ -167,5 +164,6 @@
   </div>
 </body>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="module" src="public/assets/js/login.js" defer></script>
 <script src="public/assets/js/progressBar.js" defer></script>
