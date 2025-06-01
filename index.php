@@ -3,7 +3,6 @@ session_start();
 if (isset($_GET["cerrarSesion"])) {
     session_destroy();
 }
-
     require "src/features/users/model/Persona.php";
     require "src/features/users/model/Usuario.php";
 

@@ -8,13 +8,6 @@ const formularioInicioSesion = document.getElementById("formulario-inicio-sesion
 const formularioRegistro = document.getElementById("formulario-registro");
 const botonRegistro = document.getElementById("btn-registrarse");
 const botonIniciarSesion = document.getElementById("btn-iniciar-sesion");
-const registroCampos = [
-  document.getElementById("nombre-registro"),
-  document.getElementById("apellido-registro"),
-  document.getElementById("correo-registro"),
-  document.getElementById("clave-registro")
-];
-const barraProgreso = document.getElementById("barra-progreso");
 
 // Evento para cambiar entre formularios de registro e inicio de sesión
 signUpButton.addEventListener("click", () => {
@@ -87,22 +80,3 @@ botonIniciarSesion.addEventListener("click", (event) => {
 
   formularioInicioSesion.submit();
 });
-
-// Actualización de la barra de progreso en el formulario de registro
-registroCampos.forEach(campo => {
-  campo.addEventListener("input", actualizarBarraProgreso);
-});
-
-// Función para actualizar la barra de progreso
-function actualizarBarraProgreso() {
-  const total = registroCampos.length;
-  let completados = 0;
-
-  registroCampos.forEach(campo => {
-    if(campo.value.trim() !== "")
-      completados++;
-  });
-
-  const porcentaje = (completados / total) * 100;
-  barraProgreso.style.width = `${porcentaje}%`;
-}

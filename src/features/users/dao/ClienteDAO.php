@@ -2,8 +2,9 @@
 
 namespace dao;
 
-require_once "../../../../config/Conexion.php";
-require_once "../model/Clientes.php";
+require_once __DIR__ . "/../../../../config/Conexion.php";
+require_once __DIR__ . "/../model/Clientes.php";
+
 
 use Conexion;
 use model\Clientes;
@@ -31,7 +32,6 @@ class ClienteDAO{
         $this->conexion->cerrarConexion();
         if($resultado)
             return $cliente;
-
         echo ("Hubo un error al registrar el cliente");
         return null;
     }

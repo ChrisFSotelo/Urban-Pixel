@@ -4,6 +4,12 @@
   require_once __DIR__ . '/../../../features/users/model/Persona.php'; // si también usas esta clase
   require_once __DIR__ . '/../../../features/users/model/Usuario.php';
 
+
+//
+//if (isset($_POST["registrarse"])) {
+//    $RegistrarCliente = new ClienteControlador();
+//    $RegistrarCliente->RegistrarCliente();
+//}
   if(isset($_POST["autenticar"])) {
     $correo = $_POST["correo"];
     $clave = md5($_POST["clave"]);
@@ -41,6 +47,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login y Registro</title>
   <link rel="stylesheet" href="public/assets/css/login.css" />
+  <link rel="stylesheet" href="public/assets/css/progress_bar.css" />
 </head>
 
 <body>
@@ -55,6 +62,9 @@
       >
 
         <h1>Crear Cuenta</h1>
+          <?php
+          include("components/progressBar.php")
+          ?>
 
         <input
           type="text"
@@ -91,10 +101,6 @@
           placeholder="Contraseña"
           required
         />
-
-        <div class="contenedor-barra-progreso">
-          <div id="barra-progreso" class="barra-progreso"></div>
-        </div>
 
         <button
           class="btn btn--big"
@@ -161,3 +167,4 @@
 </body>
 
 <script type="module" src="public/assets/js/login.js" defer></script>
+<script src="public/assets/js/progressBar.js" defer></script>

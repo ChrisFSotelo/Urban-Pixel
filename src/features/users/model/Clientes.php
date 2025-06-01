@@ -62,6 +62,18 @@ class Clientes
     {
         $this->apellido = $apellido;
     }
+    public function setCorreo($correo)
+    {
+        $this->correo = $correo;
+    }
+    public function setClave($clave)
+    {
+        $this->clave = $clave;
+    }
+    public function setIdRol($idRol){
+        $this->idRol = $idRol;
+    }
+
 
 }
 
