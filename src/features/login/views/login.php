@@ -59,6 +59,7 @@
           name="formulario-registro"
           class="data-form"
           autocomplete="off"
+          action="src/features/users/controller/ClienteControlador.php?accion=registrar"
       >
 
         <h1>Crear Cuenta</h1>
@@ -116,8 +117,8 @@
         method="post"
         id="formulario-inicio-sesion"
         class="data-form"
-        autocomplete="off"
-        action="?pdi=src/features/login/views/login.php"
+        autocomplete="on"
+        action="?pdi=src/features/users/views/control_panel.php"
       >
 
         <h1>Iniciar Sesión</h1>
