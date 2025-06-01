@@ -12,6 +12,8 @@ class Persona
     protected $correo;
     protected $clave;
 
+    protected $rol;
+
     public function __construct($idPersona, $nombre, $apellido, $correo, $clave, $rol){
         $this -> idPersona = $idPersona;
         $this -> nombre = $nombre;
