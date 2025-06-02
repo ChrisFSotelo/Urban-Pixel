@@ -17,9 +17,9 @@ class Usuario extends Persona
         $this->productos = $productos;
     }
 
-    public function __construct($idPersona = 0, $nombre = "", $apellido = "", $correo = "", $clave = "")
+    public function __construct($idPersona = 0, $nombre = "", $apellido = "", $correo = "", $clave = "", $rol = 0)
     {
-        parent::__construct($idPersona, $nombre, $apellido, $correo, $clave);
+        parent::__construct($idPersona, $nombre, $apellido, $correo, $clave, $rol);
     }
     public function autenticarUsuario()
     {
