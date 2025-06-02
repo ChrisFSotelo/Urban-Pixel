@@ -4,24 +4,44 @@ namespace dao;
 require_once __DIR__ . "/../../../../config/Conexion.php";
 require_once __DIR__ . '/../model/Persona.php';
 
+require_once __DIR__ . '/../../roles/model/Rol.php';
+require_once __DIR__ . '/../../roles/dao/RolDAO.php';
 
 use Conexion;
-use model\Persona;
+use model\Usuario;
+use RolDAO;
 
-class UsuarioDAO
-{
+class UsuarioDAO{
     private $conexion;
+    private RolDAO $rolDAO;
 
     public function __construct()
     {
         $this->conexion = new Conexion();
     }
+    public function AutenticarUsuario($correo, $clave) {
+        $this->conexion->abrirConexion();
 
-    public function autenticarUsuario($correo, $clave)
-    {
-        return "SELECT id FROM usuario 
-            WHERE correo = '$correo' AND clave = '$clave'";
+        $sql = "SELECT id FROM usuario WHERE correo = '$correo' AND clave = '$clave'";
+
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+
+        if ($resultado && $resultado->num_rows > 0) {
+            $fila = $resultado->fetch_assoc();
+
+            // Crear y retornar objeto Usuario
+            $usuario = new \Usuario(
+                $fila['id'],
+            );
+
+            $this->conexion->cerrarConexion();
+            return $usuario;
+        }
+
+        $this->conexion->cerrarConexion();
+        return null;
     }
+
 
     public function insertar(Persona $usuario)
     {
@@ -32,7 +52,7 @@ class UsuarioDAO
         $clave = $usuario->getClave();
 
         $sql = "INSERT INTO usuario (nombre, apellido, correo, clave, idRol)
-                VALUES ('$nombre', '$apellido', '$correo', '$clave', 1)"; 
+                VALUES ('$nombre', '$apellido', '$correo', '$clave', 1)";
 
         $resultado = $this->conexion->ejecutarConsulta($sql);
         $this->conexion->cerrarConexion();
@@ -53,9 +73,46 @@ class UsuarioDAO
         $usuario = null;
 
         if ($fila = $resultado->fetch_assoc()) {
-            $usuario = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave']);
+            $usuario = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave'], 1);
+            // con este objeto de persona ya se esta llenando el constructor de la clase persona
         } else {
             echo "No se encontró el usuario por el ID\n";
+        }
+
+        $this->conexion->cerrarConexion();
+        return $usuario;
+    }
+
+    public function obtenerPorCorreo($correo)
+    {
+        $this->conexion->abrirConexion();
+        $sql = "SELECT * FROM usuario WHERE correo = $correo";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+        $usuario = null;
+
+        if ($fila = $resultado->fetch_assoc()) {
+            $usuario = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave'], 1);
+            // con este objeto de persona ya se esta llenando el constructor de la clase persona
+        } else {
+            echo "No se encontró el usuario por el correo\n";
+        }
+
+        $this->conexion->cerrarConexion();
+        return $usuario;
+    }
+
+    public function obtenerPorCorreoExcluyendoCorreoActual($id, $correo)
+    {
+        $this->conexion->abrirConexion();
+        $sql = "SELECT * FROM usuario WHERE(id != $id) AND (correo = '$correo')";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+        $usuario = null;
+
+        if ($fila = $resultado->fetch_assoc()) {
+            $usuario = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave'], 1);
+            // con este objeto de persona ya se esta llenando el constructor de la clase persona
+        } else {
+            echo "No se encontró el usuario por el correo \n";
         }
 
         $this->conexion->cerrarConexion();
@@ -77,8 +134,8 @@ class UsuarioDAO
         }
 
         while ($fila = $resultado->fetch_assoc()) {
-            $usuarios[] = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave']);
-        }
+            $usuarios[] = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave'], 1);
+        } // con este objeto de persona ya se esta llenando el constructor de la clase persona
 
         $this->conexion->cerrarConexion();
         return $usuarios;

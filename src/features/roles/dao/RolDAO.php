@@ -1,6 +1,9 @@
-<?php 
-    require_once "../../../../config/Conexion.php";
-    require_once "../model/Rol.php";
+<?php
+    namespace dao;
+    require_once __DIR__ . "/../../../../config/Conexion.php";
+    require_once __DIR__ . '/../model/Rol.php';
+
+    use Conexion;
 
     class RolDAO {
         private Conexion $conexion;

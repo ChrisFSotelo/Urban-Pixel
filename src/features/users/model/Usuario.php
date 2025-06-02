@@ -1,10 +1,11 @@
 <?php
 
-    require_once __DIR__. "/Persona.php";
-    use dao\UsuarioDAO;
+use model\Persona;
 
-class Usuario extends Persona
-{
+require_once __DIR__. "/Persona.php";
+
+
+class Usuario extends Persona{
     private $productos;
 
     public function getProductos()
@@ -20,26 +21,5 @@ class Usuario extends Persona
     public function __construct($idPersona = 0, $nombre = "", $apellido = "", $correo = "", $clave = "", $rol = 0)
     {
         parent::__construct($idPersona, $nombre, $apellido, $correo, $clave, $rol);
-    }
-    public function autenticarUsuario()
-    {
-        $conexion = new Conexion();
-        $conexion->abrirConexion();
-
-        $usuarioDAO = new UsuarioDAO();
-        $sql = $usuarioDAO->autenticarUsuario($this->correo, $this->clave);
-
-//        echo "Consulta ejecutada: $sql <br>";
-        $conexion->ejecutarConsulta($sql);
-
-        if ($conexion->numeroFilas() == 0) {
-            $conexion->cerrarConexion();
-            return false;
-        } else {
-            $registro = $conexion->siguienteRegistro();
-            $this->idPersona = $registro[0];
-            $conexion->cerrarConexion();
-            return true;
-        }
     }
 }

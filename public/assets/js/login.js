@@ -91,7 +91,7 @@ botonRegistro.addEventListener("click", async (event) => {
 });
 
 // Validación de formulario de inicio de sesión
-botonIniciarSesion.addEventListener("click", (event) => {
+botonIniciarSesion.addEventListener("click", async (event) => {
   event.preventDefault();
   const correoRegex = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
   const correo = document.getElementById("correo-inicio-sesion");
@@ -112,5 +112,38 @@ botonIniciarSesion.addEventListener("click", (event) => {
     return false;
   }
 
-  formularioInicioSesion.submit();
+  // Construir FormData con los valores
+  const datos = new FormData();
+  datos.append("correo", correo.value);
+  datos.append("clave", clave.value);
+  try {
+    const respuesta = await fetch("src/features/users/controller/UsuarioControlador.php?accion=autenticar", {
+      method: "POST",
+      body: datos
+    });
+
+    const resultado = await respuesta.json();
+
+    if (resultado.mensaje) {
+      Swal.fire({
+        title: '¡Usuario Autenticado Correctamente!',
+        text: resultado.mensaje,
+        icon: 'success',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        window.location.href = "../urban-Pixel/src/features/users/views/control_panel.php"; // ⬅ cámbialo por la página deseada
+      });
+    } else if (resultado.error) {
+      Swal.fire({
+        title: 'Error',
+        text: resultado.error,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
+
+  } catch (error) {
+    console.error("Error al registrar:", error);
+    sweetAlert.mostrarError("Error", "No se pudo completar el registro");
+  }
 });

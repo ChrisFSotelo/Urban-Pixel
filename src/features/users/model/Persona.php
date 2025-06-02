@@ -1,6 +1,8 @@
 <?php
-require_once __DIR__ . '/../../../../config/Conexion.php';
 
+namespace model;
+
+require_once __DIR__ . '/../../../../config/Conexion.php';
 require_once __DIR__ . '/../dao/UsuarioDAO.php';
 
 
