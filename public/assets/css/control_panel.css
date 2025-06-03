@@ -14,6 +14,7 @@ header {
     background: #212529;
     color: white;
     padding: 20px;
+    border: none;
 }
 
 header h2 {
@@ -29,8 +30,7 @@ section {
 section .sidebar {
     width: fit-content;
     background-color: #212529;
-    margin: 15px;
-    border-radius: 12px;
+    border: none;
 }
 
 section .content {
