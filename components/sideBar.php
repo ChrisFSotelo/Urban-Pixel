@@ -11,7 +11,7 @@
         <button id="toggleSidebar" class="btn btn-outline-light w-100 mb-3">
             ☰
         </button>
-        
+
         <ul class="nav flex-column gap-2">
             <li class="optionToSelect nav-item" id="inicio">
                 <a class="nav-link text-white" title="Inicio">
@@ -60,16 +60,30 @@
     const mainContent = document.getElementById('mainContent');
     const options = document.querySelectorAll('.optionToSelect');
 
-    // Agrega una clase 'active' a la opción seleccionada
+    const autoCollapseSidebar = () => {
+        if (window.innerWidth < 768) {
+            sidebar.classList.add('collapsed');
+            if (mainContent) mainContent.classList.add('collapsed');
+        } else {
+            sidebar.classList.remove('collapsed');
+            if (mainContent) mainContent.classList.remove('collapsed');
+        }
+    };
+
+    // Detectar cambio de tamaño de pantalla
+    window.addEventListener('resize', autoCollapseSidebar);
+    window.addEventListener('load', autoCollapseSidebar); // ejecutar al inicio
+
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        if (mainContent) mainContent.classList.toggle('collapsed');
+    });
+
     options.forEach(option => {
         option.addEventListener('click', () => {
             options.forEach(opt => opt.classList.remove('active'));
             option.classList.add('active');
         });
     });
-
-    toggleBtn.addEventListener('click', () => {
-        sidebar.classList.toggle('collapsed');
-        mainContent.classList.toggle('collapsed');
-    });
 </script>
+
