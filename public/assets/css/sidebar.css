@@ -1,0 +1,42 @@
+.d-flex {
+    width: fit-content;
+    margin: 0;
+}
+
+.sidebar {
+    width: fit-content;
+    transition: width 0.2s ease-in-out;
+}
+
+.sidebar .nav-link {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar.collapsed .nav-link span {
+    display: none;
+}
+
+.sidebar.collapsed .nav-link i {
+    margin-right: 0;
+}
+
+ul > li {
+    cursor: pointer;
+    transition: .2s ease-in-out;
+
+    &:hover {
+        background-color: #929292;
+        border-radius: 5px;
+    }
+    &:focus {
+        background-color: #929292;
+        border-radius: 5px;
+    }
+}
+
+.active {
+    background-color: #929292;
+    border-radius: 5px;
+}

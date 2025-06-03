@@ -131,7 +131,7 @@ botonIniciarSesion.addEventListener("click", async (event) => {
         icon: 'success',
         confirmButtonText: 'OK'
       }).then(() => {
-        window.location.href = "../urban-Pixel/src/features/users/views/control_panel.php"; // ⬅ cámbialo por la página deseada
+        window.location.href = "src/features/users/views/control_panel.php";
       });
     } else if (resultado.error) {
       Swal.fire({
