@@ -1,35 +1,91 @@
 <link rel="stylesheet" href="../../../../public/assets/css/usuarios.css">
+<head>
 
+    <title>Clientes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+</head>
 <div class="usuario-contenido">
-    <h2>Usuarios</h2>
 
-    <div>
-        What is Lorem Ipsum?
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's 
-        standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-        It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
-        It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently 
-        with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+    <body>
 
-        Why do we use it?
-        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its 
-        layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to 
-        using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web 
-        page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web 
-        sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+    <div class="container table-container shadow">
+        <div class="top-bar">
+            <button class="btn btn--small">Registrar Cliente</button>
+            <input type="search" class="form-control" placeholder="Buscar...">
+        </div>
 
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Lead</th>
+                <th>Identificación</th>
+                <th>País</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Estado</th>
+                <th>Ciudad</th>
+                <th>Tipo Cliente</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td><button class="btn btn-info text-white"><i class="fas fa-info"></i></button></td>
+                <td>12332114</td>
+                <td></td>
+                <td>carmen</td>
+                <td>poveda</td>
+                <td></td>
+                <td></td>
+                <td>Persona Natural</td>
+                <td>carpov@outlook.com</td>
+                <td>3121286800</td>
+                <td class="actions-column">
+                    <button class="btn btn-danger"><i class="fas fa-times"></i></button>
+                    <button class="btn btn-primary"><i class="fas fa-file-pdf"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td><button class="btn btn-info text-white"><i class="fas fa-info"></i></button></td>
+                <td>1117526300</td>
+                <td>Colombia</td>
+                <td>CARLOS EDUARDO</td>
+                <td>QUINTERO</td>
+                <td>Bogotá</td>
+                <td>Bogotá</td>
+                <td>Persona Natural</td>
+                <td></td>
+                <td>3103436614</td>
+                <td class="actions-column">
+                    <button class="btn btn-danger"><i class="fas fa-times"></i></button>
+                    <button class="btn btn-primary"><i class="fas fa-file-pdf"></i></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-        Where does it come from?
-        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature 
-        from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, 
-        looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of 
-        the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 
-        of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise 
-        on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit 
-        amet..", comes from a line in section 1.10.32.
-
-        The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 
-        and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, 
-        accompanied by English versions from the 1914 translation by H. Rackham.
+        <!-- Paginación -->
+        <nav>
+            <ul class="pagination justify-content-end">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Anterior</a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
     </div>
+
+    </body>
 </div>
