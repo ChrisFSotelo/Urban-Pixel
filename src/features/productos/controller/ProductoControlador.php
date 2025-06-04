@@ -161,4 +161,58 @@
             ]
         ];
     }
+
+    function listarProductos()
+    {
+        $categorias = array();
+        $usuarios = array();
+        $conexion = new Conexion();
+        $conexion->abrirConexion();
+        $productoDAO = new ProductoDAO();
+        $conexion->ejecutarConsulta($productoDAO->listar());
+
+        while($registro = $conexion->siguienteRegistro())
+        {
+            $categoria = null;
+            $usuario = null;
+
+            if(array_key_exists($registro[4], $categorias))
+            {
+                $categoria = $categorias[$registro[4]];
+            }
+            else
+            {
+                $categoria = new Categoria($registro[4]);
+                $categoria->consultar();
+                $categorias[$registro[4]] = $categoria;
+            }
+
+            if(array_key_exists($registro[5], $usuarios))
+            {
+                $usuario = $usuarios[$registro[5]];
+            }
+            else
+            {
+                $usuario = new Usuario($registro[5]);
+                $usuario->consultar();
+                $usuarios[$registro[5]] = $usuario;
+            }
+
+            $producto = new Producto(
+                $registro[0],
+                $registro[1],
+                $registro[2],
+                $registro[3],
+                $categoria,
+                $usuario
+            );
+
+            array_push($productos, $producto);
+        }
+
+        $conexion->cerrarConexion();
+        return $productos;
+    }
+
+
 ?>
