@@ -9,7 +9,7 @@ $("#productos").click(function() {
 });
 
 $("#usuarios").click(function() {
-    $("#contenido").load("usuarios.php");
+    $("#contenido").load("clientes.php");
 });
 
 $("#nosotros").click(function() {

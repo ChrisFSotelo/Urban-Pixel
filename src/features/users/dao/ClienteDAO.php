@@ -12,14 +12,25 @@ use model\Clientes;
 class ClienteDAO{
     private $conexion;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->conexion = new Conexion();
     }
 
-    //insertar
-    public function RegistrarCliente(Clientes $cliente)
-    {
+    public function listar() {
+        $this->conexion->abrirConexion();
+
+        $sql = "SELECT * FROM cliente";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+        $clientes = [];
+
+        while($fila = $resultado->fetch_assoc())
+            $clientes[] = $fila;
+
+        $this->conexion->cerrarConexion();
+        return $clientes;
+    }
+
+    public function RegistrarCliente(Clientes $cliente) {
         $this->conexion->abrirConexion();
         $nombre = $cliente->getNombre();
         $apellido = $cliente->getApellido();
@@ -30,15 +41,17 @@ class ClienteDAO{
         $sql = "INSERT INTO  cliente (nombre, apellido, correo, clave, idRol) VALUES ('$nombre','$apellido','$correo','$clave',$idRol)";
         $resultado = $this->conexion->ejecutarConsulta($sql);
         $this->conexion->cerrarConexion();
+
         if($resultado)
             return $cliente;
+
         echo ("Hubo un error al registrar el cliente");
         return null;
     }
-//CONSULTAS POR PROBAR
-    public function obtenerPorId($id){
+
+    public function obtenerPorId($id) {
         $this->conexion->abrirConexion();
-        $sql = "SELECT  nombre, apellido, correo FROM clientes WHERE id = $id";
+        $sql = "SELECT * FROM cliente WHERE id = $id";
         $resultado = $this->conexion->ejecutarConsulta($sql);
 
         if(!$resultado) { // Si hubo un error
@@ -47,11 +60,65 @@ class ClienteDAO{
             return null;
         }
 
-        if ($fila = $resultado ->fetch_assoc())
-            $cliente = new Clientes($fila['nombre'], $fila['apellido'], $fila['correo'], $fila['idRol']);
-        $this->conexion->cerrarConexion();
-        return $cliente;
+        if($fila = $resultado->fetch_assoc()) {
+            $this->conexion->cerrarConexion();
+            return $fila;
+        }
 
+        $this->conexion->cerrarConexion();
+        return null;
+    }
+
+    public function obtenerPorCorreo($correo) {
+        $this->conexion->abrirConexion();
+        $sql = 
+            "SELECT * FROM (
+                SELECT * FROM usuario 
+                UNION ALL 
+                SELECT * FROM cliente
+            ) AS combinado 
+            WHERE correo = '$correo'";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+
+        if(!$resultado) { // Si hubo un error
+            $this->conexion->cerrarConexion();
+            echo("Hubo un fallo al obtener el cliente \n");
+            return null;
+        }
+
+        if($fila = $resultado->fetch_assoc()) {
+            $this->conexion->cerrarConexion();
+            return $fila;
+        }
+
+        $this->conexion->cerrarConexion();
+        return null;
+    }
+
+    public function obtenerPorCorreoExcluyendoActual($id, $correo) {
+        $this->conexion->abrirConexion();
+        $sql = 
+            "SELECT * FROM (
+                SELECT * FROM usuario 
+                UNION ALL 
+                SELECT * FROM cliente
+            ) AS combinado 
+            WHERE (id != $id) AND (correo = '$correo')";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+
+        if(!$resultado) { // Si hubo un error
+            $this->conexion->cerrarConexion();
+            echo("Hubo un fallo al obtener el cliente \n");
+            return null;
+        }
+
+        if($fila = $resultado->fetch_assoc()) {
+            $this->conexion->cerrarConexion();
+            return $fila;
+        }
+
+        $this->conexion->cerrarConexion();
+        return null;
     }
 
     public function actualizar(Clientes $cliente) {
@@ -63,25 +130,17 @@ class ClienteDAO{
         $correo = $cliente->getCorreo();
         $clave = $cliente->getClave();
 
-        $sql = "UPDATE clientes SET nombre = '$nombre', apellido = '$apellido', correo = '$correo', clave = '$clave'  WHERE id = $id";
+        $sql = "UPDATE cliente SET nombre = '$nombre', apellido = '$apellido', correo = '$correo', clave = '$clave' WHERE id = $id";
         $resultado = $this->conexion->ejecutarConsulta($sql);
+
+        if(!$resultado) { // Si hubo un error
+            $this->conexion->cerrarConexion();
+            echo("Hubo un fallo al actualizar el cliente \n");
+            return null;
+        }
 
         $this->conexion->cerrarConexion();
         return $resultado;
-    }
-
-    public function listar() {
-        $this->conexion->abrirConexion();
-
-        $sql = "SELECT nombre, apellido, correo FROM clientes";
-        $resultado = $this->conexion->ejecutarConsulta($sql);
-        $clientes = [];
-
-        while ($fila = $resultado->fetch_assoc())
-            $clientes[] = new Clientes($fila['nombre'], $fila['apellido'], $fila['correo']);
-
-        $this->conexion->cerrarConexion();
-        return $clientes;
     }
 
     public function eliminar($id) {

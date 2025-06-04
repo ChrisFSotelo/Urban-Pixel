@@ -5,6 +5,7 @@
     overflow-y: auto;
     position: relative;
 }
+
 .table-container {
     position: absolute;
     top: 0;
@@ -20,16 +21,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 15px 0;
+    margin: 0 0 30px 0;
 }
 
 .top-bar .form-control {
     width: 200px;
 }
 
- .table thead th {
-     vertical-align: middle;
- }
+.table thead th {
+    vertical-align: middle;
+}
 
 .top-bar button {
     cursor: pointer;
@@ -53,23 +54,29 @@
     border: 1px solid transparent;
 }
 
+.fields {
+    width: 100%;
+}
 
 /* estas son las clases que heredan las propiedades del boton
  sin embargo tienen sus propiedades unicas */
 .btn--big {
     padding: 15px 50px;
 }
+
 .btn--small {
     font-size: 14px;
     padding: 8px 12px;
 }
+
 .actions-column {
     display: flex;
     gap: 5px;
     justify-content: center;
 }
 
-.table td, .table th {
+.table td,
+.table th {
     text-align: center;
     vertical-align: middle;
 }
