@@ -101,9 +101,9 @@ class ClienteDAO{
             "SELECT * FROM (
                 SELECT * FROM usuario 
                 UNION ALL 
-                SELECT * FROM cliente
+                SELECT * FROM cliente WHERE id != $id
             ) AS combinado 
-            WHERE (id != $id) AND (correo = '$correo')";
+            WHERE correo = '$correo'";
         $resultado = $this->conexion->ejecutarConsulta($sql);
 
         if(!$resultado) { // Si hubo un error
