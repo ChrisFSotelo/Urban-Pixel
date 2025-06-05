@@ -18,7 +18,15 @@ $(document).ready(function() {
             {"data" : "nombre"},
             {"data" : "apellido"},
             {"data" : "correo"},
-            {"data" : "lead"},
+            {
+                "data": "estado",
+                "render": function(data, type, row) {
+                    let estadoClass = data === "Activo" ? "estado-activo" : "estado-inactivo";
+                    return `<button class="estado-btn ${estadoClass}" data-id="${row.id}" data-estado="${data}">
+                ${data}
+            </button>`;
+                }
+            },
             {"data" : "editar"},
             {"data" : "eliminar"},
         ],

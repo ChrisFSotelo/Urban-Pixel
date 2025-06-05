@@ -24,7 +24,8 @@ class ClienteControlador{
                 for($i = 0; $i < count($respuesta); $i++){
                     $respuesta[$i]["no"] = $i + 1;
                     $respuesta[$i]["clave"] = "";
-                    $respuesta[$i]["estado"] = '<button class="btn btn-info" type="button"><i class="fa-solid fa-info"></i></button>';
+                    $estado = $respuesta[$i]["estado"] == 1 ? "Activo" : "Inactivo";
+                    $respuesta[$i]["estado"] = $estado;
                     $respuesta[$i]["editar"] = 
                         '<button 
                             class="btn btn-primary" 
@@ -219,6 +220,45 @@ class ClienteControlador{
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         exit;
     }
+
+    public function ActualizarEstadoCliente() {
+        $clienteDAO = new ClienteDAO();
+        $input = $_POST;
+
+
+        if (empty($input["id"]) || !isset($input["estado"])) {
+            echo json_encode(["error" => "Faltan parámetros obligatorios"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        $id = intval($input["id"]);
+        $nuevoEstado = intval($input["estado"]);
+        // Buscar cliente actual
+        $clienteActual = $clienteDAO->obtenerPorId($id);
+        if ($clienteActual === null) {
+            echo json_encode(["error" => "Cliente no encontrado"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        $clienteActual->setEstado($nuevoEstado);
+        $resultado = $clienteDAO->actualizarEstado($clienteActual);
+
+        if ($resultado) {
+            $respuesta = [
+                "mensaje" => "Estado actualizado correctamente",
+                "cliente" => [
+                    "id" => $clienteActual->getId(),
+                    "estado" => $clienteActual->getEstado()
+                ]
+            ];
+        } else {
+            $respuesta = ["error" => "No se pudo actualizar el estado"];
+        }
+
+        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
 }
 
 // ✅ Este bloque es el que activa la ejecución del método
@@ -240,4 +280,9 @@ if(isset($_GET["accion"]) && $_GET["accion"] === "registrar") {
 if(isset($_GET["accion"]) && $_GET["accion"] === "actualizar") {
     $controlador = new ClienteControlador();
     $controlador->actualizarCliente();
+}
+
+if(isset($_GET["accion"]) && $_GET["accion"] === "actualizarEstado") {
+    $controlador = new ClienteControlador();
+    $controlador->ActualizarEstadoCliente();
 }

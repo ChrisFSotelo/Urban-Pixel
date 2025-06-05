@@ -23,3 +23,32 @@ footer p{
   justify-content: center;
   margin: 0;
 }
+.estado-btn {
+  padding: 6px 12px;
+  border-radius: 30px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.4s ease;
+}
+
+/* Botón para estado Activo */
+.estado-btn.estado-activo {
+  background-color: #213b1f; /* Verde */
+  color: #fff;
+}
+.estado-btn.estado-activo:hover {
+  background-color: #04b45c;
+}
+
+/* Botón para estado Inactivo */
+.estado-btn.estado-inactivo {
+  background-color: #863f58;
+  color: #fff;
+}
+.estado-btn.estado-inactivo:hover {
+  background-color: #BC0404;
+}
+
+

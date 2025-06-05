@@ -145,6 +145,21 @@ class ClienteDAO{
         return $resultado;
     }
 
+    public function actualizarEstado(Clientes $cliente) {
+        $this->conexion->abrirConexion();
+
+        $id = $cliente->getId();
+        $nuevoEstado = $cliente->getEstado() ? 1 : 0;
+
+        $sql = "UPDATE cliente SET estado = $nuevoEstado WHERE id = $id";
+
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+        $this->conexion->cerrarConexion();
+
+        return $resultado;
+    }
+
+
     public function eliminar($id) {
         $this->conexion->abrirConexion();
 
