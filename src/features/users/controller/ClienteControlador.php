@@ -1,7 +1,7 @@
 <?php
 ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 
 require_once __DIR__ . '/../model/Clientes.php';
 require_once __DIR__ . '/../dao/ClienteDAO.php';
@@ -222,9 +222,7 @@ class ClienteControlador{
     }
 
     public function ActualizarEstadoCliente() {
-        $clienteDAO = new ClienteDAO();
         $input = $_POST;
-
 
         if (empty($input["id"]) || !isset($input["estado"])) {
             echo json_encode(["error" => "Faltan parámetros obligatorios"], JSON_UNESCAPED_UNICODE);
@@ -232,23 +230,26 @@ class ClienteControlador{
         }
 
         $id = intval($input["id"]);
-        $nuevoEstado = intval($input["estado"]);
-        // Buscar cliente actual
+        $estadoActual = intval($input["estado"]);
+        $nuevoEstado = $estadoActual == 1 ? 0 : 1;
+
+        $clienteDAO = new ClienteDAO();
+
+        // Verificar que el cliente exista antes de actualizar
         $clienteActual = $clienteDAO->obtenerPorId($id);
         if ($clienteActual === null) {
             echo json_encode(["error" => "Cliente no encontrado"], JSON_UNESCAPED_UNICODE);
             exit;
         }
 
-        $clienteActual->setEstado($nuevoEstado);
-        $resultado = $clienteDAO->actualizarEstado($clienteActual);
+        $resultado = $clienteDAO->actualizarEstado($id, $nuevoEstado);
 
         if ($resultado) {
             $respuesta = [
                 "mensaje" => "Estado actualizado correctamente",
                 "cliente" => [
-                    "id" => $clienteActual->getId(),
-                    "estado" => $clienteActual->getEstado()
+                    "id" => $id,
+                    "estado" => $nuevoEstado
                 ]
             ];
         } else {
