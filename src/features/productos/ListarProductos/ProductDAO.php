@@ -36,4 +36,33 @@ class ProductDAO
         $this->conexion->cerrarConexion();
         return $productos;
     }
+
+    public function buscarPorNombre(string $nombre): array 
+    {
+        $this->conexion->abrirConexion();
+        $querySQL = "SELECT * FROM producto WHERE nombre LIKE '%$nombre%' ORDER BY id ASC";
+        $resultado = $this->conexion->ejecutarConsulta($querySQL);
+
+        if (!$resultado)
+        {
+            $this->conexion->cerrarConexion();
+            throw new Exception("Error al buscar el producto por nombre.");
+        }
+
+        $productos = [];
+
+        while ($row = $resultado->fetch_assoc())
+        {
+            $productos[] = new Product(
+                $row['id'],
+                $row['nombre'],
+                $row['cantidad'],
+                $row['precio'],
+            );
+        }
+
+        $this->conexion->cerrarConexion();
+        
+        return $productos;
+    }
 }

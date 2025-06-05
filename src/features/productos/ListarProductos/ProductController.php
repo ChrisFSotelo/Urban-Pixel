@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 
 require_once __DIR__ . "/ProductDAO.php";
 
-class ListarProductosController
+class ProductosController
 {
     public function listarProductController()
     {
@@ -18,10 +18,27 @@ class ListarProductosController
             //     'data' => $productos,
             // ]);
 
-            require __DIR__ . '/listar_producto.php';
+            require __DIR__ . '/View.php';
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }
+    }
+
+    public function buscarPorNombreController($nombre)
+    {
+        try {
+            $dao = new ProductDAO();
+            $productos = $dao->buscarPorNombre($nombre);
+
+            ob_start();
+            require __DIR__ . '/views/Resultados.php';
+            $html = ob_get_clean();
+
+            echo $html;
+            exit;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }      
     }
 }
 
@@ -31,7 +48,11 @@ class ListarProductosController
 //     listarProductController();
 // }
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $controller = new ListarProductosController();
-    $controller->listarProductController();
+$controller = new ProductosController();
+
+if (isset($_GET['a']) && $_GET['a'] === 'buscar') {
+    $controller->buscarPorNombreController($_GET['query'] ?? '');
+    exit;
 }
+
+$controller->listarProductController();
