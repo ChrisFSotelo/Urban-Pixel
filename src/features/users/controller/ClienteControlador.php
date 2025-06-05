@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 require_once __DIR__ . '/../model/Clientes.php';
 require_once __DIR__ . '/../dao/ClienteDAO.php';
@@ -21,7 +24,7 @@ class ClienteControlador{
                 for($i = 0; $i < count($respuesta); $i++){
                     $respuesta[$i]["no"] = $i + 1;
                     $respuesta[$i]["clave"] = "";
-                    $respuesta[$i]["lead"] = '<button class="btn btn-info" type="button"><i class="fa-solid fa-info"></i></button>';
+                    $respuesta[$i]["estado"] = '<button class="btn btn-info" type="button"><i class="fa-solid fa-info"></i></button>';
                     $respuesta[$i]["editar"] = 
                         '<button 
                             class="btn btn-primary" 
@@ -74,7 +77,6 @@ class ClienteControlador{
 
     public function RegistrarCliente() {
         $clienteDAO = new ClienteDAO();
-        $respuesta = null;
 
         // Capturar inputs del formulario POST
         $input = $_POST;
@@ -102,18 +104,18 @@ class ClienteControlador{
         }
 
         $idRolCliente = 2;
-
+        $estado = 1;
         // Cifrar la contraseña con md5
         $clave = md5($input["clave"]);
 
-        // Crear objeto cliente
         $cliente = new Clientes(
             0, // ID autoincrementable
             $input["nombre"],
             $input["apellido"],
             $input["correo"],
             $clave,
-            $idRolCliente
+            $idRolCliente,
+            $estado
         );
 
         // Registrar en base de datos
@@ -128,7 +130,8 @@ class ClienteControlador{
                     "nombre" => $cliente->getNombre(),
                     "apellido" => $cliente->getApellido(),
                     "correo" => $cliente->getCorreo(),
-                    "idRol" => $cliente->getIdRol()
+                    "idRol" => $cliente->getIdRol(),
+                    "estado" => $cliente->getEstado()
                 ]
             ];
         }

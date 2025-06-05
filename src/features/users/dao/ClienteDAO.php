@@ -37,16 +37,19 @@ class ClienteDAO{
         $correo = $cliente->getCorreo();
         $clave = $cliente->getClave();
         $idRol = $cliente->getIdRol();
+        $estado = $cliente->getEstado() ? 1 : 0;
+        $sql = "INSERT INTO cliente (nombre, apellido, correo, clave, idRol, estado) 
+                                VALUES ('$nombre','$apellido','$correo','$clave',$idRol,$estado)";
 
-        $sql = "INSERT INTO  cliente (nombre, apellido, correo, clave, idRol) VALUES ('$nombre','$apellido','$correo','$clave',$idRol)";
         $resultado = $this->conexion->ejecutarConsulta($sql);
         $this->conexion->cerrarConexion();
 
-        if($resultado)
+        if ($resultado)
             return $cliente;
 
         echo ("Hubo un error al registrar el cliente");
         return null;
+
     }
 
     public function obtenerPorId($id) {
@@ -56,7 +59,6 @@ class ClienteDAO{
 
         if(!$resultado) { // Si hubo un error
             $this->conexion->cerrarConexion();
-            echo("Hubo un fallo al obtener el cliente \n");
             return null;
         }
 
@@ -82,7 +84,7 @@ class ClienteDAO{
 
         if(!$resultado) { // Si hubo un error
             $this->conexion->cerrarConexion();
-            echo("Hubo un fallo al obtener el cliente \n");
+            echo("Hubo un error al obtener el correo del cliente \n");
             return null;
         }
 
@@ -108,7 +110,7 @@ class ClienteDAO{
 
         if(!$resultado) { // Si hubo un error
             $this->conexion->cerrarConexion();
-            echo("Hubo un fallo al obtener el cliente \n");
+            echo("Hubo un fallo al obtener el cliente Actual \n");
             return null;
         }
 
