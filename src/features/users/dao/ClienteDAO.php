@@ -168,4 +168,36 @@ class ClienteDAO{
         return $resultado;
     }
 
+    public function AutenticarCliente($correo, $clave) {
+        $this->conexion->abrirConexion();
+
+        $sql = "SELECT id, nombre, apellido, correo, clave,idRol, estado 
+        FROM cliente 
+        WHERE correo = '$correo' AND clave = '$clave'";
+
+
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+
+        if ($resultado && $resultado->num_rows > 0) {
+            $fila = $resultado->fetch_assoc();
+
+            // Crear y retornar objeto Cliente
+            $cliente = new Clientes(
+                $fila['id'],
+                $fila['nombre'],
+                $fila['apellido'],
+                $fila['correo'],
+                $fila['clave'],
+                $fila['idRol'],
+                $fila['estado']
+            );
+
+
+            $this->conexion->cerrarConexion();
+            return $cliente;
+       }
+
+        $this->conexion->cerrarConexion();
+        return null;
+    }
 }

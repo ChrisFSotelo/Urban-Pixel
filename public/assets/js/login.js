@@ -124,6 +124,43 @@ botonIniciarSesion.addEventListener("click", async (event) => {
 
     const resultado = await respuesta.json();
 
+    if (resultado.error) {
+      Swal.fire({
+        title: 'Error',
+        text: resultado.error,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
+
+    const rol = resultado.usuario.rol;
+
+    // Redirige según el rol
+    if (rol === "usuario") {
+      if (resultado.mensaje) {
+        Swal.fire({
+          title: '¡Usuario Autenticado Correctamente!',
+          text: resultado.mensaje,
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          window.location.href = "src/features/users/views/control_panel.php";
+        });
+      }
+    } else if (rol === 2 || rol === "2") {
+      if (resultado.mensaje) {
+        Swal.fire({
+          title: '¡Cliente Autenticado Correctamente!',
+          text: resultado.mensaje,
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          window.location.href = "src/features/users/views/landing_page.php";
+        });
+      }
+    } else {
+      alert("Rol no reconocido");
+    }
     if (resultado.mensaje) {
       Swal.fire({
         title: '¡Usuario Autenticado Correctamente!',
@@ -133,17 +170,10 @@ botonIniciarSesion.addEventListener("click", async (event) => {
       }).then(() => {
         window.location.href = "src/features/users/views/control_panel.php";
       });
-    } else if (resultado.error) {
-      Swal.fire({
-        title: 'Error',
-        text: resultado.error,
-        icon: 'error',
-        confirmButtonText: 'OK'
-      });
     }
 
   } catch (error) {
     console.error("Error al registrar:", error);
-    sweetAlert.mostrarError("Error", "No se pudo completar el registro");
+    sweetAlert.mostrarError("Error", "No se pudo completar el registro 2");
   }
 });
