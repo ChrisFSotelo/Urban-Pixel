@@ -161,4 +161,19 @@
             ]
         ];
     }
+
+    function listarProductosController()
+    {
+        try
+        {
+            $productoDAO = new ProductoDAO();
+            $productoDAO->listar();
+
+            require __DIR__ . "/../views/listarProductos.php";
+        } catch (Exception $e)
+        {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
 ?>
