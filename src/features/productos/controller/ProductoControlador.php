@@ -1,179 +1,62 @@
 <?php
-    use dao\UsuarioDAO;
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-    require_once "../../categorias/model/Categoria.php";
-    require_once "../../categorias/dao/CategoriaDAO.php";
-    require_once "../model/Producto.php";
-    require_once "../dao/ProductoDAO.php";
-    require_once "../../users/models/Usuario.php";
-    require_once "../../users/dao/UsuarioDAO.php";
+require_once __DIR__ . '/../model/Producto.php';
+require_once __DIR__ . '/../dao/ProductoDAO.php';
 
-    header('Content-Type: application/json; charset=utf-8');
+use model\Producto;
+use dao\ProductoDAO;
 
-    if(isset($_REQUEST["accion"])) {
-        $accion = $_REQUEST["accion"];
+header('Content-Type: application/json; charset=utf-8');
+class ProductoControlador{
+    public function listar() {
         $productoDAO = new ProductoDAO();
-        $categoriaDAO = new CategoriaDAO();
-        $adminDAO = new UsuarioDAO();
-        $datos = null;
+        $productos = $productoDAO->listar();
 
-        switch ($accion) {
-            case "listar": {
-                $productos = $productoDAO->listar();
+        $respuesta = [];
 
-                if($productos === null) {
-                    $datos = ["error" => "Error al listar los productos"];
-                    break;
-                }
-
-                $datos = [
-                    "mensaje" => "Productos listados correctamente",
-                    "productos" => generarJsonDeUnArray($productos)
+        if (empty($productos)) {
+            $respuesta = ["error" => "No se encontraron productos"];
+        } else {
+            foreach ($productos as $index => $producto) {
+                $respuesta[] = [
+                    "no" => $index + 1,
+                    "id" => $producto->getId(),
+                    "nombre" => $producto->getNombre(),
+                    "cantidad" => $producto->getCantidad(),
+                    "precio" => $producto->getPrecio(),
+                    "clave" => "",
+                    "editar" =>
+                        '<button 
+                        class="btn btn-primary" 
+                        type="button" 
+                        title="Editar" 
+                        onclick="obtenerClienteInfo('.$producto->getId().')"
+                    >
+                        <i class="fa-solid fa-pencil"></i>
+                    </button>',
+                    "eliminar" =>
+                        '<button 
+                        class="btn btn-danger" 
+                        type="button" 
+                        title="Eliminar"
+                        onclick="confirmarEliminacion('.$producto->getId().')"
+                    >
+                        <i class="fa-solid fa-times"></i>
+                    </button>',
                 ];
-
-                break;
-            };
-
-            case "agregar": {
-                // Obtenemos los objetos reales desde sus DAOs
-                $categoria = $categoriaDAO->obtenerPorId((int) $_POST["idCategoria"]);
-                $administrador = $adminDAO->obtenerPorId((int) $_POST["idAdministrador"]);
-
-                // Validamos que existan
-                if($categoria === null || $administrador === null) {
-                    $datos = ["error" => "Categoría o administrador no encontrados"];
-                    break;
-                }
-
-                // Creamos el objeto 'Producto'
-                $producto = new Producto(
-                    0, 
-                    $_POST["nombre"],
-                    (int) $_POST["cantidad"],
-                    (int) $_POST["precio"],
-                    $categoria,
-                    $administrador
-                );
-
-                // Evitamos duplicados por nombre
-                if($productoDAO->obtenerPorNombre($producto->getNombre()) !== null) {
-                    $datos = ["error" => "Ya existe un producto con ese nombre"];
-                    break;
-                }
-
-                // Insertamos y validamos
-                if($productoDAO->insertar($producto) === null) {
-                    $datos = ["error" => "Error al insertar el producto"];
-                    break;
-                }
-
-                $nuevoProducto = $productoDAO->obtenerPorNombre($producto->getNombre());
-                $datos = [
-                    "mensaje" => "Producto agregado correctamente",
-                    "producto" => generarJsonDeUnObjeto($nuevoProducto)
-                ];
-
-                break;
-            };
-
-            case "editar": {
-                // Obtenemos los objetos reales desde sus DAOs
-                $categoria = $categoriaDAO->obtenerPorId((int) $_POST["idCategoria"]);
-                $administrador = $adminDAO->obtenerPorId((int) $_POST["idAdministrador"]);
-
-                // Validamos que existan
-                if($categoria === null || $administrador === null) {
-                    $datos = ["error" => "Categoría o administrador no encontrados"];
-                    break;
-                }
-
-                // Creamos el objeto 'Producto'
-                $producto = new Producto(
-                    (int) $_POST["id"], 
-                    $_POST["nombre"],
-                    (int) $_POST["cantidad"],
-                    (int) $_POST["precio"],
-                    $categoria,
-                    $administrador
-                );
-
-                // Evitamos duplicados por nombre
-                if($productoDAO->obtenerPorNombreExcluyendoProductoActual($producto->getId(), $producto->getNombre()) !== null) {
-                    $datos = ["error" => "Ya existe un producto con ese nombre"];
-                    break;
-                }
-
-                // Editamos y validamos
-                if($productoDAO->actualizar($producto) === null) {
-                    $datos = ["error" => "Error al editar el producto"];
-                    break;
-                }
-
-                $nuevoProducto = $productoDAO->obtenerPorNombre($producto->getNombre());
-                $datos = [
-                    "mensaje" => "Producto editado correctamente",
-                    "producto" => generarJsonDeUnObjeto($nuevoProducto)
-                ];
-
-                break;
-            };
+            }
         }
 
-        echo json_encode($datos, JSON_UNESCAPED_UNICODE);
-    }
-    else 
-        header("Location: ../../../../");
-
-    // Función para generar el Json de un arreglo de objetos 
-    function generarJsonDeUnArray(array $productos) {
-        return array_map(function($producto) {
-            return [
-                'id' => $producto->getId(),
-                'nombre' => $producto->getNombre(),
-                'cantidad' => $producto->getCantidad(),
-                'precio' => $producto->getPrecio(),
-                'categoria' => [
-                    'id' => $producto->getCategoria()->getId(),
-                    'nombre' => $producto->getCategoria()->getNombre(),
-                ],
-                'administrador' => [
-                    'id' => $producto->getAdministrador()->getId(),
-                    'nombre' => $producto->getAdministrador()->getNombre(),
-                ]
-            ];
-        }, $productos);
+        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        exit;
     }
 
-    // Función para generar el Json de un solo objeto
-    function generarJsonDeUnObjeto(Producto $producto) {
-        return [
-            'id' => $producto->getId(),
-            'nombre' => $producto->getNombre(),
-            'cantidad' => $producto->getCantidad(),
-            'precio' => $producto->getPrecio(),
-            'categoria' => [
-                'id' => $producto->getCategoria()->getId(),
-                'nombre' => $producto->getCategoria()->getNombre(),
-            ],
-            'administrador' => [
-                'id' => $producto->getAdministrador()->getId(),
-                'nombre' => $producto->getAdministrador()->getNombre(),
-            ]
-        ];
-    }
+}
 
-    function listarProductosController()
-    {
-        try
-        {
-            $productoDAO = new ProductoDAO();
-            $productoDAO->listar();
-
-            require __DIR__ . "/../views/listarProductos.php";
-        } catch (Exception $e)
-        {
-            echo "Error: " . $e->getMessage();
-        }
-    }
-
-?>
+// ✅ Este bloque es el que activa la ejecución del método
+if(isset($_GET["accion"]) && $_GET["accion"] === "listar") {
+    $controlador = new ProductoControlador();
+    $controlador->listar();
+}

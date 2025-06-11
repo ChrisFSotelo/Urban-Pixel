@@ -24,11 +24,23 @@ header h1 {
 }
 
 .hero {
-  background: url("https://via.placeholder.com/1200x400") center/cover no-repeat;
+  display: flex;
+  background: url("../images/ciberpunk2.jpeg") center/cover no-repeat;
   padding: 100px 40px;
   color: white;
   text-shadow: 2px 2px 5px #000;
   text-align: center;
+  height: 600px;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+}
+.hero h2{
+  font-size: 46px;
+  text-transform: capitalize;
+}
+.hero p{
+  font-size: 24px;
 }
 
 .products {
