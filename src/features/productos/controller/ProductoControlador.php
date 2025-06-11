@@ -26,7 +26,6 @@ class ProductoControlador{
                     "nombre" => $producto->getNombre(),
                     "cantidad" => $producto->getCantidad(),
                     "precio" => $producto->getPrecio(),
-                    "clave" => "",
                     "editar" =>
                         '<button 
                         class="btn btn-primary" 
