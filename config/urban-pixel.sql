@@ -1,6 +1,6 @@
-CREATE DATABASE Urban_Pixel;
+CREATE DATABASE urban_pixel;
 
-USE Urban_Pixel;
+USE urban_pixel;
 
 -- ---------------------
 -- Creación de tablas
@@ -20,6 +20,7 @@ CREATE TABLE usuario (
 	correo VARCHAR(255) NOT NULL,
 	clave VARCHAR(255) NOT NULL,
 	idRol INT NOT NULL,
+	idEstado INT NOT NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (idRol) REFERENCES rol(id) 
@@ -32,6 +33,7 @@ CREATE TABLE cliente (
 	correo VARCHAR(255) NOT NULL,
 	clave VARCHAR(255) NOT NULL,
 	idRol INT NOT NULL,
+	idEstado INT NOT NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (idRol) REFERENCES rol(id) 
@@ -50,11 +52,9 @@ CREATE TABLE producto (
 	cantidad INT NOT NULL,
 	precio INT NOT NULL,
 	idCategoria INT NOT NULL,
-	idAdministrador INT NOT NULL,
 
 	PRIMARY KEY (id),
-	FOREIGN KEY (idCategoria) REFERENCES categoria(id),
-	FOREIGN KEY (idAdministrador) REFERENCES usuario(id) 
+	FOREIGN KEY (idCategoria) REFERENCES categoria(id)
 );
 
 CREATE TABLE factura (
@@ -92,5 +92,9 @@ INSERT INTO rol (nombre) VALUES
 ('Administrador'),
 ('Cliente');
 
-INSERT INTO usuario(nombre, apellido, correo, clave, idRol) VALUES 
-('Cristian Ferney', 'Sotelo Lancheros', 'cfsotelol@udistrital.edu.co', '51f5ba3406f5d930999897226474cbef', 1);
+INSERT INTO usuario(nombre, apellido, correo, clave, idRol, idEstado) VALUES 
+('Cristian Ferney', 'Sotelo Lancheros', 'cfsotelol@udistrital.edu.co', '202cb962ac59075b964b07152d234b70', 1, 1);
+
+INSERT INTO cliente(nombre, apellido, correo, clave, idRol, idEstado) VALUES 
+('Jose', 'Jose', 'jose1@gmail.com', '202cb962ac59075b964b07152d234b70', 2, 1),
+('Carlos', 'Lopez', 'krlosL0pz@gmail.com', '202cb962ac59075b964b07152d234b70', 2, 0);

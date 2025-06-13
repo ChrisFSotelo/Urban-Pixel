@@ -1,7 +1,7 @@
 // Este archivo se encarga de cambiar el contenido segun la opcion seleccionada en el sidebar
 
 $("#inicio").click(function() {
-    $("#contenido").load(); // Completar con la ruta del contenido de inicio
+    $("#contenido").load("../../inicio/views/inicio.php"); // Completar con la ruta del contenido de inicio
 });
 
 $("#productos").click(function() {

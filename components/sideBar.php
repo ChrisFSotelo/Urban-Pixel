@@ -13,7 +13,7 @@
         </button>
 
         <ul class="nav flex-column gap-2">
-            <li class="optionToSelect nav-item" id="inicio">
+            <li class="active optionToSelect nav-item" id="inicio">
                 <a class="nav-link text-white" title="Inicio">
                     <i class="fas fa-home"></i> <span>Inicio</span>
                 </a>
