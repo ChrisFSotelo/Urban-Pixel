@@ -4,7 +4,8 @@ namespace dao;
 require_once __DIR__ . '/../../../../config/Conexion.php';
 require_once __DIR__ . '/../model/Producto.php';
 
-use Conexion;
+use conexion;
+
 use model\Producto;
 
 
@@ -70,4 +71,30 @@ class ProductoDAO{
 
         return $productos;
     }
+
+   
+    public function RegistrarProducto(Producto $producto) {
+        $this->conexion->abrirConexion();
+    
+        $nombre = $producto->getNombre();
+        $cantidad = $producto->getCantidad();
+        $precio = $producto->getPrecio();
+        $idCategoria = $producto->getCategoria()->getId(); 
+
+    
+        $sql = "INSERT INTO productos (nombre, cantidad, precio, idCategoria)
+                VALUES ('$nombre', $cantidad, $precio, $idCategoria)";
+    
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+    
+        $this->conexion->cerrarConexion();
+    
+        if ($resultado)
+            return $producto;
+    
+        echo "Hubo un error al registrar el producto";
+        return null;
+    }
+    
 }
+

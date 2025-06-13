@@ -3,6 +3,8 @@ function abrirModalProducto() {
     document.getElementById("id").value = "";
     $("#tituloModalProducto").text("Agregar Producto");
     $("#submitForm").text("Guardar");
+    cargarCategorias(); 
+
     $(".modal").modal("show");
   }
 
@@ -56,6 +58,32 @@ $("#submitForm").click(function(e){
     }
 });
 
+function cargarCategorias() {
+    fetch("../../../../src/features/categorias/controller/CategoriaControlador.php?accion=listar")
+
+        .then(response => response.json())
+        .then(data => {
+            const select = document.getElementById("idCategoria");
+            select.innerHTML = '<option value="">Seleccione una categoría</option>';
+
+            if(data.categorias && Array.isArray(data.categorias)) {
+                data.categorias.forEach(cat => {
+                    const option = document.createElement("option");
+                    option.value = cat.id;
+                    option.textContent = cat.nombre;
+                    select.appendChild(option);
+                });
+            } else {
+                console.warn("No se encontraron categorías");
+            }
+        })
+        .catch(error => {
+            console.error("Error al cargar categorías:", error);
+        });
+}
+
+
+
 async function guardarNuevoProducto(nombre, cantidad, precio, categoria){
     const datos = new FormData();
     datos.append("nombre", nombre.value);
@@ -64,7 +92,7 @@ async function guardarNuevoProducto(nombre, cantidad, precio, categoria){
     datos.append("categoria", categoria.value);
 
     try {
-        const respuesta = await fetch("../controller/ProductoControlador.php?accion=agregar", {
+        const respuesta = await fetch("../../../../src/features/productos/controller/ProductoControlador.php?accion=registrar_producto", {
             method: "POST",
             body: datos
         });
@@ -72,7 +100,7 @@ async function guardarNuevoProducto(nombre, cantidad, precio, categoria){
 
         if(resultado.mensaje) {
             $(".modal").modal("hide");
-            document.getElementById("formAgregarProducto").reset(); // Asegúrate de usar el ID correcto
+            document.getElementById("formAgregarProducto").reset(); 
 
             Swal.fire({
                 title: "¡Registro exitoso!",

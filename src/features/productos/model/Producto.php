@@ -5,15 +5,15 @@ class Producto{
     private string $nombre;
     private int $cantidad;
     private int $precio;
-    private Categoria $idCategoria;
-    private Usuario $idAdministrador;
+    private Categoria $categoria;
 
-    public function __construct(int $id, string $nombre, int $cantidad, int $precio)
+    public function __construct(int $id, string $nombre, int $cantidad, int $precio, Categoria $categoria)
     {
         $this->id = $id;
         $this->nombre = $nombre;
         $this->cantidad = $cantidad;
         $this->precio = $precio;
+        $this->categoria= $categoria;
     }
 
     public function getId(): int
@@ -38,11 +38,9 @@ class Producto{
 
     public function getCategoria(): Categoria
     {
-        return $this->idCategoria;
+        return $this->categoria;
     }
 
-    public function getAdministrador(): Usuario
-    {
-        return $this->idAdministrador;
-    }
+
+
 }
