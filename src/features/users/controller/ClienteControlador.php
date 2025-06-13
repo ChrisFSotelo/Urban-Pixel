@@ -2,7 +2,6 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-
 require_once __DIR__ . '/../model/Clientes.php';
 require_once __DIR__ . '/../dao/ClienteDAO.php';
 header('Content-Type: application/json; charset=utf-8');
@@ -24,8 +23,8 @@ class ClienteControlador{
                 for($i = 0; $i < count($respuesta); $i++){
                     $respuesta[$i]["no"] = $i + 1;
                     $respuesta[$i]["clave"] = "";
-                    $estado = $respuesta[$i]["estado"] == 1 ? "Activo" : "Inactivo";
-                    $respuesta[$i]["estado"] = $estado;
+                    $estado = $respuesta[$i]["idEstado"] == 1 ? "Activo" : "Inactivo";
+                    $respuesta[$i]["idEstado"] = $estado;
                     $respuesta[$i]["editar"] = 
                         '<button 
                             class="btn btn-primary" 
@@ -187,7 +186,8 @@ class ClienteControlador{
             $input["apellido"],
             $input["correo"],
             "",
-            $clientePorId["idRol"] // Mantener el mismo rol
+            $clientePorId["idRol"], // Mantener el mismo rol
+            $clientePorId["idEstado"]
         );
 
         if($input["clave"] !== "") {
@@ -244,7 +244,7 @@ class ClienteControlador{
 
         $resultado = $clienteDAO->actualizarEstado($id, $nuevoEstado);
 
-        if ($resultado) {
+        if($resultado) {
             $respuesta = [
                 "mensaje" => "Estado actualizado correctamente",
                 "cliente" => [
@@ -252,7 +252,8 @@ class ClienteControlador{
                     "estado" => $nuevoEstado
                 ]
             ];
-        } else {
+        } 
+        else {
             $respuesta = ["error" => "No se pudo actualizar el estado"];
         }
 

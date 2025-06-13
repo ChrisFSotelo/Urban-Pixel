@@ -3,7 +3,6 @@ namespace dao;
 
 require_once __DIR__ . "/../../../../config/Conexion.php";
 require_once __DIR__ . '/../model/Persona.php';
-
 require_once __DIR__ . '/../../roles/model/Rol.php';
 require_once __DIR__ . '/../../roles/dao/RolDAO.php';
 
@@ -11,7 +10,7 @@ use Conexion;
 use model\Usuario;
 use RolDAO;
 
-class UsuarioDAO{
+class UsuarioDAO {
     private $conexion;
     private RolDAO $rolDAO;
 

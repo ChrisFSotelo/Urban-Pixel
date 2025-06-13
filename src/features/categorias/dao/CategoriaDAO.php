@@ -1,6 +1,10 @@
 <?php
-    require_once __DIR__. "/../model/Categoria.php";
-    require_once "../../../../config/Conexion.php";
+    namespace dao;
+    require_once __DIR__ . "/../../../../config/Conexion.php";
+    require_once "../../categorias/model/Categoria.php";
+    
+    use Conexion;
+    use model\Categoria;
 
     class CategoriaDAO {
         private $conexion;
@@ -22,10 +26,10 @@
             
             $sql = "SELECT * FROM categoria WHERE id = $id";
             $resultado = $this->conexion->ejecutarConsulta($sql);
-            $categoria=null;
+            $categoria = null;
 
             if($fila = $resultado->fetch_assoc())
-                $categoria = new Categoria($fila['id'], $fila['nombre']);
+                $categoria = $fila;
 
             $this->conexion->cerrarConexion();
             return $categoria;
@@ -52,8 +56,8 @@
             $resultado = $this->conexion->ejecutarConsulta($sql);
             $categorias = [];
 
-            while ($fila = $resultado->fetch_assoc())
-                $categorias[] = new Categoria($fila['id'], $fila['nombre']);
+            while($fila = $resultado->fetch_assoc())
+                $categorias[] = $fila;
 
             $this->conexion->cerrarConexion();
             return $categorias;

@@ -1,51 +1,47 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-require_once __DIR__ . '/../model/Producto.php';
-require_once __DIR__ . '/../dao/ProductoDAO.php';
-require_once '../../categorias/dao/CategoriaDAO.php';
-require_once '../../categorias/model/Categoria.php';
-
-use model\Producto;
-use dao\ProductoDAO;
+require_once "../../productos/model/Producto.php";
+require_once "../../productos/dao/ProductoDAO.php";
+require_once "../../categorias/dao/CategoriaDAO.php";
+require_once "../../categorias/model/Categoria.php";
 header('Content-Type: application/json; charset=utf-8');
+
+use dao\ProductoDAO;
+use model\Producto;
+use dao\CategoriaDAO;
+use model\Categoria;
+
 class ProductoControlador{
     public function listar() {
         $productoDAO = new ProductoDAO();
         $productos = $productoDAO->listar();
 
-        $respuesta = [];
+        if($productos == null)
+            $respuesta = ["error" => "Error al listar los productos"];
+        else {
+            $respuesta = $productos;
 
-        if (empty($productos)) {
-            $respuesta = ["error" => "No se encontraron productos"];
-        } else {
-            foreach ($productos as $index => $producto) {
-                $respuesta[] = [
-                    "no" => $index + 1,
-                    "id" => $producto->getId(),
-                    "nombre" => $producto->getNombre(),
-                    "cantidad" => $producto->getCantidad(),
-                    "precio" => $producto->getPrecio(),
-                    "editar" =>
+            if(!empty($respuesta)) {
+                for($i = 0; $i < count($respuesta); $i++) {
+                    $respuesta[$i]["no"] = $i + 1;
+                    $respuesta[$i]["editar"] = 
                         '<button 
-                        class="btn btn-primary" 
-                        type="button" 
-                        title="Editar" 
-                        onclick="obtenerClienteInfo('.$producto->getId().')"
-                    >
-                        <i class="fa-solid fa-pencil"></i>
-                    </button>',
-                    "eliminar" =>
+                            class="btn btn-primary" 
+                            type="button" 
+                            title="Editar" 
+                            onclick="obtenerProductoInfo('.$respuesta[$i]["id"].')"
+                        >
+                            <i class="fa-solid fa-pencil"></i>
+                        </button>';
+                    $respuesta[$i]["eliminar"] = 
                         '<button 
-                        class="btn btn-danger" 
-                        type="button" 
-                        title="Eliminar"
-                        onclick="confirmarEliminacion('.$producto->getId().')"
-                    >
-                        <i class="fa-solid fa-times"></i>
-                    </button>',
-                ];
+                            class="btn btn-danger" 
+                            type="button" 
+                            title="Eliminar"
+                            onclick="confirmarEliminacion('.$respuesta[$i]["id"].')"
+                        >
+                            <i class="fa-solid fa-times"></i>
+                        </button>';
+                }
             }
         }
 
@@ -56,7 +52,7 @@ class ProductoControlador{
     public function RegistrarProducto() {
         $productoDAO = new ProductoDAO();
         $categoriaDAO = new CategoriaDAO();
-        $categorias = $categoriaDAO->obtenerPorId($_POST["categoria"]);
+        $categoria = $categoriaDAO->obtenerPorId($_POST["categoria"]);
 
         if (
             empty($_POST["nombre"]) ||
@@ -67,24 +63,40 @@ class ProductoControlador{
             echo json_encode(["error" => "Todos los campos son obligatorios"], JSON_UNESCAPED_UNICODE);
             exit;
         }
+
+        if($categoria === null) {
+            echo json_encode(["error" => "Error al encontrar la categoría"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
     
+        $categoriaObjeto = new Categoria(
+            $categoria["id"],
+            $categoria["nombre"]
+        );
         $producto = new Producto(
             0,
             $_POST["nombre"],
             $_POST["cantidad"],
             $_POST["precio"],
-            $categorias
+            $categoriaObjeto
         );
     
-        
         $resultado = $productoDAO->RegistrarProducto($producto);
     
-        if ($resultado === null) {
-            echo json_encode(["error" => "Error al registrar el producto"], JSON_UNESCAPED_UNICODE);
-        } else {
-            echo json_encode(["mensaje" => "Producto registrado exitosamente"], JSON_UNESCAPED_UNICODE);
+        if ($resultado === null)
+            $respuesta = ["error" => "Error al registrar el producto"];
+        else {
+            $respuesta = [
+                "mensaje" => "Producto registrado correctamente",
+                "producto" => [
+                    "id" => $producto->getId(),
+                    "nombre" => $producto->getNombre(),
+                    "categoria" => $producto->getCategoria()->getNombre(),
+                ]
+            ];
         }
-    
+
+        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         exit;
     }
 }

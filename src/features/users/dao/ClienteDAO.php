@@ -5,7 +5,6 @@ namespace dao;
 require_once __DIR__ . "/../../../../config/Conexion.php";
 require_once __DIR__ . "/../model/Clientes.php";
 
-
 use Conexion;
 use model\Clientes;
 
@@ -38,7 +37,8 @@ class ClienteDAO{
         $clave = $cliente->getClave();
         $idRol = $cliente->getIdRol();
         $estado = $cliente->getEstado() ? 1 : 0;
-        $sql = "INSERT INTO cliente (nombre, apellido, correo, clave, idRol, estado) 
+
+        $sql = "INSERT INTO cliente (nombre, apellido, correo, clave, idRol, idEstado) 
                                 VALUES ('$nombre','$apellido','$correo','$clave',$idRol,$estado)";
 
         $resultado = $this->conexion->ejecutarConsulta($sql);
@@ -49,7 +49,6 @@ class ClienteDAO{
 
         echo ("Hubo un error al registrar el cliente");
         return null;
-
     }
 
     public function obtenerPorId($id) {
@@ -148,7 +147,7 @@ class ClienteDAO{
     public function actualizarEstado($id, $nuevoEstado) {
         $this->conexion->abrirConexion();
 
-        $sql = "UPDATE cliente SET estado = $nuevoEstado WHERE id = $id";
+        $sql = "UPDATE cliente SET idEstado = $nuevoEstado WHERE id = $id";
 
         $resultado = $this->conexion->ejecutarConsulta($sql);
         $this->conexion->cerrarConexion();

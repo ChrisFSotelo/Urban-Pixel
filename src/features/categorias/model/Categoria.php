@@ -1,4 +1,6 @@
 <?php 
+    namespace model;
+    
     class Categoria {
         private $id;
         private $nombre;

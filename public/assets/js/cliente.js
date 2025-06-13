@@ -19,7 +19,7 @@ $(document).ready(function() {
             {"data" : "apellido"},
             {"data" : "correo"},
             {
-                "data": "estado",
+                "data": "idEstado",
                 "render": function(data, type, row) {
                     let estadoClass = data === "Activo" ? "estado-activo" : "estado-inactivo";
                     let estadoNumerico = data === "Activo" ? 1 : 0;
@@ -46,7 +46,7 @@ $(document).ready(function() {
                 text: "<i class='fa-solid fa-file-pdf'></i>",
                 className: "pdf btn btn-danger",
                 exportOptions: {
-                    columns: [0, 1, 2, 3]
+                    columns: [0, 1, 2, 3, 4]
                 }
             },
             {
@@ -57,7 +57,7 @@ $(document).ready(function() {
                 text: "<i class='fa-solid fa-print'></i>",
                 className: "imprimir btn btn-info",
                 exportOptions: {
-                    columns: [0, 1, 2, 3]
+                    columns: [0, 1, 2, 3, 4]
                 }
             }
         ],
@@ -314,9 +314,6 @@ async function actualizarEstadoCliente(idCliente, estadoActual) {
     datos.append("id", idCliente);
     datos.append("estado", estadoActual);
 
-    console.log("Actualizando estado del cliente con ID:", idCliente);
-    console.log("Nuevo estado:", nuevoEstado);
-
     try {
         const respuesta = await fetch("../controller/ClienteControlador.php?accion=actualizarEstado", {
             method: "POST",
@@ -325,7 +322,7 @@ async function actualizarEstadoCliente(idCliente, estadoActual) {
 
         const resultado = await respuesta.json();
 
-        if (resultado.mensaje) {
+        if(resultado.mensaje) {
             Swal.fire({
                 title: "¡Actualización exitosa!",
                 text: resultado.mensaje,
@@ -333,15 +330,17 @@ async function actualizarEstadoCliente(idCliente, estadoActual) {
             }).then(() => {
                 tablaUsuarios.ajax.reload(); // Recargar la tabla
             });
-        } else if (resultado.error) {
+        } 
+        else if(resultado.error) {
             Swal.fire({
                 title: "Error",
                 text: resultado.error,
                 icon: "error"
             });
         }
-    } catch (error) {
-        console.error("Error al actualizar el estado del cliente:", error);
+    } 
+    catch(error) {
+        console.error("Error al actualizar el estado del cliente: ", error);
         Swal.fire({
             title: "Error",
             text: "Hubo un problema al actualizar el estado. Intenta nuevamente.",

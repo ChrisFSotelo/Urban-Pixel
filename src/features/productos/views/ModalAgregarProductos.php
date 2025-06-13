@@ -1,7 +1,7 @@
 
   <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
-      <div class="modal-header bg-primary text-white">
+      <div class="modal-header">
         <h1 class="modal-title fs-5" id="tituloModalProducto">Agregar Producto</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>

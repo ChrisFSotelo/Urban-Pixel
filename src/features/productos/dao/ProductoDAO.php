@@ -1,43 +1,33 @@
 <?php
 namespace dao;
-
 require_once __DIR__ . '/../../../../config/Conexion.php';
 require_once __DIR__ . '/../model/Producto.php';
 
-use conexion;
-
+use Conexion;
 use model\Producto;
-
 
 class ProductoDAO{
     private $conexion;
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->conexion = new Conexion();
     }
 
-    public function listar(): array
-    {
+    public function listar() {
         $this->conexion->abrirConexion();
-        $sql = "SELECT id, nombre, cantidad, precio FROM producto ORDER BY id ASC";
+
+        $sql = "SELECT * FROM producto ORDER BY id ASC";
         $resultado = $this->conexion->ejecutarConsulta($sql);
-
-        if (!$resultado) {
-            $this->conexion->cerrarConexion();
-            throw new Exception("Error al obtener los productos.");
-        }
-
         $productos = [];
 
-        while ($fila = $resultado->fetch_assoc()) {
-            $productos[] = new Producto(
-                $fila['id'],
-                $fila['nombre'],
-                $fila['cantidad'],
-                $fila['precio']
-            );
+        if(!$resultado) {
+            $this->conexion->cerrarConexion();
+            echo "Hubo un error al listar los productos";
+            return null;
         }
+
+        while($fila = $resultado->fetch_assoc())
+            $productos[] = $fila;
 
         $this->conexion->cerrarConexion();
         return $productos;
@@ -82,8 +72,8 @@ class ProductoDAO{
         $idCategoria = $producto->getCategoria()->getId(); 
 
     
-        $sql = "INSERT INTO productos (nombre, cantidad, precio, idCategoria)
-                VALUES ('$nombre', $cantidad, $precio, $idCategoria)";
+        $sql = "INSERT INTO producto (nombre, cantidad, precio, idCategoria)
+            VALUES ('$nombre', $cantidad, $precio, $idCategoria)";
     
         $resultado = $this->conexion->ejecutarConsulta($sql);
     

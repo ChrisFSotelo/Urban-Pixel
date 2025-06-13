@@ -1,4 +1,6 @@
 <?php 
+    namespace model;
+    
     class Rol {
         private int $id; 
         private string $nombre;

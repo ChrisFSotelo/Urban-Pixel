@@ -1,8 +1,8 @@
 <link rel="stylesheet" href="../../../../public/assets/css/productos.css">
-<!--extraer estilos boton para productos.css-->
 <link rel="stylesheet" href="../../../../public/assets/css/usuarios.css">
+
 <head>
-    <title>Clientes</title>
+    <title>Productos</title>
 </head>
 
 <div class="productos-contenido">
@@ -12,8 +12,8 @@
             <button class="btn btn--small" onclick="abrirModalProducto()">Registrar Producto</button>
             <!-- <input type="search" class="form-control" placeholder="Buscar..."> -->
         </div>
-<!--                                cambiar idModal-->
-        <div class="modal fade" id="clientesModal" tabindex="-1" aria-hidden="true">
+
+        <div class="modal fade" id="productoModal" tabindex="-1" aria-hidden="true">
             <?php include("ModalAgregarProductos.php") ?>
         </div>
 
@@ -31,8 +31,6 @@
         </table>
     </div>
 
-    <script src="../../../../public/assets/js/producto.js"></script>
-<!--    mover logica del evento-->
     <script src="../../../../public/assets/js/productos.js"></script>
     </body>
 </div>
