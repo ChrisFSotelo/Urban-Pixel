@@ -30,6 +30,26 @@ class ClienteDAO{
         return $clientes;
     }
 
+    public function autenticarCliente($correo, $clave) {
+        $this->conexion->abrirConexion();
+        $sql = "SELECT * FROM cliente WHERE correo = '$correo' AND clave = '$clave'";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+
+        if(!$resultado) {
+            $this->conexion->cerrarConexion();
+            echo "Error al autenticar el cliente";
+            return null;
+        }
+
+        if($fila = $resultado->fetch_assoc()) {
+            $this->conexion->cerrarConexion();
+            return $fila;
+        }
+
+        $this->conexion->cerrarConexion();
+        return null;
+    }
+
     public function RegistrarCliente(Clientes $cliente) {
         $this->conexion->abrirConexion();
         $nombre = $cliente->getNombre();

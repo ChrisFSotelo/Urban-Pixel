@@ -1,4 +1,7 @@
 <?php
-require_once __DIR__ . '/controllers/AuthController.php';
-AuthController::logout();
+    session_start();
+    session_unset();
+    session_destroy();
+    header("Location: ../../../");
+    exit;
 ?>

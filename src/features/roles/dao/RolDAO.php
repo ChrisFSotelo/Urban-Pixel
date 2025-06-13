@@ -4,6 +4,7 @@
     require_once __DIR__ . '/../model/Rol.php';
 
     use Conexion;
+    use Rol;
 
     class RolDAO {
         private Conexion $conexion;
@@ -38,7 +39,7 @@
         }
 
         // Obtener un rol por id
-        public function obtenerPorId(int $id): Rol | null {
+        public function obtenerPorId(int $id) {
             $this->conexion->abrirConexion();
             $sql = "SELECT * FROM rol WHERE id = $id";
             $resultado = $this->conexion->ejecutarConsulta($sql);
@@ -49,14 +50,9 @@
                 return null;
             }
             
-            if($fila = $resultado->fetch_object()) { // Si se encuentra el rol
-                $rol = new Rol(
-                    (int) $fila->id, 
-                    $fila->nombre
-                );
-
+            if($fila = $resultado->fetch_assoc()) { // Si se encuentra el rol
                 $this->conexion->cerrarConexion();
-                return $rol;
+                return $fila;
             }
 
             // Si no se encuentra el rol

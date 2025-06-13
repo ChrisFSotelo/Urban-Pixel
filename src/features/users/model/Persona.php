@@ -1,10 +1,7 @@
 <?php
 
 namespace model;
-
-require_once __DIR__ . '/../../../../config/Conexion.php';
-require_once __DIR__ . '/../dao/UsuarioDAO.php';
-
+use Rol;
 
 class Persona
 {
@@ -13,8 +10,7 @@ class Persona
     protected $apellido;
     protected $correo;
     protected $clave;
-
-    protected $rol;
+    protected Rol $rol;
 
     public function __construct($idPersona, $nombre, $apellido, $correo, $clave, $rol){
         $this -> idPersona = $idPersona;
@@ -40,10 +36,12 @@ class Persona
     public function getClave(){
         return $this -> clave;
     }
-    public function setIdPersona($idPersona)
-    {
-        $this -> idPersona = $idPersona;
+    public function getRol(): Rol {
+        return $this->rol;
+    }
 
+    public function setIdPersona($idPersona) {
+        $this -> idPersona = $idPersona;
     }
     public function setNombre($nombre){
         $this -> nombre = $nombre;

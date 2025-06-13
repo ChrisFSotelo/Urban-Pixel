@@ -1,11 +1,17 @@
 <?php 
+  require_once "../../users/model/Usuario.php";
+  require_once "../../roles/model/Rol.php";
   session_start();
 
-  if(!isset($_SESSION["id"]) && !isset($_SESSION["correo"])) {
+  if(!isset($_SESSION["usuario"])) {
     session_start();
     session_unset();
     session_destroy();
     header("Location: ../../../../");
+    exit;
+  }
+  else if(($_SESSION["usuario"])->getRol()->getNombre() === "Cliente") {
+    // Redirigir a la vista de cliente
   }
   else {
 ?>

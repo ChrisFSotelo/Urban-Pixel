@@ -1,11 +1,30 @@
+<?php 
+  require_once "../../users/model/Usuario.php";
+  require_once "../../roles/model/Rol.php";
+  session_start();
+  
+  if(isset($_SESSION["usuario"])) {
+    if(($_SESSION["usuario"])->getRol()->getNombre() === "Administrador") {
+      header("Location: ../../users/views/control_panel.php");
+      exit;
+    }
+    if(($_SESSION["usuario"])->getRol()->getNombre() === "Cliente") {
+      // Vista cliente
+      exit;
+    }
+  }
+  else {
+?>
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.0/dist/sweetalert2.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../../../public/assets/css/login.css" />
+  <link rel="stylesheet" href="../../../../public/assets/css/progress_bar.css" />
   <title>Login y Registro</title>
-  <link rel="stylesheet" href="public/assets/css/login.css" />
-  <link rel="stylesheet" href="public/assets/css/progress_bar.css" />
-
 </head>
 
 <body>
@@ -21,7 +40,7 @@
 
         <h1>Crear Cuenta</h1>
           <?php
-          include("components/progressBar.php")
+          include("../../../../components/progressBar.php")
           ?>
 
         <input
@@ -125,5 +144,7 @@
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script type="module" src="public/assets/js/login.js" defer></script>
-<script src="public/assets/js/progressBar.js" defer></script>
+<script type="module" src="../../../../public/assets/js/login.js" defer></script>
+<script src="../../../../public/assets/js/progressBar.js" defer></script>
+
+<?php  } ?>

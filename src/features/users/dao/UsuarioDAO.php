@@ -3,7 +3,6 @@ namespace dao;
 
 require_once __DIR__ . "/../../../../config/Conexion.php";
 require_once __DIR__ . '/../model/Persona.php';
-
 require_once __DIR__ . '/../../roles/model/Rol.php';
 require_once __DIR__ . '/../../roles/dao/RolDAO.php';
 
@@ -15,27 +14,24 @@ class UsuarioDAO{
     private $conexion;
     private RolDAO $rolDAO;
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->conexion = new Conexion();
     }
+
     public function AutenticarUsuario($correo, $clave) {
         $this->conexion->abrirConexion();
-
-        $sql = "SELECT id FROM usuario WHERE correo = '$correo' AND clave = '$clave'";
-
+        $sql = "SELECT * FROM usuario WHERE correo = '$correo' AND clave = '$clave'";
         $resultado = $this->conexion->ejecutarConsulta($sql);
 
-        if ($resultado && $resultado->num_rows > 0) {
-            $fila = $resultado->fetch_assoc();
-
-            // Crear y retornar objeto Usuario
-            $usuario = new \Usuario(
-                $fila['id'],
-            );
-
+        if(!$resultado) {
             $this->conexion->cerrarConexion();
-            return $usuario;
+            echo "Error al autenticar el usuario";
+            return null;
+        }
+
+        if($fila = $resultado->fetch_assoc()) {
+            $this->conexion->cerrarConexion();
+            return $fila;
         }
 
         $this->conexion->cerrarConexion();

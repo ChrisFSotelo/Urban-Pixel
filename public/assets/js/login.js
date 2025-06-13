@@ -4,8 +4,6 @@ const sweetAlert = new SweetAlert();
 const signUpButton = document.getElementById("signUp");
 const signInButton = document.getElementById("signIn");
 const container = document.getElementById("container");
-const formularioInicioSesion = document.getElementById("formulario-inicio-sesion");
-const formularioRegistro = document.getElementById("formulario-registro");
 const botonRegistro = document.getElementById("btn-registrarse");
 const botonIniciarSesion = document.getElementById("btn-iniciar-sesion");
 
@@ -59,7 +57,7 @@ botonRegistro.addEventListener("click", async (event) => {
     datos.append("correo", correo.value);
     datos.append("clave", clave.value);
   try {
-    const respuesta = await fetch("src/features/users/controller/ClienteControlador.php?accion=registrar", {
+    const respuesta = await fetch("../../../../src/features/users/controller/ClienteControlador.php?accion=registrar", {
       method: "POST",
       body: datos
     });
@@ -73,7 +71,7 @@ botonRegistro.addEventListener("click", async (event) => {
         icon: 'success',
         confirmButtonText: 'OK'
       }).then(() => {
-        window.location.href = "../urban-Pixel"; // ⬅ cámbialo por la página deseada
+        window.location.href = "../../../../"; // ⬅ cámbialo por la página deseada
       });
     } else if (resultado.error) {
       Swal.fire({
@@ -116,24 +114,30 @@ botonIniciarSesion.addEventListener("click", async (event) => {
   const datos = new FormData();
   datos.append("correo", correo.value);
   datos.append("clave", clave.value);
+
   try {
-    const respuesta = await fetch("src/features/users/controller/UsuarioControlador.php?accion=autenticar", {
+    const respuesta = await fetch("../../../../src/features/Auth/controllers/AuthController.php?accion=autenticar", {
       method: "POST",
       body: datos
     });
 
     const resultado = await respuesta.json();
 
-    if (resultado.mensaje) {
+    if(resultado.mensaje) {
       Swal.fire({
         title: '¡Usuario Autenticado Correctamente!',
         text: resultado.mensaje,
         icon: 'success',
         confirmButtonText: 'OK'
       }).then(() => {
-        window.location.href = "src/features/users/views/control_panel.php";
+        if(resultado.usuario.rol === "Administrador")
+          window.location.href = "../../../../src/features/users/views/control_panel.php";
+        else if(resultado.usuario.rol === "Cliente") {
+          // Redireccionar a la vista de cliente
+        }
       });
-    } else if (resultado.error) {
+    } 
+    else if(resultado.error) {
       Swal.fire({
         title: 'Error',
         text: resultado.error,
@@ -142,7 +146,8 @@ botonIniciarSesion.addEventListener("click", async (event) => {
       });
     }
 
-  } catch (error) {
+  } 
+  catch(error) {
     console.error("Error al registrar:", error);
     sweetAlert.mostrarError("Error", "No se pudo completar el registro");
   }
