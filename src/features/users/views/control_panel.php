@@ -4,7 +4,6 @@
   session_start();
 
   if(!isset($_SESSION["usuario"])) {
-    session_start();
     session_unset();
     session_destroy();
     header("Location: ../../../../");
@@ -12,6 +11,7 @@
   }
   else if(($_SESSION["usuario"])->getRol()->getNombre() === "Cliente") {
     // Redirigir a la vista de cliente
+    exit;
   }
   else {
 ?>
