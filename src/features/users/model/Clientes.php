@@ -2,6 +2,8 @@
 
 namespace model;
 
+use Rol;
+
 class Clientes
 {
     private int $id;
@@ -9,10 +11,10 @@ class Clientes
     private string $apellido;
     private string $correo;
     private string $clave;
-    private int $idRol;
+    private Rol $idRol;
 
 
-    public function __construct(int $id, string $nombre, string $apellido, string $correo, string $clave, int $idRol)
+    public function __construct(int $id, string $nombre, string $apellido, string $correo, string $clave, Rol $idRol)
     {
         $this->id = $id;
         $this->nombre = $nombre;

@@ -1,6 +1,7 @@
 <?php
     require_once "../../users/model/Usuario.php";
     require_once "../../users/dao/UsuarioDAO.php";
+    require_once "../../users/model/Clientes.php";
     require_once "../../users/dao/ClienteDAO.php";
     require_once "../../roles/dao/RolDAO.php";
     header('Content-Type: application/json; charset=utf-8');
@@ -8,6 +9,7 @@
     use dao\ClienteDAO;
     use dao\RolDAO;
     use dao\UsuarioDAO;
+    use model\Clientes;
 
     class AuthController {
         public function autenticarUsuario() {
@@ -35,20 +37,14 @@
             $clave = md5($input["clave"]);
 
             $usuario = $usuarioDAO->AutenticarUsuario($correo, $clave);
+            $cliente = $clienteDAO->autenticarCliente($correo, $clave);
 
-            // Verificamos si el usuario es administrador o cliente
-            if($usuario === null) { // Si no es admin
-                $cliente = $clienteDAO->autenticarCliente($correo, $clave); // Verificamos si es cliente
-
-                if($cliente === null) { // Si no es ninguna opcion
-                    session_unset();
-                    session_destroy();
-                    echo json_encode(["error" => "Usuario o contraseña incorrectos"], JSON_UNESCAPED_UNICODE);
-                    exit;
-                }
-
-                // Si es cliente
-                $rol = $rolDAO->obtenerPorId($cliente["idRol"]);
+            // Si el usuario se encuentra, ya sea admin o cliente
+            if($usuario !== null || $cliente !== null) {
+                $idRol = $usuario !== null 
+                    ? $usuario["idRol"] 
+                    : $cliente["idRol"];
+                $rol = $rolDAO->obtenerPorId($idRol);
 
                 if($rol === null) {
                     echo json_encode(["error" => "Rol no encontrado"], JSON_UNESCAPED_UNICODE);
@@ -59,14 +55,27 @@
                     $rol["id"],
                     $rol["nombre"]
                 );
-                $usuarioAutenticado = new Usuario(
-                    $cliente["id"],
-                    $cliente["nombre"],
-                    $cliente["apellido"],
-                    $cliente["correo"],
-                    "",
-                    $rolObjeto
-                );
+
+                if($usuario !== null) {
+                    $usuarioAutenticado = new Usuario(
+                        $usuario["id"],
+                        $usuario["nombre"],
+                        $usuario["apellido"],
+                        $usuario["correo"],
+                        "",
+                        $rolObjeto
+                    );
+                }
+                else {
+                    $usuarioAutenticado = new Usuario(
+                        $cliente["id"],
+                        $cliente["nombre"],
+                        $cliente["apellido"],
+                        $cliente["correo"],
+                        "",
+                        $rolObjeto
+                    );
+                }
                 
                 $_SESSION["usuario"] = $usuarioAutenticado;
                 $respuesta = [
@@ -82,41 +91,12 @@
                 echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
                 exit;
             }
-            else { // Si es admin
-                $rol = $rolDAO->obtenerPorId($usuario["idRol"]);
 
-                if($rol === null) {
-                    echo json_encode(["error" => "Rol no encontrado"], JSON_UNESCAPED_UNICODE);
-                    exit;
-                }
-
-                $rolObjeto = new Rol(
-                    $rol["id"],
-                    $rol["nombre"]
-                );
-                $usuarioAutenticado = new Usuario(
-                    $usuario["id"],
-                    $usuario["nombre"],
-                    $usuario["apellido"],
-                    $usuario["correo"],
-                    "",
-                    $rolObjeto
-                );
-                
-                $_SESSION["usuario"] = $usuarioAutenticado;
-                $respuesta = [
-                    "mensaje" => "Usuario autenticado correctamente",
-                    "usuario" => [
-                        "id" => $usuarioAutenticado->getIdPersona(),
-                        "nombre" => $usuarioAutenticado->getNombre(),
-                        "apellido" => $usuarioAutenticado->getApellido(),
-                        "rol" => $usuarioAutenticado->getRol()->getNombre()
-                    ]
-                ];
-
-                echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
-                exit;
-            }
+            // Si no existe
+            session_unset();
+            session_destroy();
+            echo json_encode(["error" => "Usuario o contraseña incorrectos"], JSON_UNESCAPED_UNICODE);
+            exit;
         }
     }
 
