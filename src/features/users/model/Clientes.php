@@ -10,10 +10,10 @@ class Clientes
     private string $correo;
     private string $clave;
     private int $idRol;
-    private int $idEstado;
+    private int $estado;
 
 
-    public function __construct(int $id, string $nombre, string $apellido, string $correo, string $clave, int $idRol, int $idEstado)
+    public function __construct(int $id, string $nombre, string $apellido, string $correo, string $clave, int $idRol, int $estado)
     {
         $this->id = $id;
         $this->nombre = $nombre;
@@ -21,7 +21,7 @@ class Clientes
         $this->correo = $correo;
         $this->clave = $clave;
         $this->idRol = $idRol;
-        $this->idEstado = $idEstado;
+        $this->estado = $estado;
     }
 
     //Getters
@@ -49,7 +49,7 @@ class Clientes
         return $this->idRol;
     }
     public function getEstado(){
-        return $this->idEstado;
+        return $this->estado;
     }
 
     //Setters
@@ -78,8 +78,8 @@ class Clientes
     public function setIdRol($idRol){
         $this->idRol = $idRol;
     }
-    public function setEstado($idEstado){
-        $this->idEstado = $idEstado;
+    public function setEstado($estado){
+        $this->estado = $estado;
     }
 
 }

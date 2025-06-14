@@ -170,7 +170,7 @@ class ClienteDAO{
     public function AutenticarCliente($correo, $clave) {
         $this->conexion->abrirConexion();
 
-        $sql = "SELECT id, nombre, apellido, correo, clave,idRol, estado 
+        $sql = "SELECT id, nombre, apellido, correo, clave,idRol, idEstado 
         FROM cliente 
         WHERE correo = '$correo' AND clave = '$clave'";
 
@@ -188,7 +188,7 @@ class ClienteDAO{
                 $fila['correo'],
                 $fila['clave'],
                 $fila['idRol'],
-                $fila['estado']
+                $fila['idEstado']
             );
 
 
