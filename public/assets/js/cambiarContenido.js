@@ -5,7 +5,7 @@ $("#inicio").click(function() {
 });
 
 $("#productos").click(function() {
-    $("#contenido").load("../../productos/views/productos.php"); // El archivo productos.php aún no existe
+    $("#contenido").load("../../productos/views/productos.php");
 });
 
 $("#usuarios").click(function() {
@@ -19,3 +19,11 @@ $("#nosotros").click(function() {
 $("#contacto").click(function() {
     $("#contenido").load(); // Completar con la ruta del contenido de contacto
 });
+
+function irACategorias() {
+    $("#contenido").load("../../categorias/views/categorias.php");
+}
+
+function volverAProductos() {
+    $("#contenido").load("../../productos/views/productos.php");
+}

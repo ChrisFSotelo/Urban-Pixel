@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="../../../../public/assets/css/productos.css">
 <link rel="stylesheet" href="../../../../public/assets/css/usuarios.css">
+<link rel="stylesheet" href="../../../../public/assets/css/productos.css">
 
 <head>
     <title>Productos</title>
@@ -10,6 +10,7 @@
     <div class="container table-container shadow">
         <div class="top-bar">
             <button class="btn btn--small" onclick="abrirModalProducto()">Registrar Producto</button>
+            <button class="btn btn--small" onclick="irACategorias()">Ver Categorias</button>
             <!-- <input type="search" class="form-control" placeholder="Buscar..."> -->
         </div>
 
@@ -24,6 +25,7 @@
                 <th>Nombre</th>
                 <th>Cantidad</th>
                 <th>Precio</th>
+                <th>Categoria</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
             </tr>

@@ -13,12 +13,22 @@
             $this->conexion = new Conexion();
         }
 
-        public function insertar (Categoria $categoria) {
+        public function insertar(Categoria $categoria) {
             $this->conexion->abrirConexion();
+            
             $nombre = $categoria->getNombre();
 
             $sql = "INSERT INTO categoria (nombre) VALUES('$nombre')";
-            $this->conexion->ejecutarConsulta($sql);
+            $resultado = $this->conexion->ejecutarConsulta($sql);
+
+            if(!$resultado) {
+                $this->conexion->cerrarConexion();
+                echo "Hubo un error al registar la categoria";
+                return null;
+            }
+
+            $this->conexion->cerrarConexion();
+            return $categoria;
         }
 
         public function obtenerPorId($id){
@@ -72,8 +82,14 @@
             $sql = "UPDATE categoria SET nombre = '$nombre' WHERE id = $id";
             $resultado = $this->conexion->ejecutarConsulta($sql);
 
+            if(!$resultado) {
+                $this->conexion->cerrarConexion();
+                echo "Hubo un error al actualizar la categoria";
+                return null;
+            }
+
             $this->conexion->cerrarConexion();
-            return $resultado;
+            return $categoria;
         }
 
         public function eliminar($id) {
@@ -82,8 +98,13 @@
             $sql = "DELETE FROM categoria WHERE id = $id";
             $resultado = $this->conexion->ejecutarConsulta($sql);
 
+            if(!$resultado) {
+                $this->conexion->cerrarConexion();
+                return null;
+            }
+
             $this->conexion->cerrarConexion();
-            return $resultado;
+            return $id;
         }
     }
 ?>
