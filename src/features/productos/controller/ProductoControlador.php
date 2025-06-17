@@ -99,6 +99,29 @@ class ProductoControlador{
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         exit;
     }
+
+    public function listarPublico() {
+        $productoDAO = new ProductoDAO();
+        $productos = $productoDAO->listar();
+
+        if ($productos == null) {
+            echo json_encode(["error" => "No se encontraron productos"], JSON_UNESCAPED_UNICODE);
+        } else {
+            // Filtramos solo los campos necesarios
+            $respuesta = array_map(function($producto) {
+                return [
+                    "id" => $producto["id"],
+                    "nombre" => $producto["nombre"],
+                    "precio" => $producto["precio"],
+                ];
+            }, $productos);
+
+            echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        }
+
+        exit;
+    }
+
 }
 
 // ✅ Este bloque es el que activa la ejecución del método
@@ -110,5 +133,10 @@ if(isset($_GET["accion"]) && $_GET["accion"] === "listar") {
 if (isset($_GET["accion"]) && $_GET["accion"] === "registrar_producto") {
     $controlador = new ProductoControlador();
     $controlador->RegistrarProducto();
+}
+
+if(isset($_GET["accion"]) && $_GET["accion"] === "listarPublico") {
+    $controlador = new ProductoControlador();
+    $controlador->listarPublico();
 }
 
