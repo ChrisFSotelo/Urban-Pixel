@@ -28,7 +28,6 @@ class Conexion
                 return $this->resultado;
             }
             catch (Exception $e) {
-                echo("Error al ejecutar la consulta: \n". $sql ."\n". $e->getMessage(). "\n");
                 return false;
             }
         }

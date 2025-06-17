@@ -18,6 +18,7 @@ $(document).ready(function() {
             {"data" : "nombre"},
             {"data" : "cantidad"},
             {"data" : "precio"},
+            {"data" : "categoria"},
             {"data" : "editar"},
             {"data" : "eliminar"}
         ],
@@ -31,7 +32,7 @@ $(document).ready(function() {
                 text: "<i class='fa-solid fa-file-pdf'></i>",
                 className: "pdf btn btn-danger",
                 exportOptions: {
-                    columns: [0, 1, 2, 3]
+                    columns: [0, 1, 2, 3, 4]
                 }
             },
             {
@@ -42,7 +43,7 @@ $(document).ready(function() {
                 text: "<i class='fa-solid fa-print'></i>",
                 className: "imprimir btn btn-info",
                 exportOptions: {
-                    columns: [0, 1, 2, 3]
+                    columns: [0, 1, 2, 3, 4]
                 }
             }
         ],
@@ -99,6 +100,7 @@ async function cargarCategorias() {
 
 $("#submitForm").click(function(e){
     e.preventDefault();
+    const form = document.getElementById("formAgregarProducto");
     const nombre = document.getElementById("nombre");
     const cantidad = document.getElementById("cantidad");
     const precio = document.getElementById("precio");
@@ -167,6 +169,8 @@ $("#submitForm").click(function(e){
 
     if(id.value === "")
         guardarNuevoProducto(nombre, cantidad, precio, categoria);
+    else 
+        editarProducto(form, id, nombre, cantidad, precio, categoria);
 });
 
 async function guardarNuevoProducto(nombre, cantidad, precio, categoria) {
@@ -208,6 +212,92 @@ async function guardarNuevoProducto(nombre, cantidad, precio, categoria) {
         Swal.fire({
             title: "Error",
             text: "Ocurrió un error al guardar el producto.",
+            icon: "error"
+        });
+    }
+}
+
+async function obtenerProductoInfo(idProducto) {
+    await cargarCategorias();
+
+    try {
+        const respuesta = await fetch(`../../../../src/features/productos/controller/ProductoControlador.php?accion=obtenerPorId&id=${idProducto}`);
+        const producto = await respuesta.json();
+
+        if(producto && producto.error === undefined) {
+            $("#tituloModalProducto").text("Actualizar Producto");
+            $("#submitForm").text("Actualizar");
+            $(".modal").modal("show");
+
+            // Llenar el formulario con la información del producto
+            $("#id").val(producto.id);
+            $("#nombre").val(producto.nombre);
+            $("#cantidad").val(producto.cantidad);
+            $("#precio").val(producto.precio);
+            document.getElementById("idCategoria").value = producto.idCategoria;
+        } 
+        else {
+            Swal.fire({
+                title: "Error",
+                text: producto.error,
+                icon: "error"
+            });
+        }
+    } 
+    catch(error) {
+        console.error("Error al obtener la información del producto: ", error);
+
+        Swal.fire({
+            title: "Error",
+            text: "Hubo un problema al obtener la información del producto. Por favor, inténtelo de nuevo más tarde.",
+            icon: "error"
+        });
+    }
+}
+
+async function editarProducto(form, id, nombre, cantidad, precio, categoria) {
+    const datos = new FormData();
+    datos.append("id", id.value);
+    datos.append("nombre", nombre.value);
+    datos.append("cantidad", cantidad.value);
+    datos.append("precio", precio.value);
+    datos.append("categoria", categoria.value);
+
+    try {
+        const respuesta = await fetch("../../../../src/features/productos/controller/ProductoControlador.php?accion=actualizar", {
+            method: "POST",
+            body: datos
+        });
+
+        const resultado = await respuesta.json();
+
+        if(resultado.mensaje) {
+            $(".modal").modal("hide");
+            id.value = ""; // Limpiar el ID
+            form.reset(); // Limpiar el formulario
+
+            Swal.fire({
+                title: "Actualización exitosa!",
+                text: resultado.mensaje,
+                icon: "success"
+            }).then(() => {
+                tablaProductos.ajax.reload(); // Recargar la tabla
+            });
+        }  
+        else if(resultado.error) {
+            Swal.fire({
+                title: "Error",
+                text: resultado.error,
+                icon: "error"
+            });
+        }
+    } 
+    catch(error) {
+        console.error("Error al actualizar: ", error);
+
+        Swal.fire({
+            title: "Error",
+            text: "Hubo un problema al actualizar el producto. Por favor, inténtelo de nuevo más tarde.",
             icon: "error"
         });
     }
