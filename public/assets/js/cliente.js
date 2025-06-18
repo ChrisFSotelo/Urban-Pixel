@@ -27,7 +27,7 @@ $(document).ready(function() {
                     return `<button class="estado-btn ${estadoClass}" 
                     type="button" 
                     title="Actualizar estado" 
-                    onclick="actualizarEstadoCliente(${row.id}, ${estadoNumerico})">
+                    onclick="confirmarActualizacionEstadoCliente(${row.id}, ${estadoNumerico})">
                 ${data}
             </button>`;
                 }
@@ -293,23 +293,24 @@ function eliminarCliente(idCliente) {
     console.log("Eliminando cliente con ID:", idCliente);
 }
 
-async function actualizarEstadoCliente(idCliente, estadoActual) {
-    const nuevoEstado = estadoActual === 1 ? 0 : 1;
-    const textoAccion = nuevoEstado === 1 ? "activar" : "desactivar";
+function confirmarActualizacionEstadoCliente(idCliente, estadoActual) {
+    const textoAccion = estadoActual === 1 ? "desactivar" : "activar";
 
-    const confirmacion = await Swal.fire({
-        title: `¿Estás seguro?`,
+    Swal.fire({
+        title: "¿Estás seguro?",
         text: `Estás a punto de ${textoAccion} al  este cliente.`,
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: "Sí, continuar",
-        cancelButtonText: "Cancelar"
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Sí, continuar"
+    }).then((result) => {
+        if(result.isConfirmed)
+            actualizarEstadoCliente(idCliente, estadoActual);
     });
+}
 
-    if (!confirmacion.isConfirmed) {
-        return; // El usuario canceló
-    }
-
+async function actualizarEstadoCliente(idCliente, estadoActual) {
     const datos = new FormData();
     datos.append("id", idCliente);
     datos.append("estado", estadoActual);
@@ -348,4 +349,3 @@ async function actualizarEstadoCliente(idCliente, estadoActual) {
         });
     }
 }
-
