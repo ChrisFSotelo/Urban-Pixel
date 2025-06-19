@@ -165,6 +165,20 @@ class UsuarioDAO {
         }
     }
 
+    public function cambiarClave($id, $nuevaClave) {
+        $this->conexion->abrirConexion();
+
+        $sql = "UPDATE usuario SET clave = '$nuevaClave' WHERE id = $id";
+
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+        $this->conexion->cerrarConexion();
+
+        if($resultado)
+            return true;
+        else
+            return false;
+    }
+
     public function eliminar($id)
     {
         $this->conexion->abrirConexion();

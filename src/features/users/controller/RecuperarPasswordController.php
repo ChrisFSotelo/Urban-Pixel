@@ -1,42 +1,78 @@
 <?php
 
-require_once __DIR__ . '/../../../utils/EnviarCorreo.php';
-require_once __DIR__ . '/../dao/ClienteDAO.php';
-require_once __DIR__ . '/../dao/UsuarioDAO.php';
+require_once '../../../utils/EnviarCorreo.php';
+require_once '../dao/ClienteDAO.php';
+require_once '../dao/UsuarioDAO.php';
+header('Content-Type: application/json; charset=utf-8');
 
 use utils\EmailSender;
 use dao\ClienteDAO;
 use dao\UsuarioDAO;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $correo = $_POST['correo'] ?? '';
+class RecuperarPasswordController {
+    public function enviarCorreo() {
+        $clienteDAO = new ClienteDAO();
 
-    if (empty($correo)) {
-        http_response_code(400);
-        echo "Correo no proporcionado.";
+        if(empty($_POST["correo"])) {
+            echo json_encode(["error" => "Correo no proporcionado"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        $correo = $_POST["correo"];
+        $usuario = $clienteDAO->obtenerPorCorreo($correo);
+
+        if($usuario === null) {
+            echo json_encode(["error" => "Usuario no encontrado"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        $id = $usuario["id"];
+        $rol = $usuario["idRol"] === 1 ? "Administrador" : "Cliente";
+        $respuesta = EmailSender::enviarCorreoRecuperacion($correo, $id, $rol);
+
+        if($respuesta) {
+            echo json_encode(["mensaje" => "Correo enviado exitosamente"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        echo json_encode(["error" => "Hubo un error al enviar el correo"], JSON_UNESCAPED_UNICODE);
         exit;
     }
 
-    $clienteDAO = new ClienteDAO();
-    //$usuarioDAO = new UsuarioDAO();
+    public function recuperarClave() {
+        $clienteDAO = new ClienteDAO();
+        $usuarioDAO = new UsuarioDAO();
 
-    $cliente = $clienteDAO->obtenerPorCorreo($correo);
-    // $usuario = $usuarioDAO->obtenerPorCorreo($correo);
+        if(empty($_GET["tipo"]) || empty($_GET["id"]) || $_POST["nuevaClave"]) {
+            echo json_encode(["error" => "Datos no proporcionado"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
 
-    if ($cliente) {
-        $id = is_array($cliente) ? $cliente['id'] : $cliente->getId();
-        EmailSender::enviarCorreoRecuperacion($correo, $id, 'cliente');
-        echo "Correo de recuperación enviado a cliente.";
-    } 
-    // elseif ($usuario) {
-    //     $id = $usuario->getIdPersona();
-    //     EmailSender::enviarCorreoRecuperacion($correo, $id, 'usuario');
-    //     echo "Correo de recuperación enviado a usuario.";
-    // } 
-    else {
-        http_response_code(404);
-        echo "No se encontró una cuenta con ese correo.";
+        $id = $_GET["id"];
+        $rol = $_GET["tipo"];
+        $nuevaClave = md5($_POST["nuevaClave"]);
+
+        if($rol === "Administrador")
+            $respuesta = $usuarioDAO->cambiarClave($id, $nuevaClave);
+        else if($rol === "Cliente")
+            $respuesta = $clienteDAO->cambiarClave($id, $nuevaClave);
+
+        if($respuesta) {
+            echo json_encode(["mensaje" => "Contraseña restaurada con exito"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        echo json_encode(["error" => "No se pudo restaurar la contraseña"], JSON_UNESCAPED_UNICODE);
+        exit;
     }
+}
 
-    exit;
+if(isset($_GET["accion"]) && $_GET["accion"] === "enviarCorreo") {
+    $controlador = new RecuperarPasswordController();
+    $controlador->enviarCorreo();
+}
+
+if(isset($_GET["accion"]) && $_GET["accion"] === "recuperarClave") {
+    $controlador = new RecuperarPasswordController();
+    $controlador->recuperarClave();
 }

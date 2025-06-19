@@ -152,6 +152,20 @@ class ClienteDAO
         return $resultado;
     }
 
+    public function cambiarClave($id, $nuevaClave) {
+        $this->conexion->abrirConexion();
+
+        $sql = "UPDATE cliente SET clave = '$nuevaClave' WHERE id = $id";
+
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+        $this->conexion->cerrarConexion();
+
+        if($resultado)
+            return true;
+        else
+            return false;
+    }
+
     public function actualizarEstado($id, $nuevoEstado)
     {
         $this->conexion->abrirConexion();

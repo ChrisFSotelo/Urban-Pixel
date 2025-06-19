@@ -156,6 +156,10 @@ button {
   transition: all 0.4s ease;
 }
 
+.iniciar {
+  margin-bottom: 10px;
+}
+
 .btn:hover,
 .btn:active {
   color: #eee;
@@ -197,4 +201,14 @@ input {
 input:valid,
 textarea:valid {
   border: 2px solid #4ddb34;
+}
+
+.cambiar-clave {
+  font-size: .85rem;
+  color: #1c1c21;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

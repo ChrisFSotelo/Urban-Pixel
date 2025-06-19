@@ -10,11 +10,10 @@ require_once __DIR__ . '/../lib/PHPMailer/Exception.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-class EmailSender
-{
-    public static function enviarCorreoRecuperacion($correoDestino, $idUsuario, $tipo)
-    {
+class EmailSender {
+    public static function enviarCorreoRecuperacion($correoDestino, $idUsuario, $tipo) {
         $mail = new PHPMailer(true);
+        $link = "http://localhost:8000/src/features/users/view/CambiarPassword.php?id=$idUsuario&tipo=$tipo";
 
         try {
             // Configuración del servidor SMTP
@@ -26,21 +25,17 @@ class EmailSender
             $mail->SMTPSecure = 'tls';
             $mail->Port       = 587;
 
-            $mail->setFrom('pixel.tornado.pt@gmail.com', 'Urban-Pixel');
+            $mail->setFrom('pixel.tornado.pt@gmail.com', 'Urban Pixel');
             $mail->addAddress($correoDestino);
-
-            $link = "http://localhost:8000/src/features/users/view/CambiarPassword.php?tipo=$tipo&id=$idUsuario";
-
             $mail->isHTML(true);
-            $mail->Subject = 'Recuperación de contraseña';
-            $mail->Body    = "Recupera tu clave aquí: <a href='$link'>Cambiar contraseña</a>";
+            $mail->Subject = 'Lo invitamos a que recupere su clave';
+            $mail->Body    = "Recupera tu clave utilizando el siguiente link: <a href='$link'>Cambiar contraseña</a>";
 
             $mail->send();
-            error_log("Correo enviado exitosamente a $correoDestino");
 
             return true;
-        } catch (Exception $e) {
-            error_log("Error al enviar correo a $correoDestino: " . $mail->ErrorInfo);
+        } 
+        catch (Exception $e) {
             return false;
         }
     }

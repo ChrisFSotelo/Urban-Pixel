@@ -98,13 +98,13 @@
         />
 
         <button
-          class="btn btn--big"
+          class="iniciar btn btn--big"
           id="btn-iniciar-sesion"
           name="autenticar">
           Ingresar
         </button>
 <br>
-        <a href="?pdi=src/features/users/views/forgot_password.php">¿Olvidaste tu contraseña?</a>
+        <a class="cambiar-clave" href="./src/features/users/views/enviarCorreo.php">¿Olvidaste tu contraseña?</a>
       </form>
     </div>
 
