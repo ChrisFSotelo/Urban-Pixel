@@ -103,6 +103,8 @@
           name="autenticar">
           Ingresar
         </button>
+<br>
+        <a href="?pdi=src/features/users/views/forgot_password.php">¿Olvidaste tu contraseña?</a>
       </form>
     </div>
 

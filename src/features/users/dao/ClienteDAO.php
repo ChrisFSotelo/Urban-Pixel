@@ -8,28 +8,32 @@ require_once __DIR__ . "/../model/Clientes.php";
 use Conexion;
 use model\Clientes;
 
-class ClienteDAO{
+class ClienteDAO
+{
     private $conexion;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->conexion = new Conexion();
     }
 
-    public function listar() {
+    public function listar()
+    {
         $this->conexion->abrirConexion();
 
         $sql = "SELECT * FROM cliente";
         $resultado = $this->conexion->ejecutarConsulta($sql);
         $clientes = [];
 
-        while($fila = $resultado->fetch_assoc())
+        while ($fila = $resultado->fetch_assoc())
             $clientes[] = $fila;
 
         $this->conexion->cerrarConexion();
         return $clientes;
     }
 
-    public function RegistrarCliente(Clientes $cliente) {
+    public function RegistrarCliente(Clientes $cliente)
+    {
         $this->conexion->abrirConexion();
         $nombre = $cliente->getNombre();
         $apellido = $cliente->getApellido();
@@ -51,17 +55,18 @@ class ClienteDAO{
         return null;
     }
 
-    public function obtenerPorId($id) {
+    public function obtenerPorId($id)
+    {
         $this->conexion->abrirConexion();
         $sql = "SELECT * FROM cliente WHERE id = $id";
         $resultado = $this->conexion->ejecutarConsulta($sql);
 
-        if(!$resultado) { // Si hubo un error
+        if (!$resultado) { // Si hubo un error
             $this->conexion->cerrarConexion();
             return null;
         }
 
-        if($fila = $resultado->fetch_assoc()) {
+        if ($fila = $resultado->fetch_assoc()) {
             $this->conexion->cerrarConexion();
             return $fila;
         }
@@ -70,9 +75,10 @@ class ClienteDAO{
         return null;
     }
 
-    public function obtenerPorCorreo($correo) {
+    public function obtenerPorCorreo($correo)
+    {
         $this->conexion->abrirConexion();
-        $sql = 
+        $sql =
             "SELECT * FROM (
                 SELECT * FROM usuario 
                 UNION ALL 
@@ -81,13 +87,13 @@ class ClienteDAO{
             WHERE correo = '$correo'";
         $resultado = $this->conexion->ejecutarConsulta($sql);
 
-        if(!$resultado) { // Si hubo un error
+        if (!$resultado) { // Si hubo un error
             $this->conexion->cerrarConexion();
-            echo("Hubo un error al obtener el correo del cliente \n");
+            echo ("Hubo un error al obtener el correo del cliente \n");
             return null;
         }
 
-        if($fila = $resultado->fetch_assoc()) {
+        if ($fila = $resultado->fetch_assoc()) {
             $this->conexion->cerrarConexion();
             return $fila;
         }
@@ -96,9 +102,10 @@ class ClienteDAO{
         return null;
     }
 
-    public function obtenerPorCorreoExcluyendoActual($id, $correo) {
+    public function obtenerPorCorreoExcluyendoActual($id, $correo)
+    {
         $this->conexion->abrirConexion();
-        $sql = 
+        $sql =
             "SELECT * FROM (
                 SELECT * FROM usuario 
                 UNION ALL 
@@ -107,13 +114,13 @@ class ClienteDAO{
             WHERE correo = '$correo'";
         $resultado = $this->conexion->ejecutarConsulta($sql);
 
-        if(!$resultado) { // Si hubo un error
+        if (!$resultado) { // Si hubo un error
             $this->conexion->cerrarConexion();
-            echo("Hubo un fallo al obtener el cliente Actual \n");
+            echo ("Hubo un fallo al obtener el cliente Actual \n");
             return null;
         }
 
-        if($fila = $resultado->fetch_assoc()) {
+        if ($fila = $resultado->fetch_assoc()) {
             $this->conexion->cerrarConexion();
             return $fila;
         }
@@ -122,7 +129,8 @@ class ClienteDAO{
         return null;
     }
 
-    public function actualizar(Clientes $cliente) {
+    public function actualizar(Clientes $cliente)
+    {
         $this->conexion->abrirConexion();
 
         $id = $cliente->getId();
@@ -134,9 +142,9 @@ class ClienteDAO{
         $sql = "UPDATE cliente SET nombre = '$nombre', apellido = '$apellido', correo = '$correo', clave = '$clave' WHERE id = $id";
         $resultado = $this->conexion->ejecutarConsulta($sql);
 
-        if(!$resultado) { // Si hubo un error
+        if (!$resultado) { // Si hubo un error
             $this->conexion->cerrarConexion();
-            echo("Hubo un fallo al actualizar el cliente \n");
+            echo ("Hubo un fallo al actualizar el cliente \n");
             return null;
         }
 
@@ -144,7 +152,8 @@ class ClienteDAO{
         return $resultado;
     }
 
-    public function actualizarEstado($id, $nuevoEstado) {
+    public function actualizarEstado($id, $nuevoEstado)
+    {
         $this->conexion->abrirConexion();
 
         $sql = "UPDATE cliente SET idEstado = $nuevoEstado WHERE id = $id";
@@ -157,7 +166,8 @@ class ClienteDAO{
 
 
 
-    public function eliminar($id) {
+    public function eliminar($id)
+    {
         $this->conexion->abrirConexion();
 
         $sql = "DELETE FROM clientes WHERE id = $id";
@@ -167,7 +177,8 @@ class ClienteDAO{
         return $resultado;
     }
 
-    public function AutenticarCliente($correo, $clave) {
+    public function AutenticarCliente($correo, $clave)
+    {
         $this->conexion->abrirConexion();
 
         $sql = "SELECT id, nombre, apellido, correo, clave,idRol, idEstado 
@@ -194,9 +205,19 @@ class ClienteDAO{
 
             $this->conexion->cerrarConexion();
             return $cliente;
-       }
+        }
 
         $this->conexion->cerrarConexion();
         return null;
+    }
+
+    // todavía sin uso
+    public function actualizarClavePorCorreo($correo, $nuevaClaveHash)
+    {
+        $this->conexion->abrirConexion();
+        $sql = "UPDATE cliente SET clave = '$nuevaClaveHash' WHERE correo = '$correo'";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+        $this->conexion->cerrarConexion();
+        return $resultado;
     }
 }
