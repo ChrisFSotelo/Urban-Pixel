@@ -43,8 +43,8 @@ class RecuperarPasswordController {
         $clienteDAO = new ClienteDAO();
         $usuarioDAO = new UsuarioDAO();
 
-        if(empty($_GET["tipo"]) || empty($_GET["id"]) || $_POST["nuevaClave"]) {
-            echo json_encode(["error" => "Datos no proporcionado"], JSON_UNESCAPED_UNICODE);
+        if(empty($_GET["tipo"]) || empty($_GET["id"]) || empty($_POST["nuevaClave"])) {
+            echo json_encode(["error" => "Datos no proporcionados"], JSON_UNESCAPED_UNICODE);
             exit;
         }
 
