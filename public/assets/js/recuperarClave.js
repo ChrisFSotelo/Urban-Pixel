@@ -56,3 +56,31 @@ async function enviarCorreo(correo) {
         sweetAlert.mostrarError("Error", "Hubo un problema al enviar el correo. Por favor, inténtelo de nuevo más tarde.");
     }
 }
+
+$("#recuperarClave").click(function(e) {
+    e.preventDefault();
+    const sweetAlert = new SweetAlert();
+    const clave = document.getElementById("clave");
+    const claveRepetida = document.getElementById("claveRepetida");
+
+    if(clave.value === ""){
+        sweetAlert.mostrarError("Error", "Por favor, ingrese una clave.");
+        return false;
+    }
+
+    if(claveRepetida.value === ""){
+        sweetAlert.mostrarError("Error", "Por favor, ingrese la contraseña nuevamente.");
+        return false;
+    }
+
+    if(clave.value !== claveRepetida.value){
+        sweetAlert.mostrarError("Error", "Las contraseñas no coinciden.");
+        return false;
+    }
+
+    recuperarClave(clave.value);
+});
+
+async function recuperarClave(clave) {
+
+}
