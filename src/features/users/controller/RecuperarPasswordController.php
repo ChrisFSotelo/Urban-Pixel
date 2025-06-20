@@ -27,7 +27,7 @@ class RecuperarPasswordController {
         }
 
         $id = $usuario["id"];
-        $rol = $usuario["idRol"] === 1 ? "Administrador" : "Cliente";
+        $rol = (int)$usuario["idRol"] === 1 ? "Administrador" : "Cliente";
         $respuesta = EmailSender::enviarCorreoRecuperacion($correo, $id, $rol);
 
         if($respuesta) {
