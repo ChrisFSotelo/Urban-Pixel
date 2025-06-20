@@ -15,6 +15,8 @@
         <form autocomplete="off">
             <h1>Cambiar contraseña</h1>
 
+            <input type="hidden" name="id" id="id" value="<?php echo $_GET["id"] ?? ''; ?>">
+            <input type="hidden" name="tipo" id="tipo" value="<?php echo $_GET["tipo"] ?? ''; ?>">
             <input type="password" name="clave" id="clave" placeholder="Contraseña">
             <input type="password" name="claveRepetida" id="claveRepetida" placeholder="Confirmar contraseña">
 

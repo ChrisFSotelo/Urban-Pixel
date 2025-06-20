@@ -64,19 +64,20 @@ class UsuarioDAO {
         }
     }
 
-    public function obtenerPorId($id)
-    {
+    public function obtenerPorId($id) {
         $this->conexion->abrirConexion();
+
         $sql = "SELECT * FROM usuario WHERE id = $id";
         $resultado = $this->conexion->ejecutarConsulta($sql);
         $usuario = null;
 
-        if ($fila = $resultado->fetch_assoc()) {
-            $usuario = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave'], 1);
-            // con este objeto de persona ya se esta llenando el constructor de la clase persona
-        } else {
-            echo "No se encontró el usuario por el ID\n";
+        if(!$resultado) {
+            $this->conexion->cerrarConexion();
+            return null;
         }
+
+        if($fila = $resultado->fetch_assoc())
+            $usuario = $fila;
 
         $this->conexion->cerrarConexion();
         return $usuario;
@@ -175,8 +176,8 @@ class UsuarioDAO {
 
         if($resultado)
             return true;
-        else
-            return false;
+        
+        return false;
     }
 
     public function eliminar($id)

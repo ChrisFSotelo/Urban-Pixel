@@ -13,7 +13,7 @@ use PHPMailer\PHPMailer\Exception;
 class EmailSender {
     public static function enviarCorreoRecuperacion($correoDestino, $idUsuario, $tipo) {
         $mail = new PHPMailer(true);
-        $link = "http://localhost:8000/src/features/users/view/cambiarClave.php?id=$idUsuario&tipo=$tipo";
+        $link = "http://localhost:8000/src/features/users/views/cambiarClave.php?id=$idUsuario&tipo=$tipo";
 
         try {
             // Configuración del servidor SMTP

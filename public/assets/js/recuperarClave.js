@@ -45,8 +45,14 @@ async function enviarCorreo(correo) {
         Swal.close(); // Cierra el loading
 
         if(resultado.mensaje) {
-            sweetAlert.mostrarExito("Correo enviado!", resultado.mensaje);
-            document.getElementById("correo").value = "";
+            Swal.fire({
+                title: "Correo enviado!",
+                text: resultado.mensaje,
+                icon: "success"
+            }).then(() => {
+                document.getElementById("correo").value = "";
+                window.location.href = "../../../../?pdi=src/features/login/views/login.php";
+            });
         }
         else if(resultado.error)
             sweetAlert.mostrarError("Error", resultado.error);
@@ -82,5 +88,35 @@ $("#recuperarClave").click(function(e) {
 });
 
 async function recuperarClave(clave) {
+    const sweetAlert = new SweetAlert();
+    const form = new FormData();
+    const id = document.getElementById("id").value;
+    const tipo = document.getElementById("tipo").value;
+    form.append('nuevaClave', clave);
 
+    try {
+        const respuesta = await fetch(`../controller/RecuperarPasswordController.php?accion=recuperarClave&id=${id}&tipo=${tipo}`, {
+            method: "POST",
+            body: form
+        });
+        const resultado = await respuesta.json();
+
+        if(resultado.mensaje) {
+            Swal.fire({
+                title: "Cambio exitoso",
+                text: resultado.mensaje,
+                icon: "success"
+            }).then(() => {
+                document.getElementById("clave").value = "";
+                document.getElementById("claveRepetida").value = "";
+                window.location.href = "../../../../?pdi=src/features/login/views/login.php";
+            });
+        }
+        else if(resultado.error)
+            sweetAlert.mostrarError("Error", resultado.error);
+    } 
+    catch (error) {
+        console.error("Error al cambiar la contraseña: ", error);
+        sweetAlert.mostrarError("Error", "Hubo un problema al cambiar la contraseña. Por favor, inténtelo de nuevo más tarde.");
+    }
 }

@@ -52,13 +52,21 @@ class RecuperarPasswordController {
         $rol = $_GET["tipo"];
         $nuevaClave = md5($_POST["nuevaClave"]);
 
-        if($rol === "Administrador")
-            $respuesta = $usuarioDAO->cambiarClave($id, $nuevaClave);
-        else if($rol === "Cliente")
-            $respuesta = $clienteDAO->cambiarClave($id, $nuevaClave);
+        if($rol === "Administrador") {
+            $respuesta = $usuarioDAO->obtenerPorId($id) !== null
+                ? $usuarioDAO->cambiarClave($id, $nuevaClave)
+                : false;
+        }
+        else if($rol === "Cliente") {
+            $respuesta = $clienteDAO->obtenerPorId($id) !== null
+                ? $clienteDAO->cambiarClave($id, $nuevaClave)
+                : false;
+        }
+        else
+            $respuesta = false;
 
         if($respuesta) {
-            echo json_encode(["mensaje" => "Contraseña restaurada con exito"], JSON_UNESCAPED_UNICODE);
+            echo json_encode(["mensaje" => "Contraseña restaurada con éxito"], JSON_UNESCAPED_UNICODE);
             exit;
         }
 

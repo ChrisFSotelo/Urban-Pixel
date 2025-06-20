@@ -162,8 +162,8 @@ class ClienteDAO
 
         if($resultado)
             return true;
-        else
-            return false;
+        
+        return false;
     }
 
     public function actualizarEstado($id, $nuevoEstado)
