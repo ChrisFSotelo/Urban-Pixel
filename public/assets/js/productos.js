@@ -1,5 +1,6 @@
 $(document).ready(function() {
     tablaProductos = $("#tablaProductos").DataTable({ // Inicializar DataTable para la tabla de productos
+
         responsive: true,
         language: {
             url: "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"
@@ -11,6 +12,9 @@ $(document).ready(function() {
             dataSrc: "",
             data: {
                 accion: "listar"
+            },
+            error: function(xhr, error, thrown) {
+                console.error("XHR response:", xhr.responseText);
             }
         },
         "columns": [

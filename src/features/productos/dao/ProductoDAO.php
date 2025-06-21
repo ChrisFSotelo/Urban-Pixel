@@ -108,24 +108,6 @@ class ProductoDAO{
         return null;
     }
 
-    public function obtenerPorId($id) {
-        $this->conexion->abrirConexion();
-        $sql = "SELECT * FROM producto WHERE id = $id";
-        $resultado = $this->conexion->ejecutarConsulta($sql);
-    
-        if(!$resultado) { // Si hubo un error
-            $this->conexion->cerrarConexion();
-            return null;
-        }
-    
-        if($fila = $resultado->fetch_assoc()) {
-            $this->conexion->cerrarConexion();
-            return $fila;
-        }
-    
-        $this->conexion->cerrarConexion();
-        return null;
-    }
     
     public function actualizarEstado(int $id, int $nuevoEstado): bool {
         $this->conexion->abrirConexion();
