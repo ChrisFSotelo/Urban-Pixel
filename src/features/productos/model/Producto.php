@@ -6,14 +6,15 @@ class Producto{
     private int $cantidad;
     private int $precio;
     private Categoria $categoria;
-
-    public function __construct(int $id, string $nombre, int $cantidad, int $precio, Categoria $categoria)
+    private int $estado;
+    public function __construct(int $id, string $nombre, int $cantidad, int $precio, Categoria $categoria, $estado)
     {
         $this->id = $id;
         $this->nombre = $nombre;
         $this->cantidad = $cantidad;
         $this->precio = $precio;
         $this->categoria= $categoria;
+        $this->estado = $estado;
     }
 
     public function getId(): int
@@ -41,6 +42,9 @@ class Producto{
         return $this->categoria;
     }
 
-
+    public function getEstado():int 
+    {
+        return $this->estado;
+    }
 
 }

@@ -24,6 +24,7 @@
                 <th>Nombre</th>
                 <th>Cantidad</th>
                 <th>Precio</th>
+                <th>Estado</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
             </tr>
