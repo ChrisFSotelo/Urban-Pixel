@@ -52,7 +52,7 @@ CREATE TABLE producto (
 	cantidad INT NOT NULL,
 	precio INT NOT NULL,
 	idCategoria INT NOT NULL,
-
+	estado INT NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (idCategoria) REFERENCES categoria(id)
 );

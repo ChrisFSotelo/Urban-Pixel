@@ -19,6 +19,21 @@ $(document).ready(function() {
             {"data" : "cantidad"},
             {"data" : "precio"},
             {"data" : "categoria"},
+            {
+            "data": "estado",
+            "render": function(data, type, row){
+                let estadoclass= data ==="Activo" ? "estado-activo" : "estado-inactivo"
+                let estadoNumerico = data === "Activo" ? 1 : 0;
+
+                return `<button class="estado-btn ${estadoclass}"
+                type="button"
+                title="Actualizar estado"
+                onclick="actualizarEstadoProducto(${row.id}, ${estadoNumerico})">
+                ${data}
+                </button>
+                `
+            }
+            },
             {"data" : "editar"},
             {"data" : "eliminar"}
         ],
@@ -43,7 +58,7 @@ $(document).ready(function() {
                 text: "<i class='fa-solid fa-print'></i>",
                 className: "imprimir btn btn-info",
                 exportOptions: {
-                    columns: [0, 1, 2, 3, 4]
+                    columns: [0, 1, 2, 3]
                 }
             }
         ],
@@ -169,7 +184,7 @@ $("#submitForm").click(function(e){
 
     if(id.value === "")
         guardarNuevoProducto(nombre, cantidad, precio, categoria);
-    else 
+    else
         editarProducto(form, id, nombre, cantidad, precio, categoria);
 });
 
@@ -235,7 +250,7 @@ async function obtenerProductoInfo(idProducto) {
             $("#cantidad").val(producto.cantidad);
             $("#precio").val(producto.precio);
             document.getElementById("idCategoria").value = producto.idCategoria;
-        } 
+        }
         else {
             Swal.fire({
                 title: "Error",
@@ -243,7 +258,7 @@ async function obtenerProductoInfo(idProducto) {
                 icon: "error"
             });
         }
-    } 
+    }
     catch(error) {
         console.error("Error al obtener la información del producto: ", error);
 
@@ -283,7 +298,7 @@ async function editarProducto(form, id, nombre, cantidad, precio, categoria) {
             }).then(() => {
                 tablaProductos.ajax.reload(); // Recargar la tabla
             });
-        }  
+        }
         else if(resultado.error) {
             Swal.fire({
                 title: "Error",
@@ -291,7 +306,7 @@ async function editarProducto(form, id, nombre, cantidad, precio, categoria) {
                 icon: "error"
             });
         }
-    } 
+    }
     catch(error) {
         console.error("Error al actualizar: ", error);
 
@@ -302,3 +317,56 @@ async function editarProducto(form, id, nombre, cantidad, precio, categoria) {
         });
     }
 }
+    async function actualizarEstadoProducto (idProducto, estadoActual){
+    const nuevoEstado = estadoActual === 1 ? 0 : 1;
+    const textoAccion = nuevoEstado === 1 ? "activar" : "desactivar";
+
+    const confirmacion = await Swal.fire({
+        title: `¿Estás seguro?`,
+        text: `Estás a punto de ${textoAccion} a este producto.`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, continuar",
+        cancelButtonText: "Cancelar"
+    });
+
+    if (!confirmacion.isConfirmed) {
+        return; // El usuario canceló
+    }
+
+    const datos = new FormData();
+    datos.append("id", idProducto);
+    datos.append("estado", estadoActual);
+
+    try {
+        const respuesta = await fetch("../../../../src/features/productos/controller/ProductoControlador.php?accion=actualizarEstado",{
+            method: "POST",
+            body: datos
+        });
+
+        const resultado = await respuesta.json();
+        if(resultado.mensaje) {
+            Swal.fire({
+                title: "¡Actualización exitosa!",
+                text: resultado.mensaje,
+                icon: "success"
+            }).then(() => {
+                tablaProductos.ajax.reload(); // Recargar la tabla
+            });
+        }
+        else if(resultado.error) {
+            Swal.fire({
+                title: "Error",
+                text: resultado.error,
+                icon: "error"
+            });
+        }
+    } catch (error) {
+        console.error("Error al actualizar el estado del producto hhh: ", error);
+        Swal.fire({
+            title: "Error",
+            text: "Hubo un problema al actualizar el estado. Intenta nuevamente.",
+            icon: "error"
+        });
+    }
+    }

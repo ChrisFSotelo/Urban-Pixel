@@ -23,7 +23,9 @@ class ProductoControlador{
             if(!empty($respuesta)) {
                 for($i = 0; $i < count($respuesta); $i++) {
                     $respuesta[$i]["no"] = $i + 1;
-                    $respuesta[$i]["editar"] = 
+                    $estado = $respuesta [$i] ["estado"] == 1 ? "Activo" : "Inactivo";
+                    $respuesta[$i] ["estado"] = $estado;
+                    $respuesta[$i]["editar"] =
                         '<button 
                             class="btn btn-primary" 
                             type="button" 
@@ -37,7 +39,7 @@ class ProductoControlador{
                             class="btn btn-danger" 
                             type="button" 
                             title="Eliminar"
-                            onclick="confirmarEliminacionProducto('.$respuesta[$i]["id"].')"
+                            onclick="confirmarEliminacion('.$respuesta[$i]["id"].')"
                         >
                             <i class="fa-solid fa-times"></i>
                         </button>';
@@ -49,33 +51,11 @@ class ProductoControlador{
         exit;
     }
 
-    public function obtenerPorId() {
-        $productoDAO = new ProductoDAO();
-
-        // Validar que se reciba el ID por GET
-        if(empty($_GET["id"])) {
-            $respuesta = ["error" => "ID no proporcionado"];
-            echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
-            exit;
-        }
-
-        $id = $_GET["id"];
-        $producto = $productoDAO->obtenerPorId($id);
-
-        if ($producto === null)
-            $respuesta = ["error" => "No se econtro el producto"];
-        else
-            $respuesta = $producto;
-
-        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-
     public function RegistrarProducto() {
         $productoDAO = new ProductoDAO();
         $categoriaDAO = new CategoriaDAO();
         $categoria = $categoriaDAO->obtenerPorId($_POST["categoria"]);
-
+        $estado = 1;
         if (
             empty($_POST["nombre"]) ||
             empty($_POST["cantidad"]) ||
@@ -100,7 +80,8 @@ class ProductoControlador{
             $_POST["nombre"],
             $_POST["cantidad"],
             $_POST["precio"],
-            $categoriaObjeto
+            $categoriaObjeto,
+            $estado
         );
     
         $resultado = $productoDAO->RegistrarProducto($producto);
@@ -173,6 +154,39 @@ class ProductoControlador{
         exit;
     }
 
+    public function ActualizarEstado(){
+
+        if(empty($_POST["id"])|| !isset($_POST["estado"])){
+            echo json_encode(["error" => "Faltan parámetros obligatorios"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+        $id =$_POST["id"];
+        $estadoActual = $_POST["estado"];
+        $nuevoEstado = $estadoActual == 1 ? 0 : 1;
+
+        $productoDAO= new ProductoDAO();
+        $productoActual = $productoDAO->obtenerPorId($id);
+        if($productoActual===null){
+            echo json_encode(["error" => "Producto no encontrado"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+        $resultado = $productoDAO->ActualizarEstado($id, $nuevoEstado);
+        if($resultado){
+            $respuesta = [
+                "mensaje" => "estado actualizado correctamente",
+                "producto" =>[
+                    "id" => $id,
+                    "estado" => $nuevoEstado
+                ]
+                ];
+        }else {
+            $respuesta = ["error" => "No se pudo actualizar el producto"];
+        }
+
+        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
     public function listarPublico() {
         $productoDAO = new ProductoDAO();
         $productos = $productoDAO->listar();
@@ -222,3 +236,9 @@ if (isset($_GET["accion"]) && $_GET["accion"] === "actualizar") {
     $controlador = new ProductoControlador();
     $controlador->actualizarProducto();
 }
+if (isset($_GET["accion"]) && $_GET["accion"] === "actualizarEstado") {
+    $controlador = new ProductoControlador();
+    $controlador->ActualizarEstado();
+}
+
+

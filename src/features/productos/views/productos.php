@@ -26,6 +26,7 @@
                 <th>Cantidad</th>
                 <th>Precio</th>
                 <th>Categoria</th>
+                <th>Estado</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
             </tr>

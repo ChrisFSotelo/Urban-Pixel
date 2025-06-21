@@ -92,10 +92,10 @@ class ProductoDAO{
         $cantidad = $producto->getCantidad();
         $precio = $producto->getPrecio();
         $idCategoria = $producto->getCategoria()->getId(); 
-
+        $estado= $producto->getEstado();
     
-        $sql = "INSERT INTO producto (nombre, cantidad, precio, idCategoria)
-            VALUES ('$nombre', $cantidad, $precio, $idCategoria)";
+        $sql = "INSERT INTO producto (nombre, cantidad, precio, idCategoria, estado)
+            VALUES ('$nombre', $cantidad, $precio, $idCategoria, $estado)";
     
         $resultado = $this->conexion->ejecutarConsulta($sql);
     
@@ -107,6 +107,38 @@ class ProductoDAO{
         echo "Hubo un error al registrar el producto";
         return null;
     }
+
+    public function obtenerPorId($id) {
+        $this->conexion->abrirConexion();
+        $sql = "SELECT * FROM producto WHERE id = $id";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+    
+        if(!$resultado) { // Si hubo un error
+            $this->conexion->cerrarConexion();
+            return null;
+        }
+    
+        if($fila = $resultado->fetch_assoc()) {
+            $this->conexion->cerrarConexion();
+            return $fila;
+        }
+    
+        $this->conexion->cerrarConexion();
+        return null;
+    }
+    
+    public function actualizarEstado(int $id, int $nuevoEstado): bool {
+        $this->conexion->abrirConexion();
+    
+        $sql = "UPDATE producto SET estado = $nuevoEstado WHERE id = $id";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+    
+        $this->conexion->cerrarConexion();
+    
+        return $resultado ? true : false;
+    }
+    
+    
     
     public function actualizarProducto(Producto $producto) {
         $this->conexion->abrirConexion();
