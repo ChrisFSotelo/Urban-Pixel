@@ -51,6 +51,28 @@ class ProductoControlador{
         exit;
     }
 
+    public function obtenerPorId() {
+        $productoDAO = new ProductoDAO();
+
+        // Validar que se reciba el ID por GET
+        if(empty($_GET["id"])) {
+            $respuesta = ["error" => "ID no proporcionado"];
+            echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        $id = $_GET["id"];
+        $producto = $productoDAO->obtenerPorId($id);
+
+        if ($producto === null)
+            $respuesta = ["error" => "No se econtro el producto"];
+        else
+            $respuesta = $producto;
+
+        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
     public function RegistrarProducto() {
         $productoDAO = new ProductoDAO();
         $categoriaDAO = new CategoriaDAO();
@@ -132,7 +154,8 @@ class ProductoControlador{
             $_POST["nombre"],
             $_POST["cantidad"],
             $_POST["precio"],
-            $categoriaObjeto
+            $categoriaObjeto,
+            0
         );
 
         $resultado = $productoDAO->actualizarProducto($producto);
@@ -155,33 +178,36 @@ class ProductoControlador{
     }
 
     public function ActualizarEstado(){
-
         if(empty($_POST["id"])|| !isset($_POST["estado"])){
             echo json_encode(["error" => "Faltan parámetros obligatorios"], JSON_UNESCAPED_UNICODE);
             exit;
         }
+
         $id =$_POST["id"];
         $estadoActual = $_POST["estado"];
         $nuevoEstado = $estadoActual == 1 ? 0 : 1;
 
         $productoDAO= new ProductoDAO();
         $productoActual = $productoDAO->obtenerPorId($id);
+
         if($productoActual===null){
             echo json_encode(["error" => "Producto no encontrado"], JSON_UNESCAPED_UNICODE);
             exit;
         }
+
         $resultado = $productoDAO->ActualizarEstado($id, $nuevoEstado);
+
         if($resultado){
             $respuesta = [
-                "mensaje" => "estado actualizado correctamente",
+                "mensaje" => "Estado actualizado correctamente",
                 "producto" =>[
                     "id" => $id,
                     "estado" => $nuevoEstado
                 ]
-                ];
-        }else {
-            $respuesta = ["error" => "No se pudo actualizar el producto"];
+            ];
         }
+        else
+            $respuesta = ["error" => "No se pudo actualizar el producto"];
 
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         exit;

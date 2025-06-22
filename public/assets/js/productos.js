@@ -321,7 +321,8 @@ async function editarProducto(form, id, nombre, cantidad, precio, categoria) {
         });
     }
 }
-    async function actualizarEstadoProducto (idProducto, estadoActual){
+
+async function actualizarEstadoProducto (idProducto, estadoActual){
     const nuevoEstado = estadoActual === 1 ? 0 : 1;
     const textoAccion = nuevoEstado === 1 ? "activar" : "desactivar";
 
@@ -373,4 +374,4 @@ async function editarProducto(form, id, nombre, cantidad, precio, categoria) {
             icon: "error"
         });
     }
-    }
+}
