@@ -1,12 +1,12 @@
 <?php
 
-namespace features\producto_factura\model;
-
-use features\factura\model\Factura;
-use Producto;
+namespace model;
 
 require_once "../../factura/model/Factura.php";
 require_once "../../productos/model/Producto.php";
+
+use model\Factura;
+use model\Producto;
 
 class ProductoFactura
 {

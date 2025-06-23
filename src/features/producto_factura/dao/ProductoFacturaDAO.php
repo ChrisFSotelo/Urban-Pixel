@@ -1,11 +1,6 @@
 <?php
 
-namespace features\producto_factura\dao;
-
-use Conexion;
-use features\factura\dao\FacturaDAO;
-use features\producto_factura\model\ProductoFactura;
-use ProductoDAO;
+namespace dao;
 
 require_once "../../../../config/Conexion.php";
 require_once "../../factura/model/Factura.php";
@@ -13,23 +8,18 @@ require_once "../../factura/dao/FacturaDAO.php";
 require_once "../../productos/model/Producto.php";
 require_once "../../productos/dao/ProductoDAO.php";
 
-class ProductoFacturaDAO
-{
+use Conexion;
+
+class ProductoFacturaDAO {
     private Conexion $conexion;
-    private FacturaDAO $facturaDAO;
-    private ProductoDAO $productoDAO;
 
     // Se instancian los objetos
-    public function __construct()
-    {
+    public function __construct() {
         $this->conexion = new Conexion();
-        $this->facturaDAO = new FacturaDAO();
-        $this->productoDAO = new ProductoDAO();
     }
 
     // Obtener los detalles de una factura por id
-    public function obtenerPorIdFactura(int $idFactura): array|null
-    {
+    public function obtenerPorIdFactura(int $idFactura) {
         $this->conexion->abrirConexion();
         $sql = "SELECT * FROM producto_factura WHERE idFactura = $idFactura";
         $resultado = $this->conexion->ejecutarConsulta($sql);
@@ -41,25 +31,15 @@ class ProductoFacturaDAO
             return null;
         }
 
-        while ($fila = $resultado->fetch_object()) { // Si se encuentran los detalles
-            $factura = $this->facturaDAO->obtenerPorId((int)$fila->idFactura); // Obtenemos la factura
-            $producto = $this->productoDAO->obtenerPorId((int)$fila->idProducto); // Obtenemos el producto
-
-            $detallesFactura[] = new ProductoFactura(
-                $factura,
-                $producto,
-                (int)$fila->cantidad,
-                (int)$fila->precioVenta
-            );
-        }
+        while ($fila = $resultado->fetch_assoc()) // Si se encuentran los detalles
+            $detallesFactura = $fila;
 
         $this->conexion->cerrarConexion();
         return $detallesFactura;
     }
 
     // Inserta los detalles de una factura
-    public function insertar(array $detallesFactura): array|null
-    {
+    public function insertar(array $detallesFactura) {
         $this->conexion->abrirConexion();
 
         foreach ($detallesFactura as $detalle) {
@@ -86,8 +66,7 @@ class ProductoFacturaDAO
     }
 
     // Elimina los detalles de una factura en la BD
-    public function eliminar(int $idFactura): array|null
-    {
+    public function eliminar(int $idFactura) {
         $detallesFactura = $this->obtenerPorIdFactura($idFactura);
 
         if ($detallesFactura !== null) { // Si se encuentra la factura
@@ -98,13 +77,9 @@ class ProductoFacturaDAO
 
             if ($resultado) // Si todo salio bien
                 return $detallesFactura;
-
-            // Si hubo un error
-            echo("Hubo un fallo al eliminar los detalles de la factura \n");
         }
 
         return null;
     }
 }
-
 ?>

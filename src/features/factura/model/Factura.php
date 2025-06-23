@@ -1,25 +1,26 @@
 <?php
 
-namespace features\factura\model;
-use Cliente;
+namespace model;
 
 require_once "../../clientes/model/Cliente.php";
 
-class Factura
-{
+use model\Clientes;
+use DateTime;
+
+class Factura {
     private int $id;
     private DateTime $fecha;
     private DateTime $hora;
     private int $subtotal;
     private int $iva;
     private int $total;
-    private Cliente $cliente;
+    private Clientes $cliente;
     private string $ciudad;
     private string $direccion;
 
     // Constructor
     public function __construct(int $id, DateTime $fecha, DateTime $hora, int $subtotal,
-                                int $iva, int $total, Cliente $cliente, string $ciudad, string $direccion)
+                                int $iva, int $total, Clientes $cliente, string $ciudad, string $direccion)
     {
 
         $this->id = $id;
@@ -34,96 +35,62 @@ class Factura
     }
 
     // Getters
-    public function getId(): int
-    {
+    public function getId(): int {
         return $this->id;
     }
-
-    public function getFecha(): DateTime
-    {
+    public function getFecha(): DateTime {
         return $this->fecha;
     }
-
-    public function getHora(): DateTime
-    {
+    public function getHora(): DateTime {
         return $this->hora;
     }
-
-    public function getSubtotal(): int
-    {
+    public function getSubtotal(): int {
         return $this->subtotal;
     }
-
-    public function getIva(): int
-    {
+    public function getIva(): int {
         return $this->iva;
     }
-
-    public function getTotal()
-    {
+    public function getTotal() {
         return $this->total;
     }
-
-    public function getCliente(): Cliente
-    {
+    public function getCliente(): Clientes {
         return $this->cliente;
     }
-
-    public function getCiudad(): string
-    {
+    public function getCiudad(): string {
         return $this->ciudad;
     }
-
-    public function getDireccion(): string
-    {
+    public function getDireccion(): string {
         return $this->direccion;
     }
 
     // Setters
-    public function setId(int $id)
-    {
+    public function setId(int $id) {
         $this->id = $id;
     }
-
-    public function setFecha(DateTime $fecha)
-    {
+    public function setFecha(DateTime $fecha) {
         $this->fecha = $fecha;
     }
-
-    public function setHora(DateTime $hora)
-    {
+    public function setHora(DateTime $hora) {
         $this->hora = $hora;
     }
-
-    public function setSubtotal(int $subtotal)
-    {
+    public function setSubtotal(int $subtotal) {
         $this->subtotal = $subtotal;
     }
 
-    public function setIva(int $iva)
-    {
+    public function setIva(int $iva) {
         $this->iva = $iva;
     }
-
-    public function setTotal(int $total)
-    {
+    public function setTotal(int $total) {
         $this->total = $total;
     }
-
-    public function setCliente(Cliente $cliente)
-    {
+    public function setCliente(Clientes $cliente) {
         $this->cliente = $cliente;
     }
-
-    public function setCiudad(string $ciudad)
-    {
+    public function setCiudad(string $ciudad) {
         $this->ciudad = $ciudad;
     }
-
-    public function setDireccion(string $direccion)
-    {
+    public function setDireccion(string $direccion) {
         $this->direccion = $direccion;
     }
 }
-
 ?>
