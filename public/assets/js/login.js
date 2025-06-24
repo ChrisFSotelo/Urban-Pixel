@@ -155,7 +155,7 @@ botonIniciarSesion.addEventListener("click", async (event) => {
           icon: 'success',
           confirmButtonText: 'OK'
         }).then(() => {
-          window.location.href = "src/features/users/views/landing_page.php";
+          window.location.href = "index.php?pdi=src/features/users/views/landing_page.php";
         });
       }
     } else {
