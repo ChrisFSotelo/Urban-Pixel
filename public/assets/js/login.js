@@ -116,6 +116,7 @@ botonIniciarSesion.addEventListener("click", async (event) => {
   const datos = new FormData();
   datos.append("correo", correo.value);
   datos.append("clave", clave.value);
+
   try {
     const respuesta = await fetch("src/features/users/controller/UsuarioControlador.php?accion=autenticar", {
       method: "POST",
@@ -124,7 +125,21 @@ botonIniciarSesion.addEventListener("click", async (event) => {
 
     const resultado = await respuesta.json();
 
-    if (resultado.error) {
+    if(resultado.mensaje) {
+      const url = resultado.usuario.rol === "usuario"
+        ? "src/features/users/views/control_panel.php"
+        : "src/features/users/views/landing_page.php";
+
+      Swal.fire({
+        title: '¡Usuario Autenticado Correctamente!',
+        text: resultado.mensaje,
+        icon: 'success',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        window.location.href = url;
+      });
+    }
+    else if (resultado.error) {
       Swal.fire({
         title: 'Error',
         text: resultado.error,
@@ -132,46 +147,6 @@ botonIniciarSesion.addEventListener("click", async (event) => {
         confirmButtonText: 'OK'
       });
     }
-
-    const rol = resultado.usuario.rol;
-
-    // Redirige según el rol
-    if (rol === "usuario") {
-      if (resultado.mensaje) {
-        Swal.fire({
-          title: '¡Usuario Autenticado Correctamente!',
-          text: resultado.mensaje,
-          icon: 'success',
-          confirmButtonText: 'OK'
-        }).then(() => {
-          window.location.href = "src/features/users/views/control_panel.php";
-        });
-      }
-    } else if (rol === 2 || rol === "2") {
-      if (resultado.mensaje) {
-        Swal.fire({
-          title: '¡Cliente Autenticado Correctamente!',
-          text: resultado.mensaje,
-          icon: 'success',
-          confirmButtonText: 'OK'
-        }).then(() => {
-          window.location.href = "src/features/users/views/landing_page.php";
-        });
-      }
-    } else {
-      alert("Rol no reconocido");
-    }
-    if (resultado.mensaje) {
-      Swal.fire({
-        title: '¡Usuario Autenticado Correctamente!',
-        text: resultado.mensaje,
-        icon: 'success',
-        confirmButtonText: 'OK'
-      }).then(() => {
-        window.location.href = "src/features/users/views/control_panel.php";
-      });
-    }
-
   } catch (error) {
     console.error("Error al registrar:", error);
     sweetAlert.mostrarError("Error", "No se pudo completar el registro 2");
