@@ -64,9 +64,10 @@ class ProductoDAO{
         $precio = $producto->getPrecio();
         $idCategoria = $producto->getCategoria()->getId(); 
         $estado= $producto->getEstado();
+        $descripcion = $producto->getDescripcion();
     
-        $sql = "INSERT INTO producto (nombre, cantidad, precio, idCategoria, estado)
-            VALUES ('$nombre', $cantidad, $precio, $idCategoria, $estado)";
+        $sql = "INSERT INTO producto (nombre, cantidad, precio, idCategoria, estado, descripcion)
+            VALUES ('$nombre', $cantidad, $precio, $idCategoria, $estado, $descripcion)";
     
         $resultado = $this->conexion->ejecutarConsulta($sql);
     
@@ -98,10 +99,11 @@ class ProductoDAO{
         $nombre = $producto->getNombre();
         $cantidad = $producto->getCantidad();
         $precio = $producto->getPrecio();
-        $idCategoria = $producto->getCategoria()->getId(); 
+        $idCategoria = $producto->getCategoria()->getId();
+        $descripcion = $producto->getDescripcion();
 
         $sql = "UPDATE producto 
-            SET nombre = '$nombre', cantidad = $cantidad, precio = $precio, idCategoria = $idCategoria
+            SET nombre = '$nombre', cantidad = $cantidad, precio = $precio, idCategoria = $idCategoria, descripcion = $descripcion
             WHERE id = $id";
     
         $resultado = $this->conexion->ejecutarConsulta($sql);

@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="/urban-pixel/public/assets/css/general_styles.css" />
     <link rel="stylesheet" href="/urban-pixel/public/assets/css/products_styles.css" />
   </head>
-
+  <?php
+  include "components/navBar.php"
+  ?>
 
   <main>
     <section class="hero">
@@ -16,8 +18,10 @@
       <p>Prendas de alta calidad y diseños únicos</p>
     </section>
 
-    <section class="products">
-    </section>
+      <div class="products-wrapper">
+          <section class="products" id="carrusel-productos">
+          </section>
+      </div>
   </main>
 
   <?php

@@ -11,7 +11,7 @@ $paginasSinSesion = array(
     "src/features/users/views/landing_page.php"
 );
 $paginasConSesion = array(
-    "src/features/users/views/control_panel.php"
+    "src/features/users/views/control_panel.php",
 );
 ?>
 
@@ -34,7 +34,6 @@ $paginasConSesion = array(
     <body>
         <?php
             if(!isset($_GET["pdi"])) {
-                include "components/navBar.php";
                 include "src/features/users/views/landing_page.php";
             }
             else {

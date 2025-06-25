@@ -226,6 +226,7 @@ class ProductoControlador{
                     "id" => $producto["id"],
                     "nombre" => $producto["nombre"],
                     "precio" => $producto["precio"],
+                    "descripcion" => $producto["descripcion"],
                 ];
             }, $productos);
 
