@@ -53,6 +53,8 @@ CREATE TABLE producto (
 	precio INT NOT NULL,
 	idCategoria INT NOT NULL,
 	estado INT NOT NULL,
+	descripcion VARCHAR(255) NOT NULL,
+
 	PRIMARY KEY (id),
 	FOREIGN KEY (idCategoria) REFERENCES categoria(id)
 );
@@ -106,5 +108,3 @@ INSERT INTO usuario(nombre, apellido, correo, clave, idRol, idEstado) VALUES
 INSERT INTO cliente(nombre, apellido, correo, clave, idRol, idEstado) VALUES 
 ('Jose', 'Jose', 'jose1@gmail.com', '202cb962ac59075b964b07152d234b70', 2, 1),
 ('Carlos', 'Lopez', 'krlosL0pz@gmail.com', '202cb962ac59075b964b07152d234b70', 2, 0);
-
-ALTER TABLE `producto` ADD `descripcion` VARCHAR(250) NOT NULL AFTER `estado`;
