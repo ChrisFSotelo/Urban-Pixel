@@ -98,9 +98,9 @@ INSERT INTO categoria (nombre) VALUES
 ('Pantalones'),
 ('Camisetas');
 
-INSERT INTO producto (nombre, cantidad, precio, idCategoria) VALUES
-('Pantalon', 36, 47500, 1),
-('Camisa polo', 120, 22000, 2);
+INSERT INTO producto (nombre, cantidad, precio, idCategoria, descripcion) VALUES
+('Pantalon', 36, 47500, 1, 'Pantalon para ocasiones casuales'),
+('Camisa polo', 120, 22000, 2, 'Camisa formal');
 
 INSERT INTO usuario(nombre, apellido, correo, clave, idRol, idEstado) VALUES 
 ('Cristian Ferney', 'Sotelo Lancheros', 'cfsotelol@udistrital.edu.co', '202cb962ac59075b964b07152d234b70', 1, 1);
