@@ -36,8 +36,10 @@
       <p>Prendas de alta calidad y diseños únicos</p>
     </section>
 
-    <section class="products">
-    </section>
+    <div class="products-wrapper">
+      <section class="products" id="carrusel-productos">
+      </section>
+    </div>
   </main>
 
   <?php
@@ -45,6 +47,7 @@
   ?>
 
 </html>
+
 <script src="public/assets/js/landingPage.js"></script>
 
 <?php } ?>
