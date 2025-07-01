@@ -1,4 +1,7 @@
-<? require_once (__DIR__ . '/../src/features/Auth/controllers/AuthController.php') ?>
+<?php 
+    require_once (__DIR__ . '/../src/features/Auth/controllers/AuthController.php'); 
+    $usuario = $_SESSION['usuario'];
+?>
 
 <link rel="stylesheet" href="../../../../public/assets/css/sidebar.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -13,41 +16,61 @@
         </button>
 
         <ul class="nav flex-column gap-2">
-            <li class="optionToSelect nav-item" id="inicio">
-                <a class="nav-link text-white" title="Inicio">
-                    <i class="fas fa-home"></i> <span>Inicio</span>
-                </a>
-            </li>
+            <?php  
+                if($usuario->getRol() === 1) {
+            ?>
+                <li class="optionToSelect active nav-item" id="inicioAdmin">
+                    <a class="nav-link text-white" title="Inicio">
+                        <i class="fas fa-home"></i> <span>Inicio</span>
+                    </a>
+                </li>
 
-            <li class="optionToSelect nav-item" id="productos">
-                <a class="nav-link text-white" title="Productos">
-                    <i class="fas fa-box"></i> <span>Productos</span>
-                </a>
-            </li>
+                <li class="optionToSelect nav-item" id="productos">
+                    <a class="nav-link text-white" title="Productos">
+                        <i class="fas fa-box"></i> <span>Productos</span>
+                    </a>
+                </li>
 
-            <li class="optionToSelect nav-item" id="usuarios">
-                <a class="nav-link text-white" title="Usuarios">
-                    <i class="fas fa-user"></i> <span>Usuarios</span>
-                </a>
-            </li>
+                <li class="optionToSelect nav-item" id="usuarios">
+                    <a class="nav-link text-white" title="Usuarios">
+                        <i class="fas fa-user"></i> <span>Usuarios</span>
+                    </a>
+                </li>
 
-            <li class="optionToSelect nav-item" id="ventas">
-                <a class="nav-link text-white" title="Ventas">
-                    <i class="fa-solid fa-money-bill-wave"></i> <span>Ventas</span>
-                </a>
-            </li>
+                <li class="optionToSelect nav-item" id="ventas">
+                    <a class="nav-link text-white" title="Ventas">
+                        <i class="fa-solid fa-money-bill-wave"></i> <span>Ventas</span>
+                    </a>
+                </li>
+            <?php } ?>
 
-            <li class="optionToSelect nav-item" id="nosotros">
-                <a class="nav-link text-white" title="Nosotros">
-                    <i class="fas fa-users"></i> <span>Nosotros</span>
-                </a>
-            </li>
+            <?php  
+                if($usuario->getRol() === 2) {
+            ?>
+                <li class="optionToSelect active nav-item" id="inicioCliente">
+                    <a class="nav-link text-white" title="Inicio">
+                        <i class="fas fa-home"></i> <span>Inicio</span>
+                    </a>
+                </li>
 
-            <li class="optionToSelect nav-item" id="contacto">
-                <a class="nav-link text-white" title="Contacto">
-                    <i class="fas fa-envelope"></i> <span>Contacto</span>
-                </a>
-            </li>
+                <li class="optionToSelect nav-item" id="compras">
+                    <a class="nav-link text-white" title="Compras">
+                        <i class="fas fa-shopping-cart"></i> <span>Compras</span>
+                    </a>
+                </li>
+
+                <li class="optionToSelect nav-item" id="nosotros">
+                    <a class="nav-link text-white" title="Nosotros">
+                        <i class="fas fa-users"></i> <span>Nosotros</span>
+                    </a>
+                </li>
+
+                <li class="optionToSelect nav-item" id="contacto">
+                    <a class="nav-link text-white" title="Contacto">
+                        <i class="fas fa-envelope"></i> <span>Contacto</span>
+                    </a>
+                </li>
+            <?php } ?>
 
             <li class="optionToSelect nav-item">
                 <a class="nav-link text-white" title="Cerrar Sesión" href="<?php echo "../../../../src/features/Auth/logout.php" ?>">

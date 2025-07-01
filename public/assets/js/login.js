@@ -52,14 +52,16 @@ botonRegistro.addEventListener("click", async (event) => {
     sweetAlert.mostrarError("Error", "Por favor, ingrese una clave.");
     return false;
   }
+
   // Construir FormData con los valores
-    const datos = new FormData();
-    datos.append("nombre", nombre.value);
-    datos.append("apellido", apellido.value);
-    datos.append("correo", correo.value);
-    datos.append("clave", clave.value);
+  const datos = new FormData();
+  datos.append("nombre", nombre.value);
+  datos.append("apellido", apellido.value);
+  datos.append("correo", correo.value);
+  datos.append("clave", clave.value);
+
   try {
-    const respuesta = await fetch("src/features/users/controller/ClienteControlador.php?accion=registrar", {
+    const respuesta = await fetch("../../users/controller/ClienteControlador.php?accion=registrar", {
       method: "POST",
       body: datos
     });
@@ -116,15 +118,40 @@ botonIniciarSesion.addEventListener("click", async (event) => {
   const datos = new FormData();
   datos.append("correo", correo.value);
   datos.append("clave", clave.value);
+
   try {
-    const respuesta = await fetch("src/features/users/controller/UsuarioControlador.php?accion=autenticar", {
+    const respuesta = await fetch("../../users/controller/UsuarioControlador.php?accion=autenticar", {
       method: "POST",
       body: datos
     });
 
     const resultado = await respuesta.json();
-
-    if (resultado.error) {
+    
+    if(resultado.mensaje) {
+      const rol = resultado.usuario.rol;
+      
+      if(rol === 1) {
+        Swal.fire({
+          title: '¡Usuario Autenticado Correctamente!',
+          text: resultado.mensaje,
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          window.location.href = "../../users/views/control_panel.php";
+        });
+      }
+      else if(rol === 2) {
+        Swal.fire({
+          title: '¡Cliente Autenticado Correctamente!',
+          text: resultado.mensaje,
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          window.location.href = "../../users/views/control_panel_customer.php";
+        });
+      }
+    }
+    else if(resultado.error) {
       Swal.fire({
         title: 'Error',
         text: resultado.error,
@@ -132,48 +159,9 @@ botonIniciarSesion.addEventListener("click", async (event) => {
         confirmButtonText: 'OK'
       });
     }
-
-    const rol = resultado.usuario.rol;
-
-    // Redirige según el rol
-    if (rol === "usuario") {
-      if (resultado.mensaje) {
-        Swal.fire({
-          title: '¡Usuario Autenticado Correctamente!',
-          text: resultado.mensaje,
-          icon: 'success',
-          confirmButtonText: 'OK'
-        }).then(() => {
-          window.location.href = "src/features/users/views/control_panel.php";
-        });
-      }
-    } else if (rol === 2 || rol === "2") {
-      if (resultado.mensaje) {
-        Swal.fire({
-          title: '¡Cliente Autenticado Correctamente!',
-          text: resultado.mensaje,
-          icon: 'success',
-          confirmButtonText: 'OK'
-        }).then(() => {
-          window.location.href = "index.php?pdi=src/features/users/views/landing_page.php";
-        });
-      }
-    } else {
-      alert("Rol no reconocido");
-    }
-    if (resultado.mensaje) {
-      Swal.fire({
-        title: '¡Usuario Autenticado Correctamente!',
-        text: resultado.mensaje,
-        icon: 'success',
-        confirmButtonText: 'OK'
-      }).then(() => {
-        window.location.href = "src/features/users/views/control_panel.php";
-      });
-    }
-
-  } catch (error) {
+  } 
+  catch(error) {
     console.error("Error al registrar:", error);
-    sweetAlert.mostrarError("Error", "No se pudo completar el registro 2");
+    sweetAlert.mostrarError("Error", "Ocurrio un error al iniciar sesión");
   }
 });

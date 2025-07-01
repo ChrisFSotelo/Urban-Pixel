@@ -64,7 +64,7 @@ CREATE TABLE factura (
 	fecha DATE NOT NULL,
 	hora TIME NOT NULL,
 	subtotal INT NOT NULL,
-	iva INT NOT NULL,
+	iva DECIMAL(5, 2) NOT NULL,
 	total INT NOT NULL,
 	idCliente INT NOT NULL,
 	ciudad VARCHAR(255) NOT NULL,

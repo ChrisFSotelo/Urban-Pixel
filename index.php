@@ -1,56 +1,50 @@
 <?php
-session_start();
-if (isset($_GET["cerrarSesion"])) {
-    session_destroy();
-}
-    require "src/features/users/model/Persona.php";
-    require "src/features/users/model/Usuario.php";
+  require 'src/features/users/model/Usuario.php';
+  session_start();
 
-$paginasSinSesion = array(
-    "src/features/login/views/login.php",
-    "src/features/users/views/landing_page.php"
-);
-$paginasConSesion = array(
-    "src/features/users/views/control_panel.php"
-);
+  if(isset($_SESSION["usuario"])) {
+    $rol = ($_SESSION["usuario"])->getRol();
+
+    if($rol === 1)
+      header('Location: src/features/users/views/control_panel.php');
+    else if($rol === 2)
+      header('Location: src/features/users/views/control_panel_customer.php');
+  }
+  else {
+    session_unset();
+    session_destroy();
 ?>
 
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Urban Pixel</title>
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-        <!-- TIPOGRAFIA -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
-        <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.0/dist/sweetalert2.min.css" rel="stylesheet">
-    </head>
+<!DOCTYPE html>
 
-    <body>
-        <?php
-            if(!isset($_GET["pdi"])) {
-                include "components/navBar.php";
-                include "src/features/users/views/landing_page.php";
-            }
-            else {
-                $pdi = $_GET["pdi"];
-                if(in_array($pdi, $paginasSinSesion))
-                    include ($pdi);
-                elseif(in_array($pdi, $paginasConSesion)) {
-                    if(isset($_SESSION["id"]))
-                        include ($pdi);
-                    else
-                        include "src/features/login/views/Login.php";
-                }
-                else
-                    echo "<h1>Error 404</h1>";
-            }
-        ?>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    </body>
+<html lang="es">
+  <head>
+    <title>Urban Pixel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="public/assets/css/landing_styles.css" />
+    <link rel="stylesheet" href="public/assets/css/general_styles.css" />
+    <link rel="stylesheet" href="public/assets/css/products_styles.css" />
+  </head>
+
+  <?php
+    include("components/navBar.php")
+  ?>
+
+  <main>
+    <section class="hero">
+      <h2>Descubre nuestra nueva colección</h2>
+      <p>Prendas de alta calidad y diseños únicos</p>
+    </section>
+
+    <section class="products">
+    </section>
+  </main>
+
+  <?php
+    include("components/footer.php")
+  ?>
+
 </html>
+<script src="public/assets/js/landingPage.js"></script>
+
+<?php } ?>

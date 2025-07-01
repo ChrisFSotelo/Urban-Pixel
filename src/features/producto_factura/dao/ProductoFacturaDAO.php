@@ -3,10 +3,7 @@
 namespace dao;
 
 require_once "../../../../config/Conexion.php";
-require_once "../../factura/model/Factura.php";
-require_once "../../factura/dao/FacturaDAO.php";
-require_once "../../productos/model/Producto.php";
-require_once "../../productos/dao/ProductoDAO.php";
+require_once "../../producto_factura/model/ProductoFactura.php";
 
 use Conexion;
 
@@ -23,16 +20,15 @@ class ProductoFacturaDAO {
         $this->conexion->abrirConexion();
         $sql = "SELECT * FROM producto_factura WHERE idFactura = $idFactura";
         $resultado = $this->conexion->ejecutarConsulta($sql);
-        $detallesFactura[] = [];
+        $detallesFactura = [];
 
         if (!$resultado) { // Si hubo un error
             $this->conexion->cerrarConexion();
-            echo("Hubo un fallo al obtener los detalles de la factura \n");
             return null;
         }
 
         while ($fila = $resultado->fetch_assoc()) // Si se encuentran los detalles
-            $detallesFactura = $fila;
+            $detallesFactura[] = $fila;
 
         $this->conexion->cerrarConexion();
         return $detallesFactura;
@@ -43,8 +39,8 @@ class ProductoFacturaDAO {
         $this->conexion->abrirConexion();
 
         foreach ($detallesFactura as $detalle) {
-            $idFactura = $detalle->getFactura()->getId();
-            $idProducto = $detalle->getProducto()->getId();
+            $idFactura = $detalle->getIdFactura();
+            $idProducto = $detalle->getIdProducto();
             $cantidad = $detalle->getCantidad();
             $precioVenta = $detalle->getPrecioVenta();
 
@@ -53,9 +49,8 @@ class ProductoFacturaDAO {
 
             $resultado = $this->conexion->ejecutarConsulta($sql);
 
-            if (!$resultado) { // Si hubo un error
+            if(!$resultado) { // Si hubo un error
                 $this->conexion->cerrarConexion();
-                echo("Hubo un fallo al agregar los detalles de la factura \n");
                 return null;
             }
         }
@@ -69,7 +64,7 @@ class ProductoFacturaDAO {
     public function eliminar(int $idFactura) {
         $detallesFactura = $this->obtenerPorIdFactura($idFactura);
 
-        if ($detallesFactura !== null) { // Si se encuentra la factura
+        if($detallesFactura !== null) { // Si se encuentra la factura
             $this->conexion->abrirConexion();
             $sql = "DELETE FROM producto_factura WHERE idFactura = $idFactura";
             $resultado = $this->conexion->ejecutarConsulta($sql);

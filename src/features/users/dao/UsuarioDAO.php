@@ -2,66 +2,28 @@
 namespace dao;
 
 require_once __DIR__ . "/../../../../config/Conexion.php";
-require_once __DIR__ . '/../model/Persona.php';
-require_once __DIR__ . '/../../roles/model/Rol.php';
-require_once __DIR__ . '/../../roles/dao/RolDAO.php';
 
 use Conexion;
-use model\Usuario;
-use RolDAO;
+use Usuario;
 
 class UsuarioDAO {
     private $conexion;
-    private RolDAO $rolDAO;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->conexion = new Conexion();
     }
+
     public function AutenticarUsuario($correo, $clave) {
         $this->conexion->abrirConexion();
 
-        $sql = "SELECT id FROM usuario WHERE correo = '$correo' AND clave = '$clave'";
-
+        $sql = "SELECT * FROM usuario WHERE correo = '$correo' AND clave = '$clave'";
         $resultado = $this->conexion->ejecutarConsulta($sql);
-
-        if ($resultado && $resultado->num_rows > 0) {
-            $fila = $resultado->fetch_assoc();
-
-            // Crear y retornar objeto Usuario
-            $usuario = new \Usuario(
-                $fila['id'],
-            );
-
-            $this->conexion->cerrarConexion();
-            return $usuario;
-        }
-
         $this->conexion->cerrarConexion();
+
+        if($fila = $resultado->fetch_assoc())
+            return $fila;
+
         return null;
-    }
-
-
-    public function insertar(Persona $usuario)
-    {
-        $this->conexion->abrirConexion();
-        $nombre = $usuario->getNombre();
-        $apellido = $usuario->getApellido();
-        $correo = $usuario->getEmail();
-        $clave = $usuario->getClave();
-
-        $sql = "INSERT INTO usuario (nombre, apellido, correo, clave, idRol)
-                VALUES ('$nombre', '$apellido', '$correo', '$clave', 1)";
-
-        $resultado = $this->conexion->ejecutarConsulta($sql);
-        $this->conexion->cerrarConexion();
-
-        if ($resultado) {
-            return $usuario;
-        } else {
-            echo "Hubo un fallo al agregar el usuario \n";
-            return null;
-        }
     }
 
     public function obtenerPorId($id) {
@@ -90,12 +52,8 @@ class UsuarioDAO {
         $resultado = $this->conexion->ejecutarConsulta($sql);
         $usuario = null;
 
-        if ($fila = $resultado->fetch_assoc()) {
-            $usuario = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave'], 1);
-            // con este objeto de persona ya se esta llenando el constructor de la clase persona
-        } else {
-            echo "No se encontró el usuario por el correo\n";
-        }
+        if($fila = $resultado->fetch_assoc())
+            $usuario = $fila;
 
         $this->conexion->cerrarConexion();
         return $usuario;
@@ -108,12 +66,8 @@ class UsuarioDAO {
         $resultado = $this->conexion->ejecutarConsulta($sql);
         $usuario = null;
 
-        if ($fila = $resultado->fetch_assoc()) {
-            $usuario = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave'], 1);
-            // con este objeto de persona ya se esta llenando el constructor de la clase persona
-        } else {
-            echo "No se encontró el usuario por el correo \n";
-        }
+        if($fila = $resultado->fetch_assoc())
+            $usuario = $fila;
 
         $this->conexion->cerrarConexion();
         return $usuario;
@@ -124,7 +78,6 @@ class UsuarioDAO {
         $this->conexion->abrirConexion();
         $sql = "SELECT * FROM usuario";
         $resultado = $this->conexion->ejecutarConsulta($sql);
-
         $usuarios = [];
 
         if (!$resultado) {
@@ -133,21 +86,21 @@ class UsuarioDAO {
             return null;
         }
 
-        while ($fila = $resultado->fetch_assoc()) {
-            $usuarios[] = new Persona($fila['id'], $fila['nombre'], $fila['apellido'], $fila['correo'], $fila['clave'], 1);
-        } // con este objeto de persona ya se esta llenando el constructor de la clase persona
+        while($fila = $resultado->fetch_assoc()) {
+            $usuarios[] = $fila;
+        }
 
         $this->conexion->cerrarConexion();
         return $usuarios;
     }
 
-    public function actualizar(Persona $usuario)
-    {
+    public function actualizar(Usuario $usuario) {
         $this->conexion->abrirConexion();
+
         $id = $usuario->getIdPersona();
         $nombre = $usuario->getNombre();
         $apellido = $usuario->getApellido();
-        $correo = $usuario->getEmail();
+        $correo = $usuario->getCorreo();
         $clave = $usuario->getClave();
 
         $sql = "UPDATE usuario 

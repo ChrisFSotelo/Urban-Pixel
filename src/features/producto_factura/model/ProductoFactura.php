@@ -2,37 +2,31 @@
 
 namespace model;
 
-require_once "../../factura/model/Factura.php";
-require_once "../../productos/model/Producto.php";
-
-use model\Factura;
-use model\Producto;
-
 class ProductoFactura
 {
-    private Factura $factura;
-    private Producto $producto;
+    private int $idFactura;
+    private int $idProducto;
     private int $cantidad;
     private int $precioVenta;
 
     // Constructor
-    public function __construct(Factura $factura, Producto $producto, int $cantidad, int $precioVenta)
+    public function __construct(int $idFactura, int $idProducto, int $cantidad, int $precioVenta)
     {
-        $this->factura = $factura;
-        $this->producto = $producto;
+        $this->idFactura = $idFactura;
+        $this->idProducto = $idProducto;
         $this->cantidad = $cantidad;
         $this->precioVenta = $precioVenta;
     }
 
     // Getters
-    public function getFactura(): Factura
+    public function getIdFactura(): int
     {
-        return $this->factura;
+        return $this->idFactura;
     }
 
-    public function getProducto(): Producto
+    public function getIdProducto(): int
     {
-        return $this->producto;
+        return $this->idProducto;
     }
 
     public function getCantidad(): int
@@ -46,14 +40,14 @@ class ProductoFactura
     }
 
     // Setters
-    public function setFactura(Factura $factura)
+    public function setIdFactura(int $idFactura)
     {
-        $this->factura = $factura;
+        $this->idFactura = $idFactura;
     }
 
-    public function setProducto(Producto $producto)
+    public function setIdProducto(int $idProducto)
     {
-        $this->producto = $producto;
+        $this->idProducto = $idProducto;
     }
 
     public function setCantidad(int $cantidad)
