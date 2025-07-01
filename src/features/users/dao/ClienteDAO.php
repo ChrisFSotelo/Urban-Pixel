@@ -191,47 +191,16 @@ class ClienteDAO
         return $resultado;
     }
 
-    public function AutenticarCliente($correo, $clave)
-    {
+    public function AutenticarCliente($correo, $clave) {
         $this->conexion->abrirConexion();
 
-        $sql = "SELECT id, nombre, apellido, correo, clave,idRol, idEstado 
-        FROM cliente 
-        WHERE correo = '$correo' AND clave = '$clave'";
-
-
+        $sql = "SELECT * FROM cliente WHERE correo = '$correo' AND clave = '$clave'";
         $resultado = $this->conexion->ejecutarConsulta($sql);
-
-        if ($resultado && $resultado->num_rows > 0) {
-            $fila = $resultado->fetch_assoc();
-
-            // Crear y retornar objeto Cliente
-            $cliente = new Clientes(
-                $fila['id'],
-                $fila['nombre'],
-                $fila['apellido'],
-                $fila['correo'],
-                $fila['clave'],
-                $fila['idRol'],
-                $fila['idEstado']
-            );
-
-
-            $this->conexion->cerrarConexion();
-            return $cliente;
-        }
-
         $this->conexion->cerrarConexion();
+
+        if($fila = $resultado->fetch_assoc())
+            return $fila;
+
         return null;
-    }
-
-    // todavía sin uso
-    public function actualizarClavePorCorreo($correo, $nuevaClaveHash)
-    {
-        $this->conexion->abrirConexion();
-        $sql = "UPDATE cliente SET clave = '$nuevaClaveHash' WHERE correo = '$correo'";
-        $resultado = $this->conexion->ejecutarConsulta($sql);
-        $this->conexion->cerrarConexion();
-        return $resultado;
     }
 }

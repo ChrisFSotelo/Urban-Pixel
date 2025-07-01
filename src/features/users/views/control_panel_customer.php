@@ -8,8 +8,8 @@
     header("Location: ../../../../");
     exit;
   }
-  else if(($_SESSION["usuario"])->getRol() === 2) {
-    header("Location: control_panel_customer.php");
+  else if(($_SESSION["usuario"])->getRol() === 1) {
+    header("Location: control_panel.php");
     exit;
   }
   else {
@@ -26,12 +26,12 @@
   <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/jszip-3.10.1/dt-2.3.1/b-3.2.3/b-colvis-3.2.3/b-html5-3.2.3/b-print-3.2.3/r-3.0.4/datatables.min.css" 
     rel="stylesheet" integrity="sha384-i/NY1sv/bRb2pkJM6qD8wiQ/CpmhXGnwFOEg9zWjjEICnl6uaspfL6PWt8cAYmNk" 
     crossorigin="anonymous">
-  <title>Inicio - Administrador</title>
+  <title>Inicio - Cliente</title>
 </head>
 
 <body>
   <header>
-    <h2>Bienvenido/a al panel Administrativo</h2>
+    <h2>Bienvenido/a al panel de Clientes</h2>
   </header>
 
   <main>
@@ -41,7 +41,7 @@
       </div>
 
       <div class="content" id="contenido">
-        <?php  include '../../inicio/views/inicioAdmin.php'; ?>
+        <?php  include '../../inicio/views/inicioCliente.php'; ?>
       </div>
     </section>
   </main>

@@ -1,10 +1,26 @@
+<?php
+  require '../../users/model/Usuario.php';
+  session_start();
+
+  if(isset($_SESSION["usuario"])) {
+    $rol = ($_SESSION["usuario"])->getRol();
+
+    if($rol === 1)
+      header('Location: ../../users/views/control_panel.php');
+    else if($rol === 2)
+      header('Location: ../../users/views/control_panel_customer.php');
+  }
+  else {
+    session_unset();
+    session_destroy();
+?>
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login y Registro</title>
-  <link rel="stylesheet" href="public/assets/css/login.css" />
-  <link rel="stylesheet" href="public/assets/css/progress_bar.css" />
+  <link rel="stylesheet" href="../../../../public/assets/css/login.css" />
+  <link rel="stylesheet" href="../../../../public/assets/css/progress_bar.css" />
 
 </head>
 
@@ -21,7 +37,7 @@
 
         <h1>Crear Cuenta</h1>
           <?php
-          include("components/progressBar.php")
+          include("../../../../components/progressBar.php")
           ?>
 
         <input
@@ -127,5 +143,7 @@
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script type="module" src="public/assets/js/login.js" defer></script>
-<script src="public/assets/js/progressBar.js" defer></script>
+<script type="module" src="../../../../public/assets/js/login.js" defer></script>
+<script src="../../../../public/assets/js/progressBar.js" defer></script>
+
+<?php } ?>
