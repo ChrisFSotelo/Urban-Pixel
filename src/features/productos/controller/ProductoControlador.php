@@ -39,7 +39,7 @@ class ProductoControlador{
                             class="btn btn-danger" 
                             type="button" 
                             title="Eliminar"
-                            onclick="confirmarEliminacion('.$respuesta[$i]["id"].')"
+                            onclick="confirmarEliminacionProducto('.$respuesta[$i]["id"].')"
                         >
                             <i class="fa-solid fa-times"></i>
                         </button>';
