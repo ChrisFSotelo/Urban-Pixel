@@ -2,34 +2,29 @@
 
 namespace model;
 
-require_once "../../clientes/model/Cliente.php";
-
-use model\Clientes;
 use DateTime;
 
 class Factura {
     private int $id;
-    private DateTime $fecha;
-    private DateTime $hora;
+    private string $fecha;
+    private string $hora;
     private int $subtotal;
-    private int $iva;
+    private float $iva;
     private int $total;
-    private Clientes $cliente;
+    private int $idCliente;
     private string $ciudad;
     private string $direccion;
 
     // Constructor
-    public function __construct(int $id, DateTime $fecha, DateTime $hora, int $subtotal,
-                                int $iva, int $total, Clientes $cliente, string $ciudad, string $direccion)
-    {
-
+    public function __construct(int $id, string $fecha, string $hora, int $subtotal,
+                                float $iva, int $total, int $idCliente, string $ciudad, string $direccion) {
         $this->id = $id;
         $this->fecha = $fecha;
         $this->hora = $hora;
         $this->subtotal = $subtotal;
         $this->iva = $iva;
         $this->total = $total;
-        $this->cliente = $cliente;
+        $this->idCliente = $idCliente;
         $this->ciudad = $ciudad;
         $this->direccion = $direccion;
     }
@@ -38,23 +33,23 @@ class Factura {
     public function getId(): int {
         return $this->id;
     }
-    public function getFecha(): DateTime {
+    public function getFecha(): string {
         return $this->fecha;
     }
-    public function getHora(): DateTime {
+    public function getHora(): string {
         return $this->hora;
     }
     public function getSubtotal(): int {
         return $this->subtotal;
     }
-    public function getIva(): int {
+    public function getIva(): float {
         return $this->iva;
     }
     public function getTotal() {
         return $this->total;
     }
-    public function getCliente(): Clientes {
-        return $this->cliente;
+    public function getIdCliente(): int {
+        return $this->idCliente;
     }
     public function getCiudad(): string {
         return $this->ciudad;
@@ -67,24 +62,24 @@ class Factura {
     public function setId(int $id) {
         $this->id = $id;
     }
-    public function setFecha(DateTime $fecha) {
+    public function setFecha(string $fecha) {
         $this->fecha = $fecha;
     }
-    public function setHora(DateTime $hora) {
+    public function setHora(string $hora) {
         $this->hora = $hora;
     }
     public function setSubtotal(int $subtotal) {
         $this->subtotal = $subtotal;
     }
 
-    public function setIva(int $iva) {
+    public function setIva(float $iva) {
         $this->iva = $iva;
     }
     public function setTotal(int $total) {
         $this->total = $total;
     }
-    public function setCliente(Clientes $cliente) {
-        $this->cliente = $cliente;
+    public function setIdCliente(int $idCliente) {
+        $this->idCliente = $idCliente;
     }
     public function setCiudad(string $ciudad) {
         $this->ciudad = $ciudad;

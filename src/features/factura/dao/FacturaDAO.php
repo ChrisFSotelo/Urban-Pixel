@@ -2,8 +2,6 @@
 
 namespace dao;
 
-require_once "../../clientes/model/Cliente.php";
-require_once "../../clientes/dao/ClienteDAO.php";
 require_once "../../../../config/Conexion.php";
 require_once "../model/Factura.php";
 
@@ -27,7 +25,6 @@ class FacturaDAO {
 
         if (!$resultado) { // Si hubo un error
             $this->conexion->cerrarConexion();
-            echo("Hubo un fallo al listar las facturas \n");
             return null;
         }
 
@@ -46,7 +43,6 @@ class FacturaDAO {
 
         if (!$resultado) { // Si hubo un error
             $this->conexion->cerrarConexion();
-            echo("Hubo un fallo al obtener la factura \n");
             return null;
         }
 
@@ -57,7 +53,6 @@ class FacturaDAO {
 
         // Si no se encuentra la factura
         $this->conexion->cerrarConexion();
-        echo("No se encontró la factura \n");
         return null;
     }
 
@@ -70,7 +65,6 @@ class FacturaDAO {
 
         if (!$resultado) { // Si hubo un error
             $this->conexion->cerrarConexion();
-            echo("Hubo un fallo al obtener las factura \n");
             return null;
         }
 
@@ -88,18 +82,16 @@ class FacturaDAO {
 
         if(!$resultado) { // Si hubo un error
             $this->conexion->cerrarConexion();
-            echo("Hubo un fallo al obtener la factura \n");
             return null;
         }
 
-        if ($fila = $resultado->fetch_assoc()) { // Si se encuentra la factura
+        if($fila = $resultado->fetch_assoc()) { // Si se encuentra la factura
             $this->conexion->cerrarConexion();
             return $fila;
         }
 
         // Si no se encuentra la factura
         $this->conexion->cerrarConexion();
-        echo("No se encontró la factura \n");
         return null;
     }
 
@@ -112,7 +104,7 @@ class FacturaDAO {
         $subtotal = $factura->getSubtotal();
         $iva = $factura->getIva();
         $total = $factura->getTotal();
-        $idCliente = $factura->getCliente()->getId();
+        $idCliente = $factura->getIdCliente();
         $ciudad = $factura->getCiudad();
         $direccion = $factura->getDireccion();
 
@@ -126,7 +118,6 @@ class FacturaDAO {
             return $factura;
 
         // Si hubo un error
-        echo("Hubo un fallo al agregar la factura \n");
         return null;
     }
 
