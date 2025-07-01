@@ -31,6 +31,12 @@
                 </a>
             </li>
 
+            <li class="optionToSelect nav-item" id="ventas">
+                <a class="nav-link text-white" title="Ventas">
+                    <i class="fa-solid fa-money-bill-wave"></i> <span>Ventas</span>
+                </a>
+            </li>
+
             <li class="optionToSelect nav-item" id="nosotros">
                 <a class="nav-link text-white" title="Nosotros">
                     <i class="fas fa-users"></i> <span>Nosotros</span>

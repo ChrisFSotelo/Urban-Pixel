@@ -123,6 +123,7 @@ $("#submitForm").click(function(e){
     const nombre = document.getElementById("nombre");
     const cantidad = document.getElementById("cantidad");
     const precio = document.getElementById("precio");
+    const descripcion = document.getElementById("descripcion");
     const categoria = document.getElementById("idCategoria");
     const id = document.getElementById("id");
 
@@ -176,6 +177,16 @@ $("#submitForm").click(function(e){
         return false;
     }
 
+    if(descripcion.value === ""){
+        Swal.fire({
+            title: "Error",
+            text: "Por favor, ingrese una descripción.",
+            icon: "error"
+        });
+
+        return false;
+    }
+
     if(categoria.value === ""){
         Swal.fire({
             title: "Error",
@@ -187,16 +198,17 @@ $("#submitForm").click(function(e){
     }
 
     if(id.value === "")
-        guardarNuevoProducto(nombre, cantidad, precio, categoria);
+        guardarNuevoProducto(nombre, cantidad, precio, descripcion, categoria);
     else
-        editarProducto(form, id, nombre, cantidad, precio, categoria);
+        editarProducto(form, id, nombre, cantidad, precio, descripcion, categoria);
 });
 
-async function guardarNuevoProducto(nombre, cantidad, precio, categoria) {
+async function guardarNuevoProducto(nombre, cantidad, precio, descripcion, categoria) {
     const datos = new FormData();
     datos.append("nombre", nombre.value);
     datos.append("cantidad", cantidad.value);
     datos.append("precio", precio.value);
+    datos.append("descripcion", descripcion.value);
     datos.append("categoria", categoria.value);
 
     try {
@@ -253,6 +265,7 @@ async function obtenerProductoInfo(idProducto) {
             $("#nombre").val(producto.nombre);
             $("#cantidad").val(producto.cantidad);
             $("#precio").val(producto.precio);
+            $("#descripcion").val(producto.descripcion);
             document.getElementById("idCategoria").value = producto.idCategoria;
         }
         else {
@@ -274,12 +287,13 @@ async function obtenerProductoInfo(idProducto) {
     }
 }
 
-async function editarProducto(form, id, nombre, cantidad, precio, categoria) {
+async function editarProducto(form, id, nombre, cantidad, precio, descripcion, categoria) {
     const datos = new FormData();
     datos.append("id", id.value);
     datos.append("nombre", nombre.value);
     datos.append("cantidad", cantidad.value);
     datos.append("precio", precio.value);
+    datos.append("descripcion", descripcion.value);
     datos.append("categoria", categoria.value);
 
     try {

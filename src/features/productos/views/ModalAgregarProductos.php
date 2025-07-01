@@ -58,6 +58,18 @@
               <!-- Opciones dinámicas -->
             </select>
           </div>
+
+          <div class="fields d-flex mb-3 gap-4">
+            <input 
+              type="text" 
+              class="form-control" 
+              id="descripcion" 
+              name="descripcion" 
+              placeholder="Descripción del producto"
+              maxlength="100" 
+              required
+            >
+          </div>
         </form>
       </div>
 

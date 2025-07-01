@@ -53,6 +53,8 @@ CREATE TABLE producto (
 	precio INT NOT NULL,
 	idCategoria INT NOT NULL,
 	estado INT NOT NULL,
+	descripcion VARCHAR(255) NOT NULL,
+
 	PRIMARY KEY (id),
 	FOREIGN KEY (idCategoria) REFERENCES categoria(id)
 );
@@ -96,9 +98,9 @@ INSERT INTO categoria (nombre) VALUES
 ('Pantalones'),
 ('Camisetas');
 
-INSERT INTO producto (nombre, cantidad, precio, idCategoria) VALUES
-('Pantalon', 36, 47500, 1),
-('Camisa polo', 120, 22000, 2);
+INSERT INTO producto (nombre, cantidad, precio, idCategoria, descripcion) VALUES
+('Pantalon', 36, 47500, 1, 'Pantalon para ocasiones casuales'),
+('Camisa polo', 120, 22000, 2, 'Camisa formal');
 
 INSERT INTO usuario(nombre, apellido, correo, clave, idRol, idEstado) VALUES 
 ('Cristian Ferney', 'Sotelo Lancheros', 'cfsotelol@udistrital.edu.co', '202cb962ac59075b964b07152d234b70', 1, 1);
@@ -106,5 +108,3 @@ INSERT INTO usuario(nombre, apellido, correo, clave, idRol, idEstado) VALUES
 INSERT INTO cliente(nombre, apellido, correo, clave, idRol, idEstado) VALUES 
 ('Jose', 'Jose', 'jose1@gmail.com', '202cb962ac59075b964b07152d234b70', 2, 1),
 ('Carlos', 'Lopez', 'krlosL0pz@gmail.com', '202cb962ac59075b964b07152d234b70', 2, 0);
-
-ALTER TABLE `producto` ADD `descripcion` VARCHAR(250) NOT NULL AFTER `estado`;
