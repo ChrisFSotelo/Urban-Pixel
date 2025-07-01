@@ -12,6 +12,10 @@ $("#usuarios").click(function() {
     $("#contenido").load("clientes.php");
 });
 
+$("#ventas").click(function() {
+    $("#contenido").load(); // Completar con la ruta del contenido de nosotros
+});
+
 $("#nosotros").click(function() {
     $("#contenido").load(); // Completar con la ruta del contenido de nosotros
 });

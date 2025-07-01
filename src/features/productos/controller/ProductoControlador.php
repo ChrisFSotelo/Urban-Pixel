@@ -82,6 +82,7 @@ class ProductoControlador{
             empty($_POST["nombre"]) ||
             empty($_POST["cantidad"]) ||
             empty($_POST["precio"]) ||
+            empty($_POST["descripcion"]) ||
             empty($_POST["categoria"])
         ) {
             echo json_encode(["error" => "Todos los campos son obligatorios"], JSON_UNESCAPED_UNICODE);
@@ -103,7 +104,8 @@ class ProductoControlador{
             $_POST["cantidad"],
             $_POST["precio"],
             $categoriaObjeto,
-            $estado
+            $estado,
+            $_POST["descripcion"]
         );
     
         $resultado = $productoDAO->RegistrarProducto($producto);
@@ -134,6 +136,7 @@ class ProductoControlador{
             empty($_POST["nombre"]) ||
             empty($_POST["cantidad"]) ||
             empty($_POST["precio"]) ||
+            empty($_POST["descripcion"]) ||
             empty($_POST["categoria"])
         ) {
             echo json_encode(["error" => "Todos los campos son obligatorios"], JSON_UNESCAPED_UNICODE);
@@ -155,7 +158,8 @@ class ProductoControlador{
             $_POST["cantidad"],
             $_POST["precio"],
             $categoriaObjeto,
-            0
+            0, // Estado activo por defecto
+            $_POST["descripcion"]
         );
 
         $resultado = $productoDAO->actualizarProducto($producto);

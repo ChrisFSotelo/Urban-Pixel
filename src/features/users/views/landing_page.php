@@ -4,9 +4,9 @@
   <head>
     <title>Urban Pixel</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="/urban-pixel/public/assets/css/landing_styles.css" />
-    <link rel="stylesheet" href="/urban-pixel/public/assets/css/general_styles.css" />
-    <link rel="stylesheet" href="/urban-pixel/public/assets/css/products_styles.css" />
+    <link rel="stylesheet" href="public/assets/css/landing_styles.css" />
+    <link rel="stylesheet" href="public/assets/css/general_styles.css" />
+    <link rel="stylesheet" href="public/assets/css/products_styles.css" />
   </head>
 
 
@@ -25,5 +25,5 @@
   ?>
 
 </html>
-<script src="/Urban-Pixel/public/assets/js/landingPage.js"></script>
+<script src="public/assets/js/landingPage.js"></script>
 
