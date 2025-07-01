@@ -75,7 +75,7 @@ botonRegistro.addEventListener("click", async (event) => {
         icon: 'success',
         confirmButtonText: 'OK'
       }).then(() => {
-        window.location.href = "../urban-Pixel"; // ⬅ cámbialo por la página deseada
+        window.location.reload();
       });
     } else if (resultado.error) {
       Swal.fire({
