@@ -115,7 +115,6 @@ $id = intval($_GET['id']);
         background: #e32b2c;
     }
 
-    //
     .detalle-cantidad {
         margin: 1.5em 0;
         font-size: 0.9em;
@@ -195,7 +194,7 @@ $id = intval($_GET['id']);
                         <button type="button" onclick="cambiarCantidad(1)">+</button>
                     </div>
                 </div>
-                <button class="product__btn">AGREGAR AL CARRITO</button>
+                <button class="product_btn">AGREGAR AL CARRITO</button>
             </div>
         </section>
     </div>
@@ -225,7 +224,6 @@ include("../../../../components/footer.php")
                 alert(data.error);
                 return;
             }
-
             // Asignar datos al HTML
             document.getElementById("producto-nombre").textContent = data.nombre;
             document.getElementById("producto-id").textContent = `CODIGO DEL PRODUCTO: ${data.id}`;
@@ -237,7 +235,7 @@ include("../../../../components/footer.php")
             document.getElementById("producto-imagen").alt = data.nombre;
 
             // Agregar al carrito
-            document.querySelector(".detalle-buy--btn").addEventListener("click", () => {
+            document.querySelector(".product_btn").addEventListener("click", () => {
                 const nombre = data.nombre;
                 const precio = parseInt(data.precio);
                 const cantidad = parseInt(document.getElementById("cantidad").value);
@@ -251,6 +249,7 @@ include("../../../../components/footer.php")
 
                 agregarAlCarrito(producto);
             });
+            
           } catch (err) {
             console.error("Error al cargar el producto:", err);
             alert("No se pudo cargar la información del producto.");

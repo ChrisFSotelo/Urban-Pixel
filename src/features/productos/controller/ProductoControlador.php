@@ -65,7 +65,7 @@ class ProductoControlador{
         $producto = $productoDAO->obtenerPorId($id);
 
         if ($producto === null)
-            $respuesta = ["error" => "No se econtro el producto"];
+            $respuesta = ["error" => "No se encontro el producto"];
         else
             $respuesta = $producto;
 

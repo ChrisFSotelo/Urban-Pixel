@@ -6,7 +6,7 @@ class Conexion
 
     public function abrirConexion()
     {
-     $this->mysqlConexion = new mysqli("localhost","root","","urban_pixel");
+     $this->mysqlConexion = new mysqli("localhost","root","1234","urban_pixel");
      if ( $this->mysqlConexion->connect_error){
          die("Error al conectar con la base de datos". $this->mysqlConexion->connect_error);
      }
