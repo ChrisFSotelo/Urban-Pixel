@@ -77,13 +77,14 @@ class ProductoControlador{
         $productoDAO = new ProductoDAO();
         $categoriaDAO = new CategoriaDAO();
         $categoria = $categoriaDAO->obtenerPorId($_POST["categoria"]);
-        $estado = 1;
+       
         if (
             empty($_POST["nombre"]) ||
             empty($_POST["cantidad"]) ||
             empty($_POST["precio"]) ||
             empty($_POST["descripcion"]) ||
-            empty($_POST["categoria"])
+            empty($_POST["categoria"]) || 
+            empty($_FILES["imagenProducto"])
         ) {
             echo json_encode(["error" => "Todos los campos son obligatorios"], JSON_UNESCAPED_UNICODE);
             exit;
@@ -94,6 +95,9 @@ class ProductoControlador{
             exit;
         }
     
+        $imagen = file_get_contents($_FILES['imagenProducto']['tmp_name']);
+        $datosImagen = base64_encode($imagen);
+
         $categoriaObjeto = new Categoria(
             $categoria["id"],
             $categoria["nombre"]
@@ -101,11 +105,14 @@ class ProductoControlador{
         $producto = new Producto(
             0,
             $_POST["nombre"],
-            $_POST["cantidad"],
-            $_POST["precio"],
+            (int) $_POST["cantidad"],
+            (int) $_POST["precio"],
             $categoriaObjeto,
-            $estado,
-            $_POST["descripcion"]
+            1,
+            $_POST["descripcion"],
+            $datosImagen,
+            $_FILES['imagenProducto']['name'],
+            $_FILES['imagenProducto']['type']
         );
     
         $resultado = $productoDAO->RegistrarProducto($producto);
@@ -134,7 +141,7 @@ class ProductoControlador{
         if(
             empty($_POST["id"]) ||
             empty($_POST["nombre"]) ||
-            empty($_POST["cantidad"]) ||
+            !isset($_POST["cantidad"]) ||
             empty($_POST["precio"]) ||
             empty($_POST["descripcion"]) ||
             empty($_POST["categoria"])
@@ -148,23 +155,46 @@ class ProductoControlador{
             exit;
         }
 
+        $productoPorId = $productoDAO->obtenerPorId($_POST["id"]);
+        if($productoPorId === null) {
+            echo json_encode(["error" => "Error al encontrar el producto"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
         $categoriaObjeto = new Categoria(
             $categoria["id"],
             $categoria["nombre"]
         );
         $producto = new Producto(
-            $_POST["id"],
+            (int) $_POST["id"],
             $_POST["nombre"],
-            $_POST["cantidad"],
-            $_POST["precio"],
+            (int) $_POST["cantidad"],
+            (int) $_POST["precio"],
             $categoriaObjeto,
-            0, // Estado activo por defecto
-            $_POST["descripcion"]
+            (int) $productoPorId['estado'],
+            $_POST["descripcion"],
+            '',
+            '',
+            ''
         );
+
+        if(!isset($_FILES['imagenProducto'])) {
+            $producto->setDatosImagen($productoPorId['datosImagen']);
+            $producto->setNombreImagen($productoPorId['nombreImagen']);
+            $producto->setTipoImagen($productoPorId['tipoImagen']);
+        }
+        else {
+            $imagen = file_get_contents($_FILES['imagenProducto']['tmp_name']);
+            $datosImagen = base64_encode($imagen);
+
+            $producto->setDatosImagen($datosImagen);
+            $producto->setNombreImagen($_FILES['imagenProducto']['name']);
+            $producto->setTipoImagen($_FILES['imagenProducto']['type']);
+        }
 
         $resultado = $productoDAO->actualizarProducto($producto);
 
-        if ($resultado === null)
+        if($resultado === null)
             $respuesta = ["error" => "Error al actualizar el producto"];
         else {
             $respuesta = [
@@ -231,6 +261,8 @@ class ProductoControlador{
                     "nombre" => $producto["nombre"],
                     "precio" => $producto["precio"],
                     "descripcion" => $producto["descripcion"],
+                    "imagen" => $producto["datosImagen"],
+                    "tipoImagen" => $producto["tipoImagen"],
                 ];
             }, $productos);
 
