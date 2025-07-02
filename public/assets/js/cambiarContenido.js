@@ -21,7 +21,7 @@ $("#usuarios").click(function() {
 });
 
 $("#ventas").click(function() {
-    $("#contenido").load(); // Completar con la ruta del contenido de contacto
+    $("#contenido").load(); // Completar con la ruta del contenido de ventas
 });
 
 $("#perfil").click(function() {
@@ -29,11 +29,11 @@ $("#perfil").click(function() {
 });
 
 $("#nosotros").click(function() {
-    $("#contenido").load(); // Completar con la ruta del contenido de nosotros
+    $("#contenido").load("../../inicio/views/nosotros.php");
 });
 
 $("#contacto").click(function() {
-    $("#contenido").load(); // Completar con la ruta del contenido de contacto
+    $("#contenido").load("../../inicio/views/contacto.php");
 });
 
 function irAUsuariosDesdeDashboard() {
@@ -59,7 +59,7 @@ function irAPerfil(rol) {
 
 function irAAdministradores() {
     sombrearSidebar('inicioAdmin');
-    $("#contenido").load('admins.php'); // Completar con la ruta del contenido de administradores
+    $("#contenido").load('admins.php');
 }
 
 function irACategorias() {

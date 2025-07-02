@@ -20,7 +20,7 @@
             <button id="enviarCorreo">ENVIAR</button>
 
             <div class="volver">
-                <a href="../../../../?pdi=src/features/login/views/login.php">¿Volver al inicio?</a>
+                <a href="../../login/views/login.php">¿Volver al inicio?</a>
             </div>
         </form>
     </div>

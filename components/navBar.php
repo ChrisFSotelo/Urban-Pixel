@@ -17,13 +17,10 @@
                     <a class="nav-link active" aria-current="page" href="#inicio">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#productos">Productos</a>
+                    <a class="nav-link" href="src/features/inicio/views/nosotros.php">Nosotros</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#nosotros">Nosotros</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#contacto">Contacto</a>
+                    <a class="nav-link" href="src/features/inicio/views/contacto.php">Contacto</a>
                 </li>
             </ul>
             <ul class="navbar-nav">
