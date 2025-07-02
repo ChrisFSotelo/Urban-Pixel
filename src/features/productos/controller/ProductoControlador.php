@@ -221,15 +221,16 @@ class ProductoControlador{
         $productoDAO = new ProductoDAO();
         $productos = $productoDAO->listar();
 
-        if ($productos == null) {
+        if($productos == null)
             echo json_encode(["error" => "No se encontraron productos"], JSON_UNESCAPED_UNICODE);
-        } else {
+        else {
             // Filtramos solo los campos necesarios
             $respuesta = array_map(function($producto) {
                 return [
                     "id" => $producto["id"],
                     "nombre" => $producto["nombre"],
                     "precio" => $producto["precio"],
+                    "descripcion" => $producto["descripcion"],
                 ];
             }, $productos);
 
