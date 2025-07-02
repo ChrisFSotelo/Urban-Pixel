@@ -13,6 +13,7 @@
     exit;
   }
   else {
+    $usuario = $_SESSION['usuario'];
 ?>
 
 <head>
@@ -41,7 +42,6 @@
       </div>
 
       <div class="content" id="contenido">
-        <?php  include '../../inicio/views/inicioAdmin.php'; ?>
       </div>
     </section>
   </main>
@@ -62,6 +62,11 @@
     crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="../../../../public/assets/js/cambiarContenido.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      $("#contenido").load("../../inicio/views/inicioAdmin.php");
+    });
+  </script>
 </body>
 
 <?php } ?>
