@@ -19,7 +19,7 @@ class FacturaDAO {
     // Lista todas las facturas
     public function listarVentas(): array | null {
         $this->conexion->abrirConexion();
-        $sql = "SELECT f.*, p.nombre AS producto, CONCAT(c.nombre,' ', c.apellido) AS cliente
+        $sql = "SELECT f.*, GROUP_CONCAT(p.nombre SEPARATOR ', ') AS productos, CONCAT(c.nombre,' ', c.apellido) AS cliente
             FROM factura f
             JOIN producto_factura pf
             ON (f.id = pf.idFactura)
@@ -56,6 +56,37 @@ class FacturaDAO {
         }
 
         if($fila = $resultado->fetch_assoc()) { // Si se encuentra la factura
+            $this->conexion->cerrarConexion();
+            return $fila;
+        }
+
+        // Si no se encuentra la factura
+        $this->conexion->cerrarConexion();
+        return null;
+    }
+
+    public function obtenerDetallesVenta(int $idVenta) {
+        $this->conexion->abrirConexion();
+        $sql = "SELECT f.*, CONCAT(c.nombre,' ', c.apellido) AS cliente, GROUP_CONCAT(p.nombre) AS productos, 
+            GROUP_CONCAT(p.precio) AS preciosUnitarios, GROUP_CONCAT(pf.cantidad) AS cantidades, GROUP_CONCAT(pf.precioVenta) AS precioVentas
+            FROM factura f
+            JOIN producto_factura pf
+            ON (f.id = pf.idFactura)
+            JOIN cliente c
+            ON (f.idCliente = c.id)
+            JOIN producto p
+            ON (pf.idProducto = p.id) 
+            WHERE f.id = $idVenta
+            GROUP BY f.id
+            ORDER BY f.id ASC, p.id ASC";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+
+        if (!$resultado) { // Si hubo un error
+            $this->conexion->cerrarConexion();
+            return null;
+        }
+
+        if($fila = $resultado->fetch_assoc()) { // Si se encuentran los detalles
             $this->conexion->cerrarConexion();
             return $fila;
         }

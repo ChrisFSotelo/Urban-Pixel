@@ -20,7 +20,7 @@ $(document).ready(function() {
         "columns": [
             {"data" : "no"},
             {"data" : "cliente"},
-            {"data" : "producto"},
+            {"data" : "productos"},
             {"data" : "fecha"},
             {"data" : "hora"},
             {
@@ -92,6 +92,86 @@ $(document).ready(function() {
     });
 });
 
+async function obtenerVentaInfo(idVenta) {
+    try {
+        const respuesta = await fetch(`../../../../src/features/factura/controller/FacturaControlador.php?accion=obtenerDetallesVenta&idVenta=${idVenta}`, {
+            method: "GET"
+        });
+
+        const venta = await respuesta.json();
+
+        if(venta && venta.error === undefined) {
+            document.getElementById("clienteVenta").textContent = venta.cliente;
+            document.getElementById("ciudadVenta").textContent = venta.ciudad;
+            document.getElementById("direccionVenta").textContent = venta.direccion;
+            document.getElementById("fechaVenta").textContent = `${venta.fecha} ${venta.hora}`;
+
+            // Estado con clase visual
+            const estadoTexto = {
+                "1": "En espera",
+                "2": "Enviado",
+                "3": "Cancelado"
+            };
+            const estadoClase = {
+                "1": "en-espera",
+                "2": "enviado",
+                "3": "cancelado"
+            };
+            const estadoSpan = document.getElementById("estadoVenta");
+            estadoSpan.textContent = estadoTexto[venta.estado] || "Desconocido";
+            estadoSpan.className = `estado-tag ${estadoClase[venta.estado]}`;
+
+            // Tabla de productos
+            const productos = venta.productos.split(",");
+            const cantidades = venta.cantidades.split(",");
+            const precios = venta.preciosUnitarios.split(",");
+            const totales = venta.precioVentas.split(",");
+
+            const tbody = document.getElementById("productosVenta");
+            tbody.innerHTML = "";
+
+            for(let i = 0; i < productos.length; i++) {
+                const tr = document.createElement("tr");
+
+                tr.innerHTML = `
+                    <td>${productos[i]}</td>
+                    <td>${cantidades[i]}</td>
+                    <td>$${Number(precios[i]).toLocaleString()}</td>
+                    <td>$${Number(totales[i]).toLocaleString()}</td>
+                `;
+
+                tbody.appendChild(tr);
+            }
+
+            // Resumen
+            const ivaDecimal = parseFloat(venta.iva);
+            const ivaValor = Number(venta.subtotal) * ivaDecimal;
+
+            document.getElementById("ivaVentaPorcentaje").textContent = `IVA (${ivaDecimal * 100}%)`;
+            document.getElementById("subtotalVenta").textContent = `$${Number(venta.subtotal).toLocaleString()}`;
+            document.getElementById("ivaVenta").textContent = `$${ivaValor.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
+            document.getElementById("totalVenta").textContent = `$${Number(venta.total).toLocaleString()}`;
+
+            $(".modal").modal("show");
+        }
+        else if(venta.error) {
+            Swal.fire({
+                title: "Error",
+                text: venta.error,
+                icon: "error"
+            });
+        }
+    } 
+    catch (error) {
+        console.error("Error al obtener los detalles de la venta: ", error);
+        Swal.fire({
+            title: "Error",
+            text: "Hubo un problema al obtener los detalles. Intenta nuevamente.",
+            icon: "error"
+        });
+    }
+}
+
 function confirmarActualizacionEstadoVenta(idVenta) {
     const estadoNuevo = document.getElementById(`estado-venta-${idVenta}`);
     const estadoNuevoTexto = estadoNuevo.options[estadoNuevo.selectedIndex].text;
@@ -131,6 +211,7 @@ async function actualizarEstadoVenta(idVenta, estadoNuevo) {
         });
 
         const resultado = await respuesta.json();
+
         if(resultado.mensaje) {
             Swal.fire({
                 title: "¡Actualización exitosa!",
@@ -139,6 +220,66 @@ async function actualizarEstadoVenta(idVenta, estadoNuevo) {
             }).then(() => {
                 tablaVentas.ajax.reload(); // Recargar la tabla
             });
+        }
+        else if(resultado.error) {
+            Swal.fire({
+                title: "Error",
+                text: resultado.error,
+                icon: "error"
+            });
+        }
+    } 
+    catch (error) {
+        console.error("Error al actualizar el estado de la venta: ", error);
+        Swal.fire({
+            title: "Error",
+            text: "Hubo un problema al actualizar el estado. Intenta nuevamente.",
+            icon: "error"
+        });
+    }
+}
+
+function confirmarEliminacionVenta(idVenta) {
+    Swal.fire({
+        title: `¿Estás seguro?`,
+        text: `No podrá recuperar los datos después de la eliminación`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, continuar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if(result.isConfirmed)
+            eliminarVentaYDetalles(idVenta);
+    });
+}
+
+async function eliminarVentaYDetalles(idVenta) {
+    try {
+        const respuesta = await fetch(`../../../../src/features/factura/controller/FacturaControlador.php?accion=eliminarVenta&id=${idVenta}`,{
+            method: "GET"
+        });
+
+        const resultado = await respuesta.json();
+
+        if(resultado.mensaje) {
+            Swal.fire({
+                title: 'Eliminado...',
+                text: 'Por favor espere',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                timer: 1500,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            }).then(() => {
+                Swal.fire({
+                    title: "Eliminación completa",
+                    text: resultado.mensaje,
+                    icon: "success"
+                }).then(() => {
+                    tablaVentas.ajax.reload(); // Recargar la tabla
+                });
+            });   
         }
         else if(resultado.error) {
             Swal.fire({

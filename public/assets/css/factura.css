@@ -1,3 +1,9 @@
+/*
+-- ----------------------------------
+-- Estilos de la ventana de ventas
+-- ----------------------------------
+*/
+
 .estado-venta-contenedor {
     display: flex;
     align-items: center;
@@ -51,4 +57,49 @@
 
 .danger {
     color: #dc3545;
+}
+
+
+/*
+-- ---------------------------------------------
+-- Estilos de la ventana de detalles de venta
+-- ---------------------------------------------
+*/
+
+/* Fondo difuminado */
+.venta-info p {
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+}
+
+.venta-resumen {
+    text-align: right;
+    font-size: 1rem;
+}
+
+.estado-tag {
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.estado-tag.en-espera {
+    color: #000000;
+    background-color: #ffc107;
+}
+
+.estado-tag.enviado {
+    background-color: #28a745;
+}
+
+.estado-tag.cancelado {
+    background-color: #dc3545;
+}
+
+.venta-productos th,
+.venta-productos td {
+    vertical-align: middle;
+    text-align: center;
 }
