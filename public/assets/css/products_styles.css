@@ -36,8 +36,12 @@
 }
 
 .product {
+    display: flex;
+    flex-direction: column; /* para organizar elementos en columna */
+    justify-content: flex-start;
     flex: 0 0 auto;
     width: 250px;
+    min-height: 400px; /* Ajusta según lo que necesites */
     background: white;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -47,6 +51,7 @@
     position: relative;
     transition: transform 0.3s ease;
 }
+
 
 .product:hover {
     transform: translateY(-5px);
@@ -90,24 +95,27 @@
     letter-spacing: 1px;
 }
 
-.product button,
 .product__btn {
-    background: #111;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    margin-top: 10px;
+    margin-top: auto; /* empuja el botón al final del contenedor */
     cursor: pointer;
-    border-radius: 3px;
-    font-size: 0.9em;
-    text-transform: uppercase;
+    border-radius: 20px;
+    border: 1px solid #fff;
+    background-color: #9a4c51;
+    color: #fff;
+    font-size: 14px;
     font-weight: bold;
-    transition: background-color 0.3s ease;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.4s ease;
 }
 
-.product button:hover,
-.product__btn:hover {
-    background-color: #cf092c;
+
+.product__btn:hover,
+.product__btn:active{
+    color: #eee;
+    border: none;
+    background-color: #c8415b;
 }
 
 /* =============================== */
@@ -161,23 +169,25 @@
 
 /* ----- Photo Section ----- */
 .detalle-product__photo {
-    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 1.5em;
+    box-sizing: border-box;
 }
 
 .detalle-photo-container {
-    position: absolute;
-    left: -2.5em;
-    display: grid;
-    grid-template-rows: 1fr auto;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     height: 100%;
+    width: 100%;
     border-radius: 6px;
     box-shadow: 4px 4px 25px -2px rgba(0, 0, 0, 0.3);
 }
 
 .detalle-photo-main {
     border-radius: 6px 6px 0 0;
-    background: radial-gradient(#e5f89e, #96e001);
+    background: radial-gradient(#74747c, #2e2e2e);
     position: relative;
 }
 
@@ -193,11 +203,15 @@
 }
 
 .detalle-photo-main img {
-    position: absolute;
-    left: -3.5em;
-    top: 2em;
-    max-width: 110%;
-    filter: saturate(150%) contrast(120%) hue-rotate(10deg) drop-shadow(1px 20px 10px rgba(0, 0, 0, 0.3));
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    padding: 2em;
+    margin: 0 auto;
+    filter: drop-shadow(2px 10px 10px rgba(0, 0, 0, 0.2));
+    position: static;
+    max-width: 100%;
 }
 
 .detalle-photo-album {
@@ -225,13 +239,16 @@
 /* ----- Info Section ----- */
 .detalle-product__info {
     padding: 0.8em 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .detalle-title h1 {
-    margin-bottom: 0.1em;
-    color: var(--color-primary);
-    font-size: 1.5em;
-    font-weight: 900;
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 0.2em;
 }
 
 .detalle-title span {
@@ -240,14 +257,17 @@
 }
 
 .detalle-price {
-    margin: 1.5em 0;
+    font-size: 1.3em;
     color: var(--color-highlight);
-    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
 }
 
 .detalle-price span {
-    padding-left: 0.15em;
-    font-size: 2.9em;
+    font-size: 3em;
+    font-weight: 900;
+    letter-spacing: -1px;
 }
 
 .detalle-variant h3 {
@@ -299,18 +319,19 @@
 }
 
 .detalle-buy--btn {
-    padding: 1.5em 3.1em;
+    padding: 1em 2em;
+    font-size: 1em;
+    background-color: #ff3f40;
+    color: white;
+    border-radius: 8px;
     border: none;
-    border-radius: 7px;
-    font-size: 0.8em;
-    font-weight: 700;
-    letter-spacing: 1.3px;
-    color: #fff;
-    background-color: var(--color-highlight);
-    box-shadow: 2px 2px 25px -7px var(--color-primary);
-    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(255, 63, 64, 0.3);
+    transition: background-color 0.3s ease;
 }
 
+.detalle-buy--btn:hover {
+    background-color: #e42f30;
+}
 .detalle-buy--btn:active {
     transform: scale(0.97);
 }
@@ -329,4 +350,13 @@
 
 .detalle-footer a:hover {
     color: var(--color-highlight);
+}
+
+.producto-detalle-container {
+    max-width: 1000px;
+    margin: 3em auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }

@@ -36,7 +36,7 @@ function crearTarjetaProducto(producto) {
     <h3 class="product__title">${producto.nombre}</h3>
     <hr />
     <p>${producto.descripcion}</p>
-    <a href="src/features/productos/views/productoDetalle.php"/${producto.id}" class="product__btn">Ver detalle</a>
+    <a href="src/features/productos/views/productoDetalle.php?id=${producto.id}" class="product__btn">Ver detalle</a>
 
   `;
   return div;
