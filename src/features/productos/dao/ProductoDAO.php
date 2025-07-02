@@ -64,10 +64,13 @@ class ProductoDAO{
         $precio = $producto->getPrecio();
         $idCategoria = $producto->getCategoria()->getId(); 
         $estado= $producto->getEstado();
-        $descripcion= $producto->getDescripcion();
+        $descripcion = $producto->getDescripcion();
+        $datosImagen = $producto->getDatosImagen();
+        $nombreImagen = $producto->getNombreImagen();
+        $tipoImagen = $producto->getTipoImagen();
     
-        $sql = "INSERT INTO producto (nombre, cantidad, precio, idCategoria, estado, descripcion)
-            VALUES ('$nombre', $cantidad, $precio, $idCategoria, $estado, '$descripcion')";
+        $sql = "INSERT INTO producto (nombre, cantidad, precio, idCategoria, estado, descripcion, datosImagen, nombreImagen, tipoImagen)
+            VALUES ('$nombre', $cantidad, $precio, $idCategoria, $estado, '$descripcion', '$datosImagen', '$nombreImagen', '$tipoImagen')";
     
         $resultado = $this->conexion->ejecutarConsulta($sql);
     
@@ -101,9 +104,13 @@ class ProductoDAO{
         $precio = $producto->getPrecio();
         $descripcion = $producto->getDescripcion();
         $idCategoria = $producto->getCategoria()->getId(); 
+        $datosImagen = $producto->getDatosImagen(); 
+        $nombreImagen = $producto->getNombreImagen(); 
+        $tipoImagen = $producto->getTipoImagen(); 
 
         $sql = "UPDATE producto 
-            SET nombre = '$nombre', cantidad = $cantidad, precio = $precio, descripcion='$descripcion', idCategoria = $idCategoria
+            SET nombre = '$nombre', cantidad = $cantidad, precio = $precio, descripcion='$descripcion', idCategoria = $idCategoria,
+                datosImagen = '$datosImagen', nombreImagen = '$nombreImagen', tipoImagen = '$tipoImagen'
             WHERE id = $id";
     
         $resultado = $this->conexion->ejecutarConsulta($sql);

@@ -70,6 +70,15 @@
               required
             >
           </div>
+
+          <div class="fields d-flex mb-3 gap-4">
+            <input 
+              type="file" 
+              class="form-control" 
+              id="imagenProducto" 
+              name="imagenProducto"
+            >
+          </div>
         </form>
       </div>
 

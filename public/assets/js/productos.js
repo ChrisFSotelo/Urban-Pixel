@@ -125,6 +125,7 @@ $("#submitForm").click(function(e){
     const precio = document.getElementById("precio");
     const descripcion = document.getElementById("descripcion");
     const categoria = document.getElementById("idCategoria");
+    const imagenProducto = document.getElementById("imagenProducto");
     const id = document.getElementById("id");
 
     if(nombre.value === ""){
@@ -197,19 +198,30 @@ $("#submitForm").click(function(e){
         return false;
     }
 
+    if(imagenProducto.value.trim() === "" && id.value === ""){
+        Swal.fire({
+            title: "Error",
+            text: "Por favor, seleccione una imagen para el producto.",
+            icon: "error"
+        });
+
+        return false;
+    }
+
     if(id.value === "")
-        guardarNuevoProducto(nombre, cantidad, precio, descripcion, categoria);
+        guardarNuevoProducto(nombre, cantidad, precio, descripcion, categoria, imagenProducto);
     else
-        editarProducto(form, id, nombre, cantidad, precio, descripcion, categoria);
+        editarProducto(form, id, nombre, cantidad, precio, descripcion, categoria, imagenProducto);
 });
 
-async function guardarNuevoProducto(nombre, cantidad, precio, descripcion, categoria) {
+async function guardarNuevoProducto(nombre, cantidad, precio, descripcion, categoria, imagenProducto) {
     const datos = new FormData();
     datos.append("nombre", nombre.value);
     datos.append("cantidad", cantidad.value);
     datos.append("precio", precio.value);
     datos.append("descripcion", descripcion.value);
     datos.append("categoria", categoria.value);
+    datos.append("imagenProducto", imagenProducto.files[0]);
 
     try {
         const respuesta = await fetch("../../../../src/features/productos/controller/ProductoControlador.php?accion=registrar_producto", {
@@ -287,7 +299,7 @@ async function obtenerProductoInfo(idProducto) {
     }
 }
 
-async function editarProducto(form, id, nombre, cantidad, precio, descripcion, categoria) {
+async function editarProducto(form, id, nombre, cantidad, precio, descripcion, categoria, imagenProducto) {
     const datos = new FormData();
     datos.append("id", id.value);
     datos.append("nombre", nombre.value);
@@ -295,6 +307,7 @@ async function editarProducto(form, id, nombre, cantidad, precio, descripcion, c
     datos.append("precio", precio.value);
     datos.append("descripcion", descripcion.value);
     datos.append("categoria", categoria.value);
+    datos.append("imagenProducto", imagenProducto.files[0]);
 
     try {
         const respuesta = await fetch("../../../../src/features/productos/controller/ProductoControlador.php?accion=actualizar", {
