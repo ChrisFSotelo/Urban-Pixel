@@ -1,9 +1,9 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+session_start();
 
 require_once __DIR__ . '/../model/Clientes.php';
 require_once __DIR__ . '/../dao/ClienteDAO.php';
+require_once __DIR__ . '/../model/Usuario.php';
 header('Content-Type: application/json; charset=utf-8');
 
 use model\Clientes;
@@ -221,6 +221,36 @@ class ClienteControlador{
         exit;
     }
 
+    public function actualizarSesion() {
+        $usuarioDAO = new ClienteDAO();
+
+        if(empty($_GET["id"])) {
+            echo json_encode(["error" => "ID no proporcionado"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        $usuarioPorId = $usuarioDAO->obtenerPorId($_GET["id"]);
+        if($usuarioPorId === null) {
+            echo json_encode(['error' => 'Hubo un error al actualizar la sesion. Intentelo nuevamente'], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        $usuarioAutenticado = new Usuario(
+            (int) $usuarioPorId['id'],
+            $usuarioPorId['nombre'],
+            $usuarioPorId['apellido'],
+            $usuarioPorId['correo'],
+            '',
+            (int) $usuarioPorId['idEstado'],
+            (int) $usuarioPorId['idRol'],
+        );
+
+        $_SESSION["usuario"] = $usuarioAutenticado;
+
+        echo json_encode(['mensaje' => 'Perfil actualizado correctamente'], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
     public function ActualizarEstadoCliente() {
         $input = $_POST;
 
@@ -282,6 +312,11 @@ if(isset($_GET["accion"]) && $_GET["accion"] === "registrar") {
 if(isset($_GET["accion"]) && $_GET["accion"] === "actualizar") {
     $controlador = new ClienteControlador();
     $controlador->actualizarCliente();
+}
+
+if(isset($_GET["accion"]) && $_GET["accion"] === "actualizarSesion") {
+    $controlador = new ClienteControlador();
+    $controlador->actualizarSesion();
 }
 
 if(isset($_GET["accion"]) && $_GET["accion"] === "actualizarEstado") {

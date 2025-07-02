@@ -32,8 +32,7 @@ class ClienteDAO
         return $clientes;
     }
 
-    public function RegistrarCliente(Clientes $cliente)
-    {
+    public function RegistrarCliente(Clientes $cliente) {
         $this->conexion->abrirConexion();
         $nombre = $cliente->getNombre();
         $apellido = $cliente->getApellido();

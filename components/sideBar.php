@@ -1,6 +1,5 @@
 <?php 
     require_once (__DIR__ . '/../src/features/Auth/controllers/AuthController.php'); 
-    $usuario = $_SESSION['usuario'];
 ?>
 
 <link rel="stylesheet" href="../../../../public/assets/css/sidebar.css">
@@ -71,6 +70,12 @@
                     </a>
                 </li>
             <?php } ?>
+
+            <li class="optionToSelect nav-item" id="perfil">
+                <a class="nav-link text-white" title="Perfil">
+                    <i class="fas fa-address-card"></i> <span>Perfil</span>
+                </a>
+            </li>
 
             <li class="optionToSelect nav-item">
                 <a class="nav-link text-white" title="Cerrar Sesión" href="<?php echo "../../../../src/features/Auth/logout.php" ?>">
