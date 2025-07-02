@@ -21,7 +21,7 @@ $("#usuarios").click(function() {
 });
 
 $("#ventas").click(function() {
-    $("#contenido").load(); // Completar con la ruta del contenido de ventas
+    $("#contenido").load('../../factura/views/verVentas.php');
 });
 
 $("#perfil").click(function() {
@@ -48,7 +48,7 @@ function irAProductosDesdeDashboard() {
 
 function irAVentasDesdeDashboard() {
     sombrearSidebar('ventas');
-    $("#contenido").load(); // Completar con la ruta del contenido de ventas
+    $("#contenido").load('../../factura/views/verVentas.php');
 }
 
 function irAPerfil(rol) {

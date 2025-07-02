@@ -72,6 +72,7 @@
 		idCliente INT NOT NULL,
 		ciudad VARCHAR(255) NOT NULL,
 		direccion VARCHAR(255) NOT NULL,
+		estado INT NOT NULL,
 
 		PRIMARY KEY (id),
 		FOREIGN KEY (idCliente) REFERENCES cliente(id)

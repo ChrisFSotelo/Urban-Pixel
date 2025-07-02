@@ -17,9 +17,18 @@ class FacturaDAO {
     }
 
     // Lista todas las facturas
-    public function listar(): array | null {
+    public function listarVentas(): array | null {
         $this->conexion->abrirConexion();
-        $sql = "SELECT * FROM factura ORDER BY id ASC";
+        $sql = "SELECT f.*, p.nombre AS producto, CONCAT(c.nombre,' ', c.apellido) AS cliente
+            FROM factura f
+            JOIN producto_factura pf
+            ON (f.id = pf.idFactura)
+            JOIN cliente c
+            ON (f.idCliente = c.id)
+            JOIN producto p
+            ON (pf.idProducto = p.id) 
+            GROUP BY f.id
+            ORDER BY f.id ASC";
         $resultado = $this->conexion->ejecutarConsulta($sql);
         $facturas = [];
 
@@ -107,9 +116,10 @@ class FacturaDAO {
         $idCliente = $factura->getIdCliente();
         $ciudad = $factura->getCiudad();
         $direccion = $factura->getDireccion();
+        $estado = $factura->getEstado();
 
-        $sql = "INSERT INTO factura(fecha, hora, subtotal, iva, total, idCliente, ciudad, direccion) 
-                VALUES('$fecha', '$hora', $subtotal, $iva, $total, $idCliente, '$ciudad', '$direccion')";
+        $sql = "INSERT INTO factura(fecha, hora, subtotal, iva, total, idCliente, ciudad, direccion, estado) 
+                VALUES('$fecha', '$hora', $subtotal, $iva, $total, $idCliente, '$ciudad', '$direccion', $estado)";
 
         $resultado = $this->conexion->ejecutarConsulta($sql);
         $this->conexion->cerrarConexion();
@@ -119,6 +129,16 @@ class FacturaDAO {
 
         // Si hubo un error
         return null;
+    }
+
+    public function actualizarEstadoVenta(int $id, int $nuevoEstado): bool {
+        $this->conexion->abrirConexion();
+
+        $sql = "UPDATE factura SET estado = $nuevoEstado WHERE id = $id";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+    
+        $this->conexion->cerrarConexion();
+        return $resultado ? true : false;
     }
 
     // Elimina una factura en la BD
