@@ -1,5 +1,11 @@
 <?php
-include("../../../../components/navBar.php")
+session_start();
+
+if (isset($_SESSION["usuario"])) {
+      include("../../../../components/NavbarConSesion.php");
+    } else {
+      include("../../../../components/NavbarSinSesion.php");
+    }
 ?>
 <?php
 // Obtener el ID desde la URL

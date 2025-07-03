@@ -1,10 +1,3 @@
-<?php 
-
-if (isset($_SESSION["usuario"])) {
-    echo "hay sesión";
-}
-?>
-
 <!-- Agrega esto en el <head> de tu documento -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -24,7 +17,7 @@ if (isset($_SESSION["usuario"])) {
                     <a class="nav-link active" aria-current="page" href="/">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#productos">Productos</a>
+                    <a class="nav-link" href="/src/features/users/views/control_panel_customer.php">Panel de control</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#nosotros">Nosotros</a>
@@ -32,10 +25,6 @@ if (isset($_SESSION["usuario"])) {
                 <li class="nav-item">
                     <a class="nav-link" href="#contacto">Contacto</a>
                 </li>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item"><a href="/src/features/login/views/login.php" class="nav-link"
-                        aria-disabled="true">Iniciar Sesion</a></li>
             </ul>
         </div>
     </nav>
