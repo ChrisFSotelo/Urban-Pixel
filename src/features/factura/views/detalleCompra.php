@@ -17,6 +17,12 @@
 
             <table class="venta-productos table table-striped mt-3">
                 <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio unitario</th>
+                        <th>Total</th>
+                    </tr>
                 </thead>
 
                 <tbody id="productosVenta">
