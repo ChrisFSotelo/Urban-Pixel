@@ -41,6 +41,11 @@ function irAUsuariosDesdeDashboard() {
     $("#contenido").load("clientes.php");
 }
 
+function irAComprasDesdeDashboard() {
+    sombrearSidebar('compras');
+    $("#contenido").load("../../factura/views/verCompras.php");
+}
+
 function irAProductosDesdeDashboard() {
     sombrearSidebar('productos');
     $("#contenido").load("../../productos/views/productos.php");
@@ -51,7 +56,17 @@ function irAVentasDesdeDashboard() {
     $("#contenido").load('../../factura/views/verVentas.php');
 }
 
-function irAPerfil(rol) {
+function irANosotrosDesdeDashboard() {
+    sombrearSidebar('nosotros');
+    $("#contenido").load("../../inicio/views/nosotros.php");
+}
+
+function irAContactanosDesdeDashboard() {
+    sombrearSidebar('contacto');
+    $("#contenido").load("../../inicio/views/contacto.php");
+}
+
+function irAPerfil() {
     sombrearSidebar('perfil');
     $("#contenido").load('perfil.php');
 }
