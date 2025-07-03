@@ -9,7 +9,7 @@ $("#inicioCliente").click(function() {
 });
 
 $("#compras").click(function() {
-    $("#contenido").load(); // Completar con la ruta del contenido de compras
+    $("#contenido").load("../../inicio/views/TablaComprasCliente.php"); // Completar con la ruta del contenido de compras
 });
 
 $("#productos").click(function() {

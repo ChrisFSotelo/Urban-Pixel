@@ -3,6 +3,7 @@
     header('Content-Type: application/json; charset=utf-8');
 
     use dao\ProductoFacturaDAO;
+use model\ProductoFactura;
 
     class ProductoFacturaControlador {
         public function listarDetallesPorIdFactura() {
@@ -24,8 +25,27 @@
             echo json_encode($detallesFactura, JSON_UNESCAPED_UNICODE);
             exit;
         }
+
+        public function getAll () {
+            $productoFacturaDAO = new ProductoFacturaDAO();
+
+            $cantidadFacturas = $productoFacturaDAO->getAll();
+
+            if($cantidadFacturas === null) {
+                echo json_encode(['error' => 'Error al encontrar facturas'], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
+
+            echo json_encode($cantidadFacturas, JSON_UNESCAPED_UNICODE);
+            exit;
+        }
     }
 
+    if ($_GET['accion'] && $_GET['accion'] === 'listarFacturas') {
+        $controlador = new ProductoFacturaControlador();
+        $controlador->getAll();
+    }
+    
     if($_GET['accion'] && $_GET['accion'] === 'listarPorIdFactura') {
         $controlador = new ProductoFacturaControlador();
         $controlador->listarDetallesPorIdFactura();

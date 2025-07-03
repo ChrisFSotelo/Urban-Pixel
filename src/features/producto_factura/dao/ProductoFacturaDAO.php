@@ -15,6 +15,27 @@ class ProductoFacturaDAO {
         $this->conexion = new Conexion();
     }
 
+    public function getAll() {
+        $this->conexion->abrirConexion();
+        $query = " SELECT factura.id, factura.fecha, factura.total 
+        FROM factura 
+        JOIN producto_factura ON factura.id = producto_factura.idFactura 
+        WHERE factura.idCliente = 1;";
+        $resultado = $this->conexion->ejecutarConsulta($query);
+        $cantidadFacturas = [];
+
+        if (!$resultado) {
+            $this->conexion->cerrarConexion();
+            return null;
+        }
+
+        while ($fila = $resultado->fetch_assoc()) // Si se encuentran los detalles
+            $cantidadFacturas[] = $fila;
+
+        $this->conexion->cerrarConexion();
+        return $cantidadFacturas;
+    }
+
     // Obtener los detalles de una factura por id
     public function obtenerPorIdFactura(int $idFactura) {
         $this->conexion->abrirConexion();
