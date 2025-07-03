@@ -14,10 +14,11 @@ class Factura {
     private int $idCliente;
     private string $ciudad;
     private string $direccion;
+    private int $estado;
 
     // Constructor
     public function __construct(int $id, string $fecha, string $hora, int $subtotal,
-                                float $iva, int $total, int $idCliente, string $ciudad, string $direccion) {
+                                float $iva, int $total, int $idCliente, string $ciudad, string $direccion, int $estado) {
         $this->id = $id;
         $this->fecha = $fecha;
         $this->hora = $hora;
@@ -27,6 +28,7 @@ class Factura {
         $this->idCliente = $idCliente;
         $this->ciudad = $ciudad;
         $this->direccion = $direccion;
+        $this->estado = $estado;
     }
 
     // Getters
@@ -57,6 +59,9 @@ class Factura {
     public function getDireccion(): string {
         return $this->direccion;
     }
+    public function getEstado(): int {
+        return $this->estado;
+    }
 
     // Setters
     public function setId(int $id) {
@@ -86,6 +91,9 @@ class Factura {
     }
     public function setDireccion(string $direccion) {
         $this->direccion = $direccion;
+    }
+    public function setEstado(string $estado) {
+        $this->estado = $estado;
     }
 }
 ?>

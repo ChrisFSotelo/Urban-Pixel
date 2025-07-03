@@ -9,7 +9,7 @@ $("#inicioCliente").click(function() {
 });
 
 $("#compras").click(function() {
-    $("#contenido").load(); // Completar con la ruta del contenido de compras
+    $("#contenido").load('../../factura/views/verCompras.php');
 });
 
 $("#productos").click(function() {
@@ -21,16 +21,61 @@ $("#usuarios").click(function() {
 });
 
 $("#ventas").click(function() {
-    $("#contenido").load(); // Completar con la ruta del contenido de ventas
+    $("#contenido").load('../../factura/views/verVentas.php');
+});
+
+$("#perfil").click(function() {
+    $("#contenido").load('perfil.php');
 });
 
 $("#nosotros").click(function() {
-    $("#contenido").load(); // Completar con la ruta del contenido de nosotros
+    $("#contenido").load("../../inicio/views/nosotros.php");
 });
 
 $("#contacto").click(function() {
-    $("#contenido").load(); // Completar con la ruta del contenido de contacto
+    $("#contenido").load("../../inicio/views/contacto.php");
 });
+
+function irAUsuariosDesdeDashboard() {
+    sombrearSidebar('usuarios');
+    $("#contenido").load("clientes.php");
+}
+
+function irAComprasDesdeDashboard() {
+    sombrearSidebar('compras');
+    $("#contenido").load("../../factura/views/verCompras.php");
+}
+
+function irAProductosDesdeDashboard() {
+    sombrearSidebar('productos');
+    $("#contenido").load("../../productos/views/productos.php");
+}
+
+function irAVentasDesdeDashboard() {
+    sombrearSidebar('ventas');
+    $("#contenido").load('../../factura/views/verVentas.php');
+}
+
+function irANosotrosDesdeDashboard() {
+    sombrearSidebar('nosotros');
+    $("#contenido").load("../../inicio/views/nosotros.php");
+}
+
+function irAContactanosDesdeDashboard() {
+    sombrearSidebar('contacto');
+    $("#contenido").load("../../inicio/views/contacto.php");
+}
+
+function irAPerfil() {
+    sombrearSidebar('perfil');
+    $("#contenido").load('perfil.php');
+}
+
+
+function irAAdministradores() {
+    sombrearSidebar('inicioAdmin');
+    $("#contenido").load('admins.php');
+}
 
 function irACategorias() {
     $("#contenido").load("../../categorias/views/categorias.php");
@@ -38,4 +83,10 @@ function irACategorias() {
 
 function volverAProductos() {
     $("#contenido").load("../../productos/views/productos.php");
+}
+
+function sombrearSidebar(opcion) {
+    const options = document.querySelectorAll('.optionToSelect');
+    options.forEach(opt => opt.classList.remove('active'));
+    document.getElementById(opcion).classList.add('active');
 }

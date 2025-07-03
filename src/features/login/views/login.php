@@ -120,7 +120,7 @@
           Ingresar
         </button>
 <br>
-        <a class="cambiar-clave" href="./src/features/users/views/enviarCorreo.php">¿Olvidaste tu contraseña?</a>
+        <a class="cambiar-clave" href="../../users/views/enviarCorreo.php">¿Olvidaste tu contraseña?</a>
       </form>
     </div>
 

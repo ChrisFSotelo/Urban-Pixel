@@ -51,7 +51,7 @@ async function enviarCorreo(correo) {
                 icon: "success"
             }).then(() => {
                 document.getElementById("correo").value = "";
-                window.location.href = "../../../../?pdi=src/features/login/views/login.php";
+                window.location.href = "../../../../";
             });
         }
         else if(resultado.error)
@@ -109,7 +109,7 @@ async function recuperarClave(clave) {
             }).then(() => {
                 document.getElementById("clave").value = "";
                 document.getElementById("claveRepetida").value = "";
-                window.location.href = "../../../../?pdi=src/features/login/views/login.php";
+                window.location.href = "../../../../";
             });
         }
         else if(resultado.error)

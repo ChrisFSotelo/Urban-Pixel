@@ -15,9 +15,9 @@
     use model\ProductoFactura;
 
     class FacturaControlador {
-        public function listarFacturas() {
+        public function listarVentas() {
             $facturaDAO = new FacturaDAO();
-            $facturas = $facturaDAO->listar();
+            $facturas = $facturaDAO->listarVentas();
 
             if($facturas === null) {
                 echo json_encode(['error' => 'Error al listar facturas'], JSON_UNESCAPED_UNICODE);
@@ -26,15 +26,62 @@
             else {
                 $respuesta = $facturas;
 
-                if(!empty($resultado)) {
-                    for($i = 0; $i < count($resultado); $i++) {
+                if(!empty($respuesta)) {
+                    for($i = 0; $i < count($respuesta); $i++) {
                         $respuesta[$i]["no"] = $i + 1;
                         $respuesta[$i]["info"] = 
                             '<button 
-                                class="btn btn-primary" 
+                                class="btn btn-info" 
                                 type="button" 
                                 title="Información" 
-                                onclick="obtenerFacturaInfo('.$respuesta[$i]["id"].')"
+                                onclick="obtenerVentaInfo('.$respuesta[$i]["id"].')"
+                            >
+                                <i class="fa-solid fa-eye"></i>
+                            </button>';
+                        $respuesta[$i]["eliminar"] = 
+                            '<button 
+                                class="btn btn-danger" 
+                                type="button" 
+                                title="Eliminar" 
+                                onclick="confirmarEliminacionVenta('.$respuesta[$i]["id"].')"
+                            >
+                                <i class="fa-solid fa-trash"></i>
+                            </button>';
+                    }
+                }
+            }
+
+            echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        public function listarCompras() {
+            $facturaDAO = new FacturaDAO();
+
+            if(empty($_GET['idCliente'])) {
+                echo json_encode(["error" => "Faltan parámetros obligatorios"], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
+
+            $idCliente = $_GET['idCliente'];
+            $facturas = $facturaDAO->listarCompras($idCliente);
+
+            if($facturas === null) {
+                echo json_encode(['error' => 'Error al listar facturas'], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
+            else {
+                $respuesta = $facturas;
+
+                if(!empty($respuesta)) {
+                    for($i = 0; $i < count($respuesta); $i++) {
+                        $respuesta[$i]["no"] = $i + 1;
+                        $respuesta[$i]["info"] = 
+                            '<button 
+                                class="btn btn-info" 
+                                type="button" 
+                                title="Información" 
+                                onclick="obtenerCompraInfo('.$respuesta[$i]["id"].')"
                             >
                                 <i class="fa-solid fa-eye"></i>
                             </button>';
@@ -43,6 +90,26 @@
             }
 
             echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        public function obtenerDetallesVenta() {
+            $facturaDAO= new FacturaDAO();
+
+            if(empty($_GET["idVenta"])){
+                echo json_encode(["error" => "Faltan parámetros obligatorios"], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
+
+            $id = $_GET["idVenta"];
+            $factura = $facturaDAO->obtenerDetallesVenta($id);
+
+            if($factura === null){
+                echo json_encode(["error" => "Factura no encontrada"], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
+
+            echo json_encode($factura, JSON_UNESCAPED_UNICODE);
             exit;
         }
 
@@ -100,7 +167,8 @@
                 $total,
                 $_POST['idCliente'],
                 $_POST["ciudad"],
-                $_POST["direccion"]
+                $_POST["direccion"],
+                1 // Estado en proceso por defecto
             );
 
             // Insertamos la factura y validamos
@@ -144,6 +212,41 @@
             exit;
         }
 
+        public function actualizarEstadoVenta() {
+            if(empty($_POST["idVenta"])|| !isset($_POST["estadoNuevo"])){
+                echo json_encode(["error" => "Faltan parámetros obligatorios"], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
+
+            $id = $_POST["idVenta"];
+            $estadoNuevo = $_POST['estadoNuevo'];
+
+            $facturaDAO= new FacturaDAO();
+            $factura = $facturaDAO->obtenerPorId($id);
+
+            if($factura === null){
+                echo json_encode(["error" => "Factura no encontrada"], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
+
+            $resultado = $facturaDAO->actualizarEstadoVenta($id, $estadoNuevo);
+
+            if($resultado){
+                $respuesta = [
+                    "mensaje" => "Estado actualizado correctamente",
+                    "factura" =>[
+                        "id" => $id,
+                        "estado" => $estadoNuevo
+                    ]
+                ];
+            }
+            else
+                $respuesta = ["error" => "No se pudo actualizar el estado de la factura"];
+
+            echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
         public function eliminarFacturaYDetalles() {
             $facturaDAO = new FacturaDAO();
             $productoFacturaDAO = new ProductoFacturaDAO();
@@ -178,15 +281,27 @@
         }
     }
 
-    if($_GET['accion'] && $_GET['accion'] === 'listar') {
+    if($_GET['accion'] && $_GET['accion'] === 'listarVentas') {
         $controlador = new FacturaControlador();
-        $controlador->listarFacturas();
+        $controlador->listarVentas();
+    }
+    if($_GET['accion'] && $_GET['accion'] === 'listarCompras') {
+        $controlador = new FacturaControlador();
+        $controlador->listarCompras();
+    }
+    if($_GET['accion'] && $_GET['accion'] === 'obtenerDetallesVenta') {
+        $controlador = new FacturaControlador();
+        $controlador->obtenerDetallesVenta();
+    }
+    if($_GET['accion'] && $_GET['accion'] === 'actualizarEstadoVenta') {
+        $controlador = new FacturaControlador();
+        $controlador->actualizarEstadoVenta();
     }
     if($_GET['accion'] && $_GET['accion'] === 'agregar') {
         $controlador = new FacturaControlador();
         $controlador->agregarFactura();
     }
-    if($_GET['accion'] && $_GET['accion'] === 'eliminar') {
+    if($_GET['accion'] && $_GET['accion'] === 'eliminarVenta') {
         $controlador = new FacturaControlador();
         $controlador->eliminarFacturaYDetalles();
     }

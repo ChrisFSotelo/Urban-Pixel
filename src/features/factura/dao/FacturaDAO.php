@@ -17,9 +17,18 @@ class FacturaDAO {
     }
 
     // Lista todas las facturas
-    public function listar(): array | null {
+    public function listarVentas(): array | null {
         $this->conexion->abrirConexion();
-        $sql = "SELECT * FROM factura ORDER BY id ASC";
+        $sql = "SELECT f.*, GROUP_CONCAT(p.nombre SEPARATOR ', ') AS productos, CONCAT(c.nombre,' ', c.apellido) AS cliente
+            FROM factura f
+            JOIN producto_factura pf
+            ON (f.id = pf.idFactura)
+            JOIN cliente c
+            ON (f.idCliente = c.id)
+            JOIN producto p
+            ON (pf.idProducto = p.id) 
+            GROUP BY f.id
+            ORDER BY f.id ASC";
         $resultado = $this->conexion->ejecutarConsulta($sql);
         $facturas = [];
 
@@ -35,6 +44,36 @@ class FacturaDAO {
         return $facturas;
     }
 
+    // Lista todas las facturas
+    public function listarCompras($idCliente): array | null {
+        $this->conexion->abrirConexion();
+        $sql = "SELECT f.*, GROUP_CONCAT(p.nombre SEPARATOR ', ') AS productos
+            FROM factura f
+            JOIN producto_factura pf
+            ON (f.id = pf.idFactura)
+            JOIN cliente c
+            ON (f.idCliente = c.id)
+            JOIN producto p
+            ON (pf.idProducto = p.id)
+            WHERE c.id = $idCliente 
+            GROUP BY f.id
+            ORDER BY c.id ASC";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+        $facturas = [];
+
+        if (!$resultado) { // Si hubo un error
+            $this->conexion->cerrarConexion();
+            return null;
+        }
+
+        while($fila = $resultado->fetch_assoc()) // Listamos las facturas
+            $facturas[] = $fila;
+
+        $this->conexion->cerrarConexion();
+        return $facturas;
+    }
+
+
     // Obtener una factura por id
     public function obtenerPorId(int $id) {
         $this->conexion->abrirConexion();
@@ -47,6 +86,37 @@ class FacturaDAO {
         }
 
         if($fila = $resultado->fetch_assoc()) { // Si se encuentra la factura
+            $this->conexion->cerrarConexion();
+            return $fila;
+        }
+
+        // Si no se encuentra la factura
+        $this->conexion->cerrarConexion();
+        return null;
+    }
+
+    public function obtenerDetallesVenta(int $idVenta) {
+        $this->conexion->abrirConexion();
+        $sql = "SELECT f.*, CONCAT(c.nombre,' ', c.apellido) AS cliente, GROUP_CONCAT(p.nombre) AS productos, 
+            GROUP_CONCAT(p.precio) AS preciosUnitarios, GROUP_CONCAT(pf.cantidad) AS cantidades, GROUP_CONCAT(pf.precioVenta) AS precioVentas
+            FROM factura f
+            JOIN producto_factura pf
+            ON (f.id = pf.idFactura)
+            JOIN cliente c
+            ON (f.idCliente = c.id)
+            JOIN producto p
+            ON (pf.idProducto = p.id) 
+            WHERE f.id = $idVenta
+            GROUP BY f.id
+            ORDER BY f.id ASC, p.id ASC";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+
+        if (!$resultado) { // Si hubo un error
+            $this->conexion->cerrarConexion();
+            return null;
+        }
+
+        if($fila = $resultado->fetch_assoc()) { // Si se encuentran los detalles
             $this->conexion->cerrarConexion();
             return $fila;
         }
@@ -107,9 +177,10 @@ class FacturaDAO {
         $idCliente = $factura->getIdCliente();
         $ciudad = $factura->getCiudad();
         $direccion = $factura->getDireccion();
+        $estado = $factura->getEstado();
 
-        $sql = "INSERT INTO factura(fecha, hora, subtotal, iva, total, idCliente, ciudad, direccion) 
-                VALUES('$fecha', '$hora', $subtotal, $iva, $total, $idCliente, '$ciudad', '$direccion')";
+        $sql = "INSERT INTO factura(fecha, hora, subtotal, iva, total, idCliente, ciudad, direccion, estado) 
+                VALUES('$fecha', '$hora', $subtotal, $iva, $total, $idCliente, '$ciudad', '$direccion', $estado)";
 
         $resultado = $this->conexion->ejecutarConsulta($sql);
         $this->conexion->cerrarConexion();
@@ -119,6 +190,16 @@ class FacturaDAO {
 
         // Si hubo un error
         return null;
+    }
+
+    public function actualizarEstadoVenta(int $id, int $nuevoEstado): bool {
+        $this->conexion->abrirConexion();
+
+        $sql = "UPDATE factura SET estado = $nuevoEstado WHERE id = $id";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+    
+        $this->conexion->cerrarConexion();
+        return $resultado ? true : false;
     }
 
     // Elimina una factura en la BD

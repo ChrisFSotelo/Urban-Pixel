@@ -32,7 +32,7 @@ function crearTarjetaProducto(producto) {
   div.className = "product";
   div.innerHTML = `
     <span class="product__price">$${parseInt(producto.precio).toLocaleString()}</span>
-    <img class="product__image" src="https://placehold.co/300x150?text=${encodeURIComponent(producto.nombre)}" alt="${producto.nombre}">
+    <img class="product__image" src="data:imagen/${producto.tipoImagen};base64,${producto.imagen}" alt="${producto.nombre}">
     <h3 class="product__title">${producto.nombre}</h3>
     <hr />
     <p>${producto.descripcion}</p>
