@@ -8,7 +8,7 @@
     if($rol === 1)
       header('Location: ../../users/views/control_panel.php');
     else if($rol === 2)
-      header('Location: ../../users/views/control_panel_customer.php');
+      header('Location: ../../');
   }
   else {
     session_unset();

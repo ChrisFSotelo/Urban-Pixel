@@ -2,17 +2,19 @@
   require 'src/features/users/model/Usuario.php';
   session_start();
 
-  if(isset($_SESSION["usuario"])) {
-    $rol = ($_SESSION["usuario"])->getRol();
+  // if(isset($_SESSION["usuario"])) {
+  //   $rol = ($_SESSION["usuario"])->getRol();
 
-    if($rol === 1)
-      header('Location: src/features/users/views/control_panel.php');
-    else if($rol === 2)
-      header('Location: src/features/users/views/control_panel_customer.php');
-  }
-  else {
-    session_unset();
-    session_destroy();
+  //   if($rol === 1)
+  //     header('Location: src/features/users/views/control_panel.php');
+  //   else if($rol === 2) {
+  //     exit;
+  //   }
+  //     //header('Location: /');
+  // }
+  // else {
+  //   session_unset();
+  //   session_destroy();
 ?>
 
 <!DOCTYPE html>
@@ -50,4 +52,4 @@
 
 <script src="public/assets/js/landingPage.js"></script>
 
-<?php } ?>
+<?php // } ?>
