@@ -85,16 +85,19 @@
     font-weight: bold;
 }
 
-.estado-tag.en-espera {
+.estado-tag.en-espera,
+.estado-compra .en-espera {
     color: #000000;
     background-color: #ffc107;
 }
 
-.estado-tag.enviado {
+.estado-tag.enviado,
+.estado-compra .enviado {
     background-color: #28a745;
 }
 
-.estado-tag.cancelado {
+.estado-tag.cancelado,
+.estado-compra .cancelado {
     background-color: #dc3545;
 }
 

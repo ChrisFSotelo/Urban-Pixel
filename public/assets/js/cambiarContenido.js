@@ -9,7 +9,7 @@ $("#inicioCliente").click(function() {
 });
 
 $("#compras").click(function() {
-    $("#contenido").load(); // Completar con la ruta del contenido de compras
+    $("#contenido").load('../../factura/views/verCompras.php');
 });
 
 $("#productos").click(function() {

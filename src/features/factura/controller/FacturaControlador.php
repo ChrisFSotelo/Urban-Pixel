@@ -55,6 +55,44 @@
             exit;
         }
 
+        public function listarCompras() {
+            $facturaDAO = new FacturaDAO();
+
+            if(empty($_GET['idCliente'])) {
+                echo json_encode(["error" => "Faltan parámetros obligatorios"], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
+
+            $idCliente = $_GET['idCliente'];
+            $facturas = $facturaDAO->listarCompras($idCliente);
+
+            if($facturas === null) {
+                echo json_encode(['error' => 'Error al listar facturas'], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
+            else {
+                $respuesta = $facturas;
+
+                if(!empty($respuesta)) {
+                    for($i = 0; $i < count($respuesta); $i++) {
+                        $respuesta[$i]["no"] = $i + 1;
+                        $respuesta[$i]["info"] = 
+                            '<button 
+                                class="btn btn-info" 
+                                type="button" 
+                                title="Información" 
+                                onclick="obtenerCompraInfo('.$respuesta[$i]["id"].')"
+                            >
+                                <i class="fa-solid fa-eye"></i>
+                            </button>';
+                    }
+                }
+            }
+
+            echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
         public function obtenerDetallesVenta() {
             $facturaDAO= new FacturaDAO();
 
@@ -246,6 +284,10 @@
     if($_GET['accion'] && $_GET['accion'] === 'listarVentas') {
         $controlador = new FacturaControlador();
         $controlador->listarVentas();
+    }
+    if($_GET['accion'] && $_GET['accion'] === 'listarCompras') {
+        $controlador = new FacturaControlador();
+        $controlador->listarCompras();
     }
     if($_GET['accion'] && $_GET['accion'] === 'obtenerDetallesVenta') {
         $controlador = new FacturaControlador();

@@ -44,6 +44,36 @@ class FacturaDAO {
         return $facturas;
     }
 
+    // Lista todas las facturas
+    public function listarCompras($idCliente): array | null {
+        $this->conexion->abrirConexion();
+        $sql = "SELECT f.*, GROUP_CONCAT(p.nombre SEPARATOR ', ') AS productos
+            FROM factura f
+            JOIN producto_factura pf
+            ON (f.id = pf.idFactura)
+            JOIN cliente c
+            ON (f.idCliente = c.id)
+            JOIN producto p
+            ON (pf.idProducto = p.id)
+            WHERE c.id = $idCliente 
+            GROUP BY f.id
+            ORDER BY c.id ASC";
+        $resultado = $this->conexion->ejecutarConsulta($sql);
+        $facturas = [];
+
+        if (!$resultado) { // Si hubo un error
+            $this->conexion->cerrarConexion();
+            return null;
+        }
+
+        while($fila = $resultado->fetch_assoc()) // Listamos las facturas
+            $facturas[] = $fila;
+
+        $this->conexion->cerrarConexion();
+        return $facturas;
+    }
+
+
     // Obtener una factura por id
     public function obtenerPorId(int $id) {
         $this->conexion->abrirConexion();

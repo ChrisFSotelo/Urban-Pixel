@@ -108,7 +108,7 @@ async function obtenerVentaInfo(idVenta) {
 
             // Estado con clase visual
             const estadoTexto = {
-                "1": "En espera",
+                "1": "En proceso",
                 "2": "Enviado",
                 "3": "Cancelado"
             };
