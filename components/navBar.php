@@ -27,7 +27,7 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
-                <li class="nav-item"><a href="src/features/login/views/login.php" class="nav-link"
+                <li class="nav-item"><a href="/src/features/login/views/login.php" class="nav-link"
                         aria-disabled="true">Iniciar Sesion</a></li>
             </ul>
         </div>
