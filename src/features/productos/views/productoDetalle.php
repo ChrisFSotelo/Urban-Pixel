@@ -114,8 +114,6 @@ $id = intval($_GET['id']);
     .catalogo__btn:hover {
         background: #e32b2c;
     }
-
-    //
     .detalle-cantidad {
         margin: 1.5em 0;
         font-size: 0.9em;
@@ -195,7 +193,7 @@ $id = intval($_GET['id']);
                         <button type="button" onclick="cambiarCantidad(1)">+</button>
                     </div>
                 </div>
-                <button class="product__btn">AGREGAR AL CARRITO</button>
+                <button class="product_btn">AGREGAR AL CARRITO</button>
             </div>
         </section>
     </div>
@@ -237,7 +235,7 @@ include("../../../../components/footer.php")
             document.getElementById("producto-imagen").alt = data.nombre;
 
             // Agregar al carrito
-            document.querySelector(".detalle-buy--btn").addEventListener("click", () => {
+            document.querySelector(".product_btn").addEventListener("click", () => {
                 const nombre = data.nombre;
                 const precio = parseInt(data.precio);
                 const cantidad = parseInt(document.getElementById("cantidad").value);
