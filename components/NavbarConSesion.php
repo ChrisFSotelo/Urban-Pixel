@@ -5,7 +5,18 @@
 <!-- NAVBAR BOOTSTRAP -->
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-        <a class="navbar-brand fw-bold text-uppercase" href="/">Urban Pixel</a>
+        <?php 
+            if (str_contains($_SERVER["REQUEST_URI"], 'src')) {
+        ?>
+            <a class="navbar-brand fw-bold text-uppercase" href="../../../../">Urban Pixel</a>
+        <?php } ?>
+
+        <?php 
+            if(!str_contains($_SERVER["REQUEST_URI"], 'src')) {
+        ?>
+            <a class="navbar-brand fw-bold text-uppercase" href="./">Urban Pixel</a>
+        <?php } ?>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
             aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -14,16 +25,56 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Inicio</a>
+                    <?php 
+                        if (str_contains($_SERVER["REQUEST_URI"], 'src')) {
+                    ?>
+                        <a class="nav-link active" aria-current="page" href="../../../../">Inicio</a>
+                    <?php } ?>
+
+                    <?php 
+                        if(!str_contains($_SERVER["REQUEST_URI"], 'src')) {
+                    ?>
+                        <a class="nav-link active" aria-current="page" href="./">Inicio</a>
+                    <?php } ?>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/src/features/users/views/control_panel_customer.php">Panel de control</a>
+                    <?php 
+                        if (str_contains($_SERVER["REQUEST_URI"], 'src')) {
+                    ?>
+                        <a class="nav-link active" aria-current="page" href="../../../../src/features/users/views/control_panel_customer.php">Panel de control</a>
+                    <?php } ?>
+
+                    <?php 
+                        if(!str_contains($_SERVER["REQUEST_URI"], 'src')) {
+                    ?>
+                        <a class="nav-link active" aria-current="page" href="src/features/users/views/control_panel_customer.php">Panel de control</a>
+                    <?php } ?>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#nosotros">Nosotros</a>
+                    <?php 
+                        if (str_contains($_SERVER["REQUEST_URI"], 'src')) {
+                    ?>
+                        <a class="nav-link active" aria-current="page" href="../../../../src/features/inicio/views/nosotros.php">Nosotros</a>
+                    <?php } ?>
+
+                    <?php 
+                        if(!str_contains($_SERVER["REQUEST_URI"], 'src')) {
+                    ?>
+                        <a class="nav-link active" aria-current="page" href="src/features/inicio/views/nosotros.php">Nosotros</a>
+                    <?php } ?>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#contacto">Contacto</a>
+                    <?php 
+                        if (str_contains($_SERVER["REQUEST_URI"], 'src')) {
+                    ?>
+                        <a class="nav-link active" aria-current="page" href="../../../../src/features/inicio/views/contacto.php">Contacto</a>
+                    <?php } ?>
+
+                    <?php 
+                        if(!str_contains($_SERVER["REQUEST_URI"], 'src')) {
+                    ?>
+                        <a class="nav-link active" aria-current="page" href="src/features/inicio/views/contacto.php">Contacto</a>
+                    <?php } ?>
                 </li>
             </ul>
         </div>

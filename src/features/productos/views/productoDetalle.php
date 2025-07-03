@@ -1,4 +1,5 @@
 <?php
+require_once '../../users/model/Usuario.php';
 session_start();
 
 if (isset($_SESSION["usuario"])) {
@@ -182,6 +183,13 @@ $id = intval($_GET['id']);
             </div>
 
             <div class="detalle-product__info">
+                <?php 
+                    if (isset($_SESSION["usuario"])) {
+                        $usuarioCompra = $_SESSION["usuario"];
+                ?>
+                    <input type="hidden" id="idClienteCompra" name="idClienteCompra" value="<?= $usuarioCompra->getIdPersona() ?>">
+                <?php } ?>
+
                 <div class="detalle-title">
                     <h1 id="producto-nombre">Cargando...</h1>
                     <span id="producto-id">CODIGO DEL PRODUCTO: --</span>
@@ -312,7 +320,7 @@ include("../../../../components/footer.php")
                 return;
             }
 
-            const idCliente = 1; // reemplaza por sesión real si aplica
+            const idCliente = document.getElementById('idClienteCompra').value; // reemplaza por sesión real si aplica
             const ciudad = "Bogotá";
             const direccion = "KR 9";
 

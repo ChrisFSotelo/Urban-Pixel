@@ -147,8 +147,7 @@ botonIniciarSesion.addEventListener("click", async (event) => {
           icon: 'success',
           confirmButtonText: 'OK'
         }).then(() => {
-          //window.location.href = "../../users/views/control_panel_customer.php";
-          window.location.href = "/";
+          window.location.href = "../../../../";
         });
       }
     }
